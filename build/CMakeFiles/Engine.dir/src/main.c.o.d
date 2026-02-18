@@ -56,10 +56,20 @@ CMakeFiles/Engine.dir/src/main.c.o: \
  /usr/include/SDL3/SDL_system.h /usr/include/SDL3/SDL_time.h \
  /usr/include/SDL3/SDL_timer.h /usr/include/SDL3/SDL_tray.h \
  /usr/include/SDL3/SDL_version.h /usr/include/SDL3/SDL_oldnames.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/draw_list.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/render_commands.h \
  /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
  /home/redw0od0/CProjects/Engine/include/headers.h /usr/include/stdlib.h \
  /usr/include/bits/stdlib-float.h \
  /home/redw0od0/CProjects/Engine/include/types/types_base.h \
  /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
  /home/redw0od0/CProjects/Engine/include/types/types_base.h \
- /home/redw0od0/CProjects/Engine/include/inputbase.h
+ /usr/include/math.h /usr/include/bits/math-vector.h \
+ /usr/include/bits/libm-simd-decl-stubs.h \
+ /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
+ /usr/include/bits/fp-fast.h /usr/include/bits/mathcalls-macros.h \
+ /usr/include/bits/mathcalls-helper-functions.h \
+ /usr/include/bits/mathcalls.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
+ /home/redw0od0/CProjects/Engine/include/inputbase.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/camera.h

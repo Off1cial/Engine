@@ -13,7 +13,7 @@ struct container_t{
 
 void ApplicationDestroy(struct container_t* container);
 
-int ApplicationInit(struct container_t* container);
+int ApplicationInit(struct container_t* container, int winw, int winh);
 
 
 #endif

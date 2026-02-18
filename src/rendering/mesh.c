@@ -60,7 +60,7 @@ void MeshPushTriangle(mesh_t* mesh, GLuint i0, GLuint i1, GLuint i2){
   VectorSub(&vB, &mesh->vertices[i0].pos, &vB);
   
   Vector cross;
-  VectorCross(&vA, &vB, &cross);
+  VectorCross(vA, vB, &cross);
   mesh->vertices[i0].normal = VectorZero();
   mesh->vertices[i1].normal = VectorZero();
   mesh->vertices[i2].normal = VectorZero();

@@ -1476,7 +1476,11 @@ CMakeFiles/Engine.dir/src/main.c.o: /home/redw0od0/CProjects/Engine/src/main.c \
   /home/redw0od0/CProjects/Engine/include/glad/glad.h \
   /home/redw0od0/CProjects/Engine/include/headers.h \
   /home/redw0od0/CProjects/Engine/include/inputbase.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/camera.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/draw_list.h \
   /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/render_commands.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
   /home/redw0od0/CProjects/Engine/include/types/types_base.h \
   /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
   /usr/include/SDL3/SDL.h \
@@ -1543,8 +1547,16 @@ CMakeFiles/Engine.dir/src/main.c.o: /home/redw0od0/CProjects/Engine/src/main.c \
   /usr/include/bits/endianness.h \
   /usr/include/bits/floatn-common.h \
   /usr/include/bits/floatn.h \
+  /usr/include/bits/flt-eval-method.h \
+  /usr/include/bits/fp-fast.h \
+  /usr/include/bits/fp-logb.h \
   /usr/include/bits/libc-header-start.h \
+  /usr/include/bits/libm-simd-decl-stubs.h \
   /usr/include/bits/long-double.h \
+  /usr/include/bits/math-vector.h \
+  /usr/include/bits/mathcalls-helper-functions.h \
+  /usr/include/bits/mathcalls-macros.h \
+  /usr/include/bits/mathcalls.h \
   /usr/include/bits/stdint-intn.h \
   /usr/include/bits/stdint-least.h \
   /usr/include/bits/stdint-uintn.h \
@@ -1570,6 +1582,7 @@ CMakeFiles/Engine.dir/src/main.c.o: /home/redw0od0/CProjects/Engine/src/main.c \
   /usr/include/gnu/stubs-64.h \
   /usr/include/gnu/stubs.h \
   /usr/include/inttypes.h \
+  /usr/include/math.h \
   /usr/include/stdc-predef.h \
   /usr/include/stdint.h \
   /usr/include/stdio.h \
@@ -1582,17 +1595,69 @@ CMakeFiles/Engine.dir/src/main.c.o: /home/redw0od0/CProjects/Engine/src/main.c \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h
 
-CMakeFiles/Engine.dir/src/rendering/mesh.c.o: /home/redw0od0/CProjects/Engine/src/rendering/mesh.c \
-  /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
-  /home/redw0od0/CProjects/Engine/include/glad/glad.h \
-  /home/redw0od0/CProjects/Engine/include/headers.h \
-  /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
+CMakeFiles/Engine.dir/src/rendering/camera.c.o: /home/redw0od0/CProjects/Engine/src/rendering/camera.c \
+  /home/redw0od0/CProjects/Engine/include/math/mathlib.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/camera.h \
   /home/redw0od0/CProjects/Engine/include/types/types_base.h \
   /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
   /usr/include/bits/floatn-common.h \
   /usr/include/bits/floatn.h \
+  /usr/include/bits/flt-eval-method.h \
+  /usr/include/bits/fp-fast.h \
+  /usr/include/bits/fp-logb.h \
   /usr/include/bits/libc-header-start.h \
+  /usr/include/bits/libm-simd-decl-stubs.h \
   /usr/include/bits/long-double.h \
+  /usr/include/bits/math-vector.h \
+  /usr/include/bits/mathcalls-helper-functions.h \
+  /usr/include/bits/mathcalls-macros.h \
+  /usr/include/bits/mathcalls.h \
+  /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/time64.h \
+  /usr/include/bits/timesize.h \
+  /usr/include/bits/types.h \
+  /usr/include/bits/types/FILE.h \
+  /usr/include/bits/types/__FILE.h \
+  /usr/include/bits/types/__fpos64_t.h \
+  /usr/include/bits/types/__fpos_t.h \
+  /usr/include/bits/types/__mbstate_t.h \
+  /usr/include/bits/types/struct_FILE.h \
+  /usr/include/bits/typesizes.h \
+  /usr/include/bits/wordsize.h \
+  /usr/include/features-time64.h \
+  /usr/include/features.h \
+  /usr/include/gnu/stubs-64.h \
+  /usr/include/gnu/stubs.h \
+  /usr/include/math.h \
+  /usr/include/stdc-predef.h \
+  /usr/include/stdio.h \
+  /usr/include/sys/cdefs.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h
+
+CMakeFiles/Engine.dir/src/rendering/draw_list.c.o: /home/redw0od0/CProjects/Engine/src/rendering/draw_list.c \
+  /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
+  /home/redw0od0/CProjects/Engine/include/glad/glad.h \
+  /home/redw0od0/CProjects/Engine/include/headers.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/draw_list.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/render_commands.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_base.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
+  /usr/include/bits/floatn-common.h \
+  /usr/include/bits/floatn.h \
+  /usr/include/bits/flt-eval-method.h \
+  /usr/include/bits/fp-fast.h \
+  /usr/include/bits/fp-logb.h \
+  /usr/include/bits/libc-header-start.h \
+  /usr/include/bits/libm-simd-decl-stubs.h \
+  /usr/include/bits/long-double.h \
+  /usr/include/bits/math-vector.h \
+  /usr/include/bits/mathcalls-helper-functions.h \
+  /usr/include/bits/mathcalls-macros.h \
+  /usr/include/bits/mathcalls.h \
   /usr/include/bits/stdint-intn.h \
   /usr/include/bits/stdint-least.h \
   /usr/include/bits/stdint-uintn.h \
@@ -1614,10 +1679,166 @@ CMakeFiles/Engine.dir/src/rendering/mesh.c.o: /home/redw0od0/CProjects/Engine/sr
   /usr/include/features.h \
   /usr/include/gnu/stubs-64.h \
   /usr/include/gnu/stubs.h \
+  /usr/include/math.h \
   /usr/include/stdc-predef.h \
   /usr/include/stdint.h \
   /usr/include/stdio.h \
   /usr/include/stdlib.h \
+  /usr/include/sys/cdefs.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h
+
+CMakeFiles/Engine.dir/src/rendering/mesh.c.o: /home/redw0od0/CProjects/Engine/src/rendering/mesh.c \
+  /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
+  /home/redw0od0/CProjects/Engine/include/glad/glad.h \
+  /home/redw0od0/CProjects/Engine/include/headers.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_base.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
+  /usr/include/bits/floatn-common.h \
+  /usr/include/bits/floatn.h \
+  /usr/include/bits/flt-eval-method.h \
+  /usr/include/bits/fp-fast.h \
+  /usr/include/bits/fp-logb.h \
+  /usr/include/bits/libc-header-start.h \
+  /usr/include/bits/libm-simd-decl-stubs.h \
+  /usr/include/bits/long-double.h \
+  /usr/include/bits/math-vector.h \
+  /usr/include/bits/mathcalls-helper-functions.h \
+  /usr/include/bits/mathcalls-macros.h \
+  /usr/include/bits/mathcalls.h \
+  /usr/include/bits/stdint-intn.h \
+  /usr/include/bits/stdint-least.h \
+  /usr/include/bits/stdint-uintn.h \
+  /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/stdlib-float.h \
+  /usr/include/bits/time64.h \
+  /usr/include/bits/timesize.h \
+  /usr/include/bits/types.h \
+  /usr/include/bits/types/FILE.h \
+  /usr/include/bits/types/__FILE.h \
+  /usr/include/bits/types/__fpos64_t.h \
+  /usr/include/bits/types/__fpos_t.h \
+  /usr/include/bits/types/__mbstate_t.h \
+  /usr/include/bits/types/struct_FILE.h \
+  /usr/include/bits/typesizes.h \
+  /usr/include/bits/wchar.h \
+  /usr/include/bits/wordsize.h \
+  /usr/include/features-time64.h \
+  /usr/include/features.h \
+  /usr/include/gnu/stubs-64.h \
+  /usr/include/gnu/stubs.h \
+  /usr/include/math.h \
+  /usr/include/stdc-predef.h \
+  /usr/include/stdint.h \
+  /usr/include/stdio.h \
+  /usr/include/stdlib.h \
+  /usr/include/sys/cdefs.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h
+
+CMakeFiles/Engine.dir/src/rendering/render_commands.c.o: /home/redw0od0/CProjects/Engine/src/rendering/render_commands.c \
+  /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
+  /home/redw0od0/CProjects/Engine/include/glad/glad.h \
+  /home/redw0od0/CProjects/Engine/include/headers.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/render_commands.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_base.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
+  /usr/include/bits/floatn-common.h \
+  /usr/include/bits/floatn.h \
+  /usr/include/bits/flt-eval-method.h \
+  /usr/include/bits/fp-fast.h \
+  /usr/include/bits/fp-logb.h \
+  /usr/include/bits/libc-header-start.h \
+  /usr/include/bits/libm-simd-decl-stubs.h \
+  /usr/include/bits/long-double.h \
+  /usr/include/bits/math-vector.h \
+  /usr/include/bits/mathcalls-helper-functions.h \
+  /usr/include/bits/mathcalls-macros.h \
+  /usr/include/bits/mathcalls.h \
+  /usr/include/bits/stdint-intn.h \
+  /usr/include/bits/stdint-least.h \
+  /usr/include/bits/stdint-uintn.h \
+  /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/stdlib-float.h \
+  /usr/include/bits/time64.h \
+  /usr/include/bits/timesize.h \
+  /usr/include/bits/types.h \
+  /usr/include/bits/types/FILE.h \
+  /usr/include/bits/types/__FILE.h \
+  /usr/include/bits/types/__fpos64_t.h \
+  /usr/include/bits/types/__fpos_t.h \
+  /usr/include/bits/types/__mbstate_t.h \
+  /usr/include/bits/types/struct_FILE.h \
+  /usr/include/bits/typesizes.h \
+  /usr/include/bits/wchar.h \
+  /usr/include/bits/wordsize.h \
+  /usr/include/features-time64.h \
+  /usr/include/features.h \
+  /usr/include/gnu/stubs-64.h \
+  /usr/include/gnu/stubs.h \
+  /usr/include/math.h \
+  /usr/include/stdc-predef.h \
+  /usr/include/stdint.h \
+  /usr/include/stdio.h \
+  /usr/include/stdlib.h \
+  /usr/include/sys/cdefs.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h
+
+CMakeFiles/Engine.dir/src/rendering/shader.c.o: /home/redw0od0/CProjects/Engine/src/rendering/shader.c \
+  /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
+  /home/redw0od0/CProjects/Engine/include/glad/glad.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_base.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
+  /usr/include/bits/floatn-common.h \
+  /usr/include/bits/floatn.h \
+  /usr/include/bits/flt-eval-method.h \
+  /usr/include/bits/fp-fast.h \
+  /usr/include/bits/fp-logb.h \
+  /usr/include/bits/libc-header-start.h \
+  /usr/include/bits/libm-simd-decl-stubs.h \
+  /usr/include/bits/long-double.h \
+  /usr/include/bits/math-vector.h \
+  /usr/include/bits/mathcalls-helper-functions.h \
+  /usr/include/bits/mathcalls-macros.h \
+  /usr/include/bits/mathcalls.h \
+  /usr/include/bits/stdint-intn.h \
+  /usr/include/bits/stdint-least.h \
+  /usr/include/bits/stdint-uintn.h \
+  /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/stdlib-float.h \
+  /usr/include/bits/time64.h \
+  /usr/include/bits/timesize.h \
+  /usr/include/bits/types.h \
+  /usr/include/bits/types/FILE.h \
+  /usr/include/bits/types/__FILE.h \
+  /usr/include/bits/types/__fpos64_t.h \
+  /usr/include/bits/types/__fpos_t.h \
+  /usr/include/bits/types/__mbstate_t.h \
+  /usr/include/bits/types/struct_FILE.h \
+  /usr/include/bits/typesizes.h \
+  /usr/include/bits/wchar.h \
+  /usr/include/bits/wordsize.h \
+  /usr/include/features-time64.h \
+  /usr/include/features.h \
+  /usr/include/gnu/stubs-64.h \
+  /usr/include/gnu/stubs.h \
+  /usr/include/math.h \
+  /usr/include/stdc-predef.h \
+  /usr/include/stdint.h \
+  /usr/include/stdio.h \
+  /usr/include/stdlib.h \
+  /usr/include/string.h \
   /usr/include/sys/cdefs.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
@@ -1658,6 +1879,7 @@ CMakeFiles/Engine.dir/src/types/types_vector.c.o: /home/redw0od0/CProjects/Engin
   /usr/include/math.h \
   /usr/include/stdc-predef.h \
   /usr/include/stdio.h \
+  /usr/include/string.h \
   /usr/include/sys/cdefs.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
@@ -1725,11 +1947,17 @@ Engine: /usr/lib/Scrt1.o \
   CMakeFiles/Engine.dir/src/glad.c.o \
   CMakeFiles/Engine.dir/src/inputbase.c.o \
   CMakeFiles/Engine.dir/src/main.c.o \
+  CMakeFiles/Engine.dir/src/rendering/camera.c.o \
+  CMakeFiles/Engine.dir/src/rendering/draw_list.c.o \
   CMakeFiles/Engine.dir/src/rendering/mesh.c.o \
+  CMakeFiles/Engine.dir/src/rendering/render_commands.c.o \
+  CMakeFiles/Engine.dir/src/rendering/shader.c.o \
   CMakeFiles/Engine.dir/src/types/types_vector.c.o
 
 
 CMakeFiles/Engine.dir/src/types/types_vector.c.o:
+
+CMakeFiles/Engine.dir/src/rendering/render_commands.c.o:
 
 CMakeFiles/Engine.dir/src/rendering/mesh.c.o:
 
@@ -1809,9 +2037,17 @@ CMakeFiles/Engine.dir/src/application.c.o:
 
 /usr/lib/crti.o:
 
+/home/redw0od0/CProjects/Engine/src/rendering/shader.c:
+
 /home/redw0od0/CProjects/Engine/src/rendering/mesh.c:
 
+/home/redw0od0/CProjects/Engine/src/rendering/draw_list.c:
+
 /home/redw0od0/CProjects/Engine/include/types/types_vector.h:
+
+/home/redw0od0/CProjects/Engine/include/rendering/draw_list.h:
+
+/home/redw0od0/CProjects/Engine/include/rendering/camera.h:
 
 /home/redw0od0/CProjects/Engine/src/main.c:
 
@@ -1927,6 +2163,8 @@ CMakeFiles/Engine.dir/include/imgui/imgui_tables.cpp.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/xtestintrin.h:
 
+CMakeFiles/Engine.dir/src/rendering/draw_list.c.o:
+
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/xsavesintrin.h:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/xsaveintrin.h:
@@ -1950,6 +2188,8 @@ CMakeFiles/Engine.dir/include/imgui/imgui_tables.cpp.o:
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/uintrintrin.h:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/tsxldtrkintrin.h:
+
+/home/redw0od0/CProjects/Engine/include/rendering/shader.h:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/tmmintrin.h:
 
@@ -2149,6 +2389,10 @@ CMakeFiles/Engine.dir/include/imgui/imgui_draw.cpp.o:
 
 /usr/include/bits/siginfo-consts-arch.h:
 
+/home/redw0od0/CProjects/Engine/include/math/mathlib.h:
+
+/home/redw0od0/CProjects/Engine/include/rendering/render_commands.h:
+
 /usr/include/bits/sigstack.h:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/wmmintrin.h:
@@ -2236,6 +2480,8 @@ CMakeFiles/Engine.dir/include/imgui/imgui_draw.cpp.o:
 /home/redw0od0/CProjects/Engine/include/rendering/mesh.h:
 
 /usr/include/assert.h:
+
+/home/redw0od0/CProjects/Engine/src/rendering/camera.c:
 
 /usr/include/bits/sigthread.h:
 
@@ -2359,6 +2605,8 @@ CMakeFiles/Engine.dir/include/imgui/imgui_draw.cpp.o:
 
 /usr/lib32/libbz2.so.1.0:
 
+/home/redw0od0/CProjects/Engine/src/rendering/render_commands.c:
+
 /usr/include/bits/types/struct_sigstack.h:
 
 /usr/include/c++/15.2.1/tr1/legendre_function.tcc:
@@ -2396,6 +2644,8 @@ CMakeFiles/Engine.dir/include/imgui/imgui_draw.cpp.o:
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/mm_malloc.h:
 
 /usr/include/features-time64.h:
+
+CMakeFiles/Engine.dir/src/rendering/camera.c.o:
 
 /usr/include/limits.h:
 
@@ -2524,6 +2774,8 @@ CMakeFiles/Engine.dir/include/imgui/imgui_draw.cpp.o:
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/avx512bwintrin.h:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/avx512dqintrin.h:
+
+CMakeFiles/Engine.dir/src/rendering/shader.c.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/avx512fintrin.h:
 

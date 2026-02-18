@@ -61,9 +61,33 @@
 },
 {
   "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/rendering/camera.c.o -c /home/redw0od0/CProjects/Engine/src/rendering/camera.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/rendering/camera.c",
+  "output": "CMakeFiles/Engine.dir/src/rendering/camera.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/rendering/draw_list.c.o -c /home/redw0od0/CProjects/Engine/src/rendering/draw_list.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/rendering/draw_list.c",
+  "output": "CMakeFiles/Engine.dir/src/rendering/draw_list.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
   "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/rendering/mesh.c.o -c /home/redw0od0/CProjects/Engine/src/rendering/mesh.c",
   "file": "/home/redw0od0/CProjects/Engine/src/rendering/mesh.c",
   "output": "CMakeFiles/Engine.dir/src/rendering/mesh.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/rendering/render_commands.c.o -c /home/redw0od0/CProjects/Engine/src/rendering/render_commands.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/rendering/render_commands.c",
+  "output": "CMakeFiles/Engine.dir/src/rendering/render_commands.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/rendering/shader.c.o -c /home/redw0od0/CProjects/Engine/src/rendering/shader.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/rendering/shader.c",
+  "output": "CMakeFiles/Engine.dir/src/rendering/shader.c.o"
 },
 {
   "directory": "/home/redw0od0/CProjects/Engine/build",

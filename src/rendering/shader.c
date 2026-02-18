@@ -42,13 +42,24 @@ static GLuint CompileShader(GLenum type, const char* src, const char* path) {
     return id;
 }
 
-bool Shader_Load(shader_t* shader, const char* vertPath, const char* fragPath) {
-    char* vertSrc = ReadFile(vertPath);
-    char* fragSrc = ReadFile(fragPath);
+bool Shader_Load(shader_t* shader, const char* assetPath, const char* vertPath, const char* fragPath) {
+    
+  char vert[512];
+  char frag[512];
+
+  snprintf(vert, sizeof(vert), "%s%s", assetPath, vertPath);
+  snprintf(frag, sizeof(frag), "%s%s", assetPath, fragPath);
+
+  printf("Attempted Path: %s\n", vert);
+  printf("Attempted Path: %s\n", frag);
+    char* vertSrc = ReadFile(vert);
+    char* fragSrc = ReadFile(frag);
     if (!vertSrc || !fragSrc) return false;
 
-    GLuint vs = CompileShader(GL_VERTEX_SHADER, vertSrc, vertPath);
-    GLuint fs = CompileShader(GL_FRAGMENT_SHADER, fragSrc, fragPath);
+    
+    GLuint vs = CompileShader(GL_VERTEX_SHADER, vertSrc, vert);
+    GLuint fs = CompileShader(GL_FRAGMENT_SHADER, fragSrc, frag);
+
 
     free(vertSrc);
     free(fragSrc);
@@ -88,7 +99,7 @@ bool Shader_Load(shader_t* shader, const char* vertPath, const char* fragPath) {
     return true;
 }
 
-
+/*
 bool Shader_LoadDefaultShader(shader_t* defaultShader, const char* defaultVert, const char* defaultFrag){
   bool result = Shader_Load(defaultShader, defaultVert, defaultFrag);
 
@@ -110,6 +121,7 @@ bool Shader_LoadDefaultBillboard(shader_t* billboardShader, const char* billboar
 
   return result;
 }
+*/
 
 void Shader_Use(shader_t* shader) {
     glUseProgram(shader->program);
@@ -128,7 +140,7 @@ void Shader_SetMat4(shader_t* shader, const char* name, mat4 mat) {
     if (loc != -1) glUniformMatrix4fv(loc, 1, GL_FALSE, (float*)mat.m);
 }
 
-void Shader_SetVec3(shader_t* shader, const char* name, Vector4 vec) {
+void Shader_SetVec3(shader_t* shader, const char* name, Vector vec) {
     GLint loc = glGetUniformLocation(shader->program, name);
     if (loc != -1) glUniform3fv(loc, 1, vec.v);
 }

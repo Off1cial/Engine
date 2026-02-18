@@ -15,6 +15,8 @@ file(GLOB_RECURSE SOURCE_FILES
     src/*.c
     src/types/*.c
     src/types/*.cpp
+    src/rendering/*.c
+    src/rendering/*.cpp
     src/*.cpp
 )
 

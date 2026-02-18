@@ -369,6 +369,54 @@ src/main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/main.c.s
 .PHONY : src/main.c.s
 
+src/rendering/camera.o: src/rendering/camera.c.o
+.PHONY : src/rendering/camera.o
+
+# target to build an object file
+src/rendering/camera.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/camera.c.o
+.PHONY : src/rendering/camera.c.o
+
+src/rendering/camera.i: src/rendering/camera.c.i
+.PHONY : src/rendering/camera.i
+
+# target to preprocess a source file
+src/rendering/camera.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/camera.c.i
+.PHONY : src/rendering/camera.c.i
+
+src/rendering/camera.s: src/rendering/camera.c.s
+.PHONY : src/rendering/camera.s
+
+# target to generate assembly for a file
+src/rendering/camera.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/camera.c.s
+.PHONY : src/rendering/camera.c.s
+
+src/rendering/draw_list.o: src/rendering/draw_list.c.o
+.PHONY : src/rendering/draw_list.o
+
+# target to build an object file
+src/rendering/draw_list.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/draw_list.c.o
+.PHONY : src/rendering/draw_list.c.o
+
+src/rendering/draw_list.i: src/rendering/draw_list.c.i
+.PHONY : src/rendering/draw_list.i
+
+# target to preprocess a source file
+src/rendering/draw_list.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/draw_list.c.i
+.PHONY : src/rendering/draw_list.c.i
+
+src/rendering/draw_list.s: src/rendering/draw_list.c.s
+.PHONY : src/rendering/draw_list.s
+
+# target to generate assembly for a file
+src/rendering/draw_list.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/draw_list.c.s
+.PHONY : src/rendering/draw_list.c.s
+
 src/rendering/mesh.o: src/rendering/mesh.c.o
 .PHONY : src/rendering/mesh.o
 
@@ -392,6 +440,54 @@ src/rendering/mesh.s: src/rendering/mesh.c.s
 src/rendering/mesh.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/mesh.c.s
 .PHONY : src/rendering/mesh.c.s
+
+src/rendering/render_commands.o: src/rendering/render_commands.c.o
+.PHONY : src/rendering/render_commands.o
+
+# target to build an object file
+src/rendering/render_commands.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/render_commands.c.o
+.PHONY : src/rendering/render_commands.c.o
+
+src/rendering/render_commands.i: src/rendering/render_commands.c.i
+.PHONY : src/rendering/render_commands.i
+
+# target to preprocess a source file
+src/rendering/render_commands.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/render_commands.c.i
+.PHONY : src/rendering/render_commands.c.i
+
+src/rendering/render_commands.s: src/rendering/render_commands.c.s
+.PHONY : src/rendering/render_commands.s
+
+# target to generate assembly for a file
+src/rendering/render_commands.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/render_commands.c.s
+.PHONY : src/rendering/render_commands.c.s
+
+src/rendering/shader.o: src/rendering/shader.c.o
+.PHONY : src/rendering/shader.o
+
+# target to build an object file
+src/rendering/shader.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/shader.c.o
+.PHONY : src/rendering/shader.c.o
+
+src/rendering/shader.i: src/rendering/shader.c.i
+.PHONY : src/rendering/shader.i
+
+# target to preprocess a source file
+src/rendering/shader.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/shader.c.i
+.PHONY : src/rendering/shader.c.i
+
+src/rendering/shader.s: src/rendering/shader.c.s
+.PHONY : src/rendering/shader.s
+
+# target to generate assembly for a file
+src/rendering/shader.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/rendering/shader.c.s
+.PHONY : src/rendering/shader.c.s
 
 src/types/types_vector.o: src/types/types_vector.c.o
 .PHONY : src/types/types_vector.o
@@ -456,9 +552,21 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/rendering/camera.o"
+	@echo "... src/rendering/camera.i"
+	@echo "... src/rendering/camera.s"
+	@echo "... src/rendering/draw_list.o"
+	@echo "... src/rendering/draw_list.i"
+	@echo "... src/rendering/draw_list.s"
 	@echo "... src/rendering/mesh.o"
 	@echo "... src/rendering/mesh.i"
 	@echo "... src/rendering/mesh.s"
+	@echo "... src/rendering/render_commands.o"
+	@echo "... src/rendering/render_commands.i"
+	@echo "... src/rendering/render_commands.s"
+	@echo "... src/rendering/shader.o"
+	@echo "... src/rendering/shader.i"
+	@echo "... src/rendering/shader.s"
 	@echo "... src/types/types_vector.o"
 	@echo "... src/types/types_vector.i"
 	@echo "... src/types/types_vector.s"

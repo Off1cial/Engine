@@ -22,6 +22,12 @@ CMakeFiles/Engine.dir/src/rendering/mesh.c.o: \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
  /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
  /home/redw0od0/CProjects/Engine/include/types/types_base.h \
+ /usr/include/math.h /usr/include/bits/math-vector.h \
+ /usr/include/bits/libm-simd-decl-stubs.h \
+ /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
+ /usr/include/bits/fp-fast.h /usr/include/bits/mathcalls-macros.h \
+ /usr/include/bits/mathcalls-helper-functions.h \
+ /usr/include/bits/mathcalls.h \
  /home/redw0od0/CProjects/Engine/include/glad/glad.h \
  /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h \

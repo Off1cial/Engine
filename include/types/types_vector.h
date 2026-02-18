@@ -9,6 +9,13 @@
 #define VEC_T_NAN FLOAT32_NAN
 
 #define VectorNew() (VectorZero())
+#define VECTOR_ZERO ((Vector){0, 0, 0})
+#define VECTOR_ONE ((Vector){1, 1, 1})
+
+#define VECTOR_AXIS_X ((Vector){1, 0, 0 })
+#define VECTOR_AXIS_Y ((Vector){0, 1, 0 })
+#define VECTOR_AXIS_Z ((Vector){0, 0, 1 })
+
 
 typedef float vec_t;
 
@@ -37,7 +44,7 @@ typedef union mat3_t{
   vec_t m[3][3];
 } mat3;
 
-mat3 Mat3Identity(){
+static mat3 Mat3Identity(){
   return  
   (mat3){
   {1, 0, 0,
@@ -49,9 +56,9 @@ mat3 Mat3Identity(){
 
 typedef union mat4_t{
   vec_t m[4][4];
-} mat4;
+} mat4 __attribute__((aligned(16)));
 
-mat4 Mat4Identity(){
+static mat4 Mat4Identity(){
   return
   (mat4){
     1, 0, 0, 0,
@@ -60,11 +67,15 @@ mat4 Mat4Identity(){
     0, 0, 0, 1
   };
 }
+void Mat4Copy(const mat4 src, mat4* dest);
 void Mat4Mul(mat4* a, mat4* b, mat4* dest);
 mat4 Mat4Translate(Vector* t);
 mat4 Mat4Scale(Vector* s);
-mat4 Mat4Rotate(float angle, Vector* axis);
+mat4 Mat4Rotate(float angle, Vector axis);
+mat4 Mat4LookAt(Vector eye, Vector center, Vector up);
+mat4 Mat4Perspective(float fovY, float aspect, float znear, float zfar);
 Vector Mat4Transform(mat4* m, Vector* v);
+
 
 inline bool IsValid(Vector* v)
 {
@@ -86,7 +97,8 @@ void VectorSub(Vector* a, Vector* b, Vector* dest);
 void VectorScale(Vector* a, float scale);
 void VectorScaleTo(Vector* a, float scale, Vector* dest);
 
-void VectorCross(Vector* a, Vector* b, Vector* dest);
+void VectorCross(Vector a, Vector b, Vector* dest);
+void VectorCrossNormalise(Vector a, Vector b, Vector* dest);
 
 void VectorNegate(Vector* a);
 void VectorNegateTo(Vector* a, Vector* dest);

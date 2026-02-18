@@ -14,7 +14,11 @@ Engine: \
   CMakeFiles/Engine.dir/src/glad.c.o \
   CMakeFiles/Engine.dir/src/inputbase.c.o \
   CMakeFiles/Engine.dir/src/main.c.o \
+  CMakeFiles/Engine.dir/src/rendering/camera.c.o \
+  CMakeFiles/Engine.dir/src/rendering/draw_list.c.o \
   CMakeFiles/Engine.dir/src/rendering/mesh.c.o \
+  CMakeFiles/Engine.dir/src/rendering/render_commands.c.o \
+  CMakeFiles/Engine.dir/src/rendering/shader.c.o \
   CMakeFiles/Engine.dir/src/types/types_vector.c.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/libSDL3.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/libSDL3_image.so \
@@ -120,7 +124,15 @@ CMakeFiles/Engine.dir/src/inputbase.c.o:
 
 CMakeFiles/Engine.dir/src/main.c.o:
 
+CMakeFiles/Engine.dir/src/rendering/camera.c.o:
+
+CMakeFiles/Engine.dir/src/rendering/draw_list.c.o:
+
 CMakeFiles/Engine.dir/src/rendering/mesh.c.o:
+
+CMakeFiles/Engine.dir/src/rendering/render_commands.c.o:
+
+CMakeFiles/Engine.dir/src/rendering/shader.c.o:
 
 CMakeFiles/Engine.dir/src/types/types_vector.c.o:
 

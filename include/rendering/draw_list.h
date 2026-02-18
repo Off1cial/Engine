@@ -1,20 +1,8 @@
 #ifndef RENDERERING_DRAW_LIST_H
 #define RENDERERING_DRAW_LIST_H
 
-#include "rendering/mesh.h"
-#include "rendering/shader.h"
+#include "rendering/render_commands.h"
 
-enum rcmd_type{
-  RCMD_MESH_DRAW,
-};
-
-struct rcmd_t{
-  enum rcmd_type type;
-  union{
-    mesh_t* mesh;
-    mat4 model;
-  }draw_mesh;
-};
 
 struct rdraw_sortable_t{
   struct rcmd_t cmd;
@@ -26,6 +14,9 @@ struct rdrawlist_t{
   struct rcmd_t* data;
   size_t capacity, count;
 };
+
+void RDrawList_Init(struct rdrawlist_t* list, size_t capacity);
+void RDrawList_Add(struct rdrawlist_t* list, struct rcmd_t cmd);
 
 
 #endif

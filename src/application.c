@@ -7,7 +7,7 @@ void ApplicationDestroy(struct container_t* container){
   SDL_DestroyWindow(container->window);
 }
 
-int ApplicationInit(struct container_t* container){
+int ApplicationInit(struct container_t* container, int winw, int winh){
   if (!SDL_Init(SDL_INIT_VIDEO)){
     fprintf(stderr, "Failed to start SDL3\n");
     exit(1);
@@ -15,17 +15,21 @@ int ApplicationInit(struct container_t* container){
   container->window = NULL;
   container->glContext = NULL;
 
-  container->window = SDL_CreateWindow("Window", 640, 480,
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+
+  container->window = SDL_CreateWindow("Window", winw, winh,
                                        SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
                                        );
+  container->win_w = winw;
+  container->win_h = winh;
 
   if (!container->window){
     fprintf(stderr, "Failed to create window\n");
     exit(1);
   }
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   
   container->glContext = SDL_GL_CreateContext(container->window);
   if (!container->glContext){
@@ -33,8 +37,13 @@ int ApplicationInit(struct container_t* container){
     exit(1);
   }
   
-  gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress);
+  if(!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)){
+    fprintf(stderr, "Bruh\n");
+    exit(1);
+  }
   glEnable(GL_DEPTH_TEST);
+  printf("OpenGL version: %s\n", glGetString(GL_VERSION));
+  printf("GLSL version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 
 
