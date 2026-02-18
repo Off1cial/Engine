@@ -1,0 +1,74 @@
+[
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/c++  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/include/imgui/imgui.cpp.o -c /home/redw0od0/CProjects/Engine/include/imgui/imgui.cpp",
+  "file": "/home/redw0od0/CProjects/Engine/include/imgui/imgui.cpp",
+  "output": "CMakeFiles/Engine.dir/include/imgui/imgui.cpp.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/c++  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/include/imgui/imgui_draw.cpp.o -c /home/redw0od0/CProjects/Engine/include/imgui/imgui_draw.cpp",
+  "file": "/home/redw0od0/CProjects/Engine/include/imgui/imgui_draw.cpp",
+  "output": "CMakeFiles/Engine.dir/include/imgui/imgui_draw.cpp.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/c++  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/include/imgui/imgui_widgets.cpp.o -c /home/redw0od0/CProjects/Engine/include/imgui/imgui_widgets.cpp",
+  "file": "/home/redw0od0/CProjects/Engine/include/imgui/imgui_widgets.cpp",
+  "output": "CMakeFiles/Engine.dir/include/imgui/imgui_widgets.cpp.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/c++  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/include/imgui/imgui_tables.cpp.o -c /home/redw0od0/CProjects/Engine/include/imgui/imgui_tables.cpp",
+  "file": "/home/redw0od0/CProjects/Engine/include/imgui/imgui_tables.cpp",
+  "output": "CMakeFiles/Engine.dir/include/imgui/imgui_tables.cpp.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/c++  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/include/imgui/imgui_impl_sdl3.cpp.o -c /home/redw0od0/CProjects/Engine/include/imgui/imgui_impl_sdl3.cpp",
+  "file": "/home/redw0od0/CProjects/Engine/include/imgui/imgui_impl_sdl3.cpp",
+  "output": "CMakeFiles/Engine.dir/include/imgui/imgui_impl_sdl3.cpp.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/c++  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/include/imgui/imgui_impl_opengl3.cpp.o -c /home/redw0od0/CProjects/Engine/include/imgui/imgui_impl_opengl3.cpp",
+  "file": "/home/redw0od0/CProjects/Engine/include/imgui/imgui_impl_opengl3.cpp",
+  "output": "CMakeFiles/Engine.dir/include/imgui/imgui_impl_opengl3.cpp.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/application.c.o -c /home/redw0od0/CProjects/Engine/src/application.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/application.c",
+  "output": "CMakeFiles/Engine.dir/src/application.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/glad.c.o -c /home/redw0od0/CProjects/Engine/src/glad.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/glad.c",
+  "output": "CMakeFiles/Engine.dir/src/glad.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/inputbase.c.o -c /home/redw0od0/CProjects/Engine/src/inputbase.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/inputbase.c",
+  "output": "CMakeFiles/Engine.dir/src/inputbase.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/main.c.o -c /home/redw0od0/CProjects/Engine/src/main.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/main.c",
+  "output": "CMakeFiles/Engine.dir/src/main.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/rendering/mesh.c.o -c /home/redw0od0/CProjects/Engine/src/rendering/mesh.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/rendering/mesh.c",
+  "output": "CMakeFiles/Engine.dir/src/rendering/mesh.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/types/types_vector.c.o -c /home/redw0od0/CProjects/Engine/src/types/types_vector.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/types/types_vector.c",
+  "output": "CMakeFiles/Engine.dir/src/types/types_vector.c.o"
+}
+]
