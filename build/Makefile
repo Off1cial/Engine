@@ -297,6 +297,78 @@ src/application.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/application.c.s
 .PHONY : src/application.c.s
 
+src/editor/brush.o: src/editor/brush.c.o
+.PHONY : src/editor/brush.o
+
+# target to build an object file
+src/editor/brush.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/brush.c.o
+.PHONY : src/editor/brush.c.o
+
+src/editor/brush.i: src/editor/brush.c.i
+.PHONY : src/editor/brush.i
+
+# target to preprocess a source file
+src/editor/brush.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/brush.c.i
+.PHONY : src/editor/brush.c.i
+
+src/editor/brush.s: src/editor/brush.c.s
+.PHONY : src/editor/brush.s
+
+# target to generate assembly for a file
+src/editor/brush.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/brush.c.s
+.PHONY : src/editor/brush.c.s
+
+src/editor/editorcamera.o: src/editor/editorcamera.cpp.o
+.PHONY : src/editor/editorcamera.o
+
+# target to build an object file
+src/editor/editorcamera.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o
+.PHONY : src/editor/editorcamera.cpp.o
+
+src/editor/editorcamera.i: src/editor/editorcamera.cpp.i
+.PHONY : src/editor/editorcamera.i
+
+# target to preprocess a source file
+src/editor/editorcamera.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.i
+.PHONY : src/editor/editorcamera.cpp.i
+
+src/editor/editorcamera.s: src/editor/editorcamera.cpp.s
+.PHONY : src/editor/editorcamera.s
+
+# target to generate assembly for a file
+src/editor/editorcamera.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.s
+.PHONY : src/editor/editorcamera.cpp.s
+
+src/editor/editorgui.o: src/editor/editorgui.cpp.o
+.PHONY : src/editor/editorgui.o
+
+# target to build an object file
+src/editor/editorgui.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o
+.PHONY : src/editor/editorgui.cpp.o
+
+src/editor/editorgui.i: src/editor/editorgui.cpp.i
+.PHONY : src/editor/editorgui.i
+
+# target to preprocess a source file
+src/editor/editorgui.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorgui.cpp.i
+.PHONY : src/editor/editorgui.cpp.i
+
+src/editor/editorgui.s: src/editor/editorgui.cpp.s
+.PHONY : src/editor/editorgui.s
+
+# target to generate assembly for a file
+src/editor/editorgui.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorgui.cpp.s
+.PHONY : src/editor/editorgui.cpp.s
+
 src/glad.o: src/glad.c.o
 .PHONY : src/glad.o
 
@@ -320,6 +392,30 @@ src/glad.s: src/glad.c.s
 src/glad.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/glad.c.s
 .PHONY : src/glad.c.s
+
+src/imgui_layer.o: src/imgui_layer.cpp.o
+.PHONY : src/imgui_layer.o
+
+# target to build an object file
+src/imgui_layer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/imgui_layer.cpp.o
+.PHONY : src/imgui_layer.cpp.o
+
+src/imgui_layer.i: src/imgui_layer.cpp.i
+.PHONY : src/imgui_layer.i
+
+# target to preprocess a source file
+src/imgui_layer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/imgui_layer.cpp.i
+.PHONY : src/imgui_layer.cpp.i
+
+src/imgui_layer.s: src/imgui_layer.cpp.s
+.PHONY : src/imgui_layer.s
+
+# target to generate assembly for a file
+src/imgui_layer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/imgui_layer.cpp.s
+.PHONY : src/imgui_layer.cpp.s
 
 src/inputbase.o: src/inputbase.c.o
 .PHONY : src/inputbase.o
@@ -368,6 +464,78 @@ src/main.s: src/main.c.s
 src/main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/main.c.s
 .PHONY : src/main.c.s
+
+src/mem.o: src/mem.c.o
+.PHONY : src/mem.o
+
+# target to build an object file
+src/mem.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/mem.c.o
+.PHONY : src/mem.c.o
+
+src/mem.i: src/mem.c.i
+.PHONY : src/mem.i
+
+# target to preprocess a source file
+src/mem.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/mem.c.i
+.PHONY : src/mem.c.i
+
+src/mem.s: src/mem.c.s
+.PHONY : src/mem.s
+
+# target to generate assembly for a file
+src/mem.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/mem.c.s
+.PHONY : src/mem.c.s
+
+src/physics/collider.o: src/physics/collider.c.o
+.PHONY : src/physics/collider.o
+
+# target to build an object file
+src/physics/collider.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/physics/collider.c.o
+.PHONY : src/physics/collider.c.o
+
+src/physics/collider.i: src/physics/collider.c.i
+.PHONY : src/physics/collider.i
+
+# target to preprocess a source file
+src/physics/collider.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/physics/collider.c.i
+.PHONY : src/physics/collider.c.i
+
+src/physics/collider.s: src/physics/collider.c.s
+.PHONY : src/physics/collider.s
+
+# target to generate assembly for a file
+src/physics/collider.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/physics/collider.c.s
+.PHONY : src/physics/collider.c.s
+
+src/physics/rigidbody.o: src/physics/rigidbody.c.o
+.PHONY : src/physics/rigidbody.o
+
+# target to build an object file
+src/physics/rigidbody.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/physics/rigidbody.c.o
+.PHONY : src/physics/rigidbody.c.o
+
+src/physics/rigidbody.i: src/physics/rigidbody.c.i
+.PHONY : src/physics/rigidbody.i
+
+# target to preprocess a source file
+src/physics/rigidbody.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/physics/rigidbody.c.i
+.PHONY : src/physics/rigidbody.c.i
+
+src/physics/rigidbody.s: src/physics/rigidbody.c.s
+.PHONY : src/physics/rigidbody.s
+
+# target to generate assembly for a file
+src/physics/rigidbody.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/physics/rigidbody.c.s
+.PHONY : src/physics/rigidbody.c.s
 
 src/rendering/camera.o: src/rendering/camera.c.o
 .PHONY : src/rendering/camera.o
@@ -543,15 +711,36 @@ help:
 	@echo "... src/application.o"
 	@echo "... src/application.i"
 	@echo "... src/application.s"
+	@echo "... src/editor/brush.o"
+	@echo "... src/editor/brush.i"
+	@echo "... src/editor/brush.s"
+	@echo "... src/editor/editorcamera.o"
+	@echo "... src/editor/editorcamera.i"
+	@echo "... src/editor/editorcamera.s"
+	@echo "... src/editor/editorgui.o"
+	@echo "... src/editor/editorgui.i"
+	@echo "... src/editor/editorgui.s"
 	@echo "... src/glad.o"
 	@echo "... src/glad.i"
 	@echo "... src/glad.s"
+	@echo "... src/imgui_layer.o"
+	@echo "... src/imgui_layer.i"
+	@echo "... src/imgui_layer.s"
 	@echo "... src/inputbase.o"
 	@echo "... src/inputbase.i"
 	@echo "... src/inputbase.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/mem.o"
+	@echo "... src/mem.i"
+	@echo "... src/mem.s"
+	@echo "... src/physics/collider.o"
+	@echo "... src/physics/collider.i"
+	@echo "... src/physics/collider.s"
+	@echo "... src/physics/rigidbody.o"
+	@echo "... src/physics/rigidbody.i"
+	@echo "... src/physics/rigidbody.s"
 	@echo "... src/rendering/camera.o"
 	@echo "... src/rendering/camera.i"
 	@echo "... src/rendering/camera.s"

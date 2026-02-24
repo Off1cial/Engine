@@ -16,6 +16,16 @@
 #define VECTOR_AXIS_Y ((Vector){0, 1, 0 })
 #define VECTOR_AXIS_Z ((Vector){0, 0, 1 })
 
+typedef enum {
+  X_POS,
+  X_NEG,
+  Y_POS,
+  Y_NEG,
+  Z_POS,
+  Z_NEG
+} eAXIS;
+
+
 
 typedef float vec_t;
 
@@ -25,6 +35,9 @@ typedef union vec3_t {
   };
   vec_t v[3];
 }Vector;
+
+extern Vector VECTOR_AXES[6];
+
 
 typedef union vec4_t{
   struct{
@@ -86,29 +99,30 @@ inline bool IsValid(Vector* v)
 
 Vector VectorInit(float x, float y, float z);
 
-double VectorDot(Vector* a, Vector* b);
-double VectorMag(Vector* a);
-double VectorMag2(Vector* a);
-double VectorAngle(Vector* a, Vector* b);
+double VectorDot(Vector a, Vector b);
+double VectorMag(Vector a);
+double VectorMag2(Vector a);
+double VectorAngle(Vector a, Vector b);
 
-void VectorAdd(Vector* a, Vector* b, Vector* dest);
-void VectorSub(Vector* a, Vector* b, Vector* dest);
+Vector VectorAdd(Vector a, Vector b);
+Vector VectorSub(Vector a, Vector b);
 
-void VectorScale(Vector* a, float scale);
-void VectorScaleTo(Vector* a, float scale, Vector* dest);
+Vector VectorScale(Vector a, float scale);
+void VectorScaleInPlace(Vector* a, float scale);
+void VectorScaleTo(Vector a, float scale, Vector* dest);
 
-void VectorCross(Vector a, Vector b, Vector* dest);
-void VectorCrossNormalise(Vector a, Vector b, Vector* dest);
+Vector VectorCross(Vector a, Vector b);
+Vector VectorCrossNormalise(Vector a, Vector b);
 
 void VectorNegate(Vector* a);
-void VectorNegateTo(Vector* a, Vector* dest);
+void VectorNegateTo(Vector a, Vector* dest);
 
 void VectorNormalise(Vector* a);
-void VectorNormaliseTo(Vector* a, Vector* dest);
+void VectorNormaliseTo(Vector a, Vector* dest);
 
 
 
-void VectorCopy(Vector* a, Vector* dest);
+void VectorCopy(Vector a, Vector* dest);
 
 Vector VectorZero();
 

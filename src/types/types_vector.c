@@ -3,6 +3,18 @@
 #include <stdio.h>
 #include <string.h>
 
+Vector VECTOR_AXES[6] = {
+  VECTOR_AXIS_X,
+  (Vector){-1, 0, 0},
+  VECTOR_AXIS_Y,
+  (Vector){0, -1, 0},
+  VECTOR_AXIS_Z,
+  (Vector){0, 0, -1}
+};
+
+
+
+
 // Debug
 void Vector_DPrint(Vector* a){
   printf("Vector: {%0.3lf, %0.3lf, %0.3lf}\n", a->x, a->y, a->z);
@@ -17,20 +29,20 @@ Vector VectorInit(float x, float y, float z){
 }
 // Mathematics
 
-double VectorDot(Vector* a, Vector* b){
-  return (a->x * b->x) + (a->y * b->y) + (a->z * b->z);
+double VectorDot(Vector a, Vector b){
+  return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
-double VectorMag2(Vector* a){
-  return (a->x*a->x) + (a->y*a->y) + (a->z*a->z);
+double VectorMag2(Vector a){
+  return (a.x*a.x) + (a.y*a.y) + (a.z*a.z);
 }
 
-double VectorMag(Vector* a){
-  return sqrt((a->x*a->x) + (a->y*a->y) + (a->z*a->z));
+double VectorMag(Vector a){
+  return sqrt((a.x*a.x) + (a.y*a.y) + (a.z*a.z));
 }
 
 
-double VectorAngle(Vector* a, Vector* b){
+double VectorAngle(Vector a, Vector b){
   double denom = VectorMag(a) * VectorMag(b);
   if (denom == 0){ return 0.0; }
   double theta = VectorDot(a, b) / denom;
@@ -38,42 +50,46 @@ double VectorAngle(Vector* a, Vector* b){
   return acos(theta);
 }
 
-void VectorAdd(Vector* a, Vector* b, Vector* dest){
-  dest->x = a->x + b->x;
-  dest->y = a->y + b->y;
-  dest->z = a->z + b->z;
+Vector VectorAdd(Vector a, Vector b){
+  return VectorInit(a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
-void VectorSub(Vector* a, Vector* b, Vector* dest){
-  dest->x = a->x - b->x;
-  dest->y = a->y - b->y;
-  dest->z = a->z - b->z;
+Vector VectorSub(Vector a, Vector b){
+  return VectorInit(a.x - b.x, a.y - b.y, a.z - b.z);
 }
 
-void VectorScale(Vector* a, float scale){
+Vector VectorScale(Vector a, float scale){
+  return (Vector){
+    a.x * scale,
+    a.y * scale,
+    a.z * scale
+  };
+}
+
+void VectorScaleInPlace(Vector* a, float scale){
   a->v[0] *= scale;
   a->v[1] *= scale;
   a->v[2] *= scale;
 }
 
-void VectorScaleTo(Vector* a, float scale, Vector* dest){
-  dest->v[0] = a->v[0] *= scale;
-  dest->v[1] = a->v[1] *= scale;
-  dest->v[2] = a->v[2] *= scale;
+void VectorScaleTo(Vector a, float scale, Vector* dest){
+  dest->v[0] = a.v[0] * scale;
+  dest->v[1] = a.v[1] * scale;
+  dest->v[2] = a.v[2] * scale;
 }
 
 
 
 void VectorNormalise(Vector* a){
-  double mag = VectorMag(a);
+  double mag = VectorMag(*a);
   if (mag == 0){
     fprintf(stderr, "Warning: Zero Vector normalised\n");
     return;
   }
-  VectorScale(a, 1.0f/mag);
+  VectorScaleInPlace(a, 1.0f/mag);
 }
 
-void VectorNormaliseTo(Vector* a, Vector* dest){
+void VectorNormaliseTo(Vector a, Vector* dest){
   double mag = VectorMag(a);
   if (mag == 0){
     fprintf(stderr, "Warning: Zero vector normalised\n");
@@ -84,20 +100,21 @@ void VectorNormaliseTo(Vector* a, Vector* dest){
 
 
 
-void VectorCross(Vector a, Vector b, Vector* dest){
-  dest->x = (a.y * b.z) - (a.z * b.y);
-  dest->y = (a.x * b.z) - (a.z * b.x);
-  dest->z = (a.x * b.y) - (a.y * b.x);
+Vector VectorCross(Vector a, Vector b){
+  float x = (a.y * b.z) - (a.z * b.y);
+  float y = (a.x * b.z) - (a.z * b.x);
+  float z = (a.x * b.y) - (a.y * b.x);
+  return VectorInit(x, y, z);
 }
 
-void VectorCrossNormalise(Vector a, Vector b, Vector* dest){
-  Vector cross;
-  VectorCross(a, b, &cross);
-  VectorNormaliseTo(&cross, dest);
+Vector VectorCrossNormalise(Vector a, Vector b){
+  Vector cross =  VectorCross(a, b);
+  VectorNormalise(&cross);
+  return cross;
 }
 
-void VectorCopy(Vector* a, Vector* dest){
-  dest[0] = a[0]; dest[1] = a[1]; dest[2] = a[2];
+void VectorCopy(Vector a, Vector* dest){
+  dest->v[0] = a.v[0]; dest->v[1] = a.v[1]; dest->v[2] = a.v[2];
 }
 
 
@@ -141,7 +158,7 @@ mat4 Mat4Scale(Vector* s)
 mat4 Mat4Rotate(float angle, Vector axis)
 {
     Vector axis_copy = VectorZero();
-    VectorNormaliseTo(&axis, &axis_copy);
+    VectorNormaliseTo(axis, &axis_copy);
 
     float c = cosf(angle);
     float s = sinf(angle);
@@ -182,13 +199,13 @@ Vector Mat4Transform(mat4* m, Vector* v)
 mat4 Mat4LookAt(Vector eye, Vector center, Vector up)
 {
     Vector f, r, u;
-    VectorSub(&center, &eye, &f);
+    f = VectorSub(center, eye);
     VectorNormalise(&f);
 
-    VectorCross(f, up, &r);
+    r = VectorCross(f, up);
     VectorNormalise(&r);
 
-    VectorCross(r, f, &u);
+    u = VectorCross(r, f);
 
     mat4 view = Mat4Identity();
 
@@ -204,9 +221,9 @@ mat4 Mat4LookAt(Vector eye, Vector center, Vector up)
     view.m[1][2] = -f.y;
     view.m[2][2] = -f.z;
 
-    view.m[3][0] = -VectorDot(&r, &eye);
-    view.m[3][1] = -VectorDot(&u, &eye);
-    view.m[3][2] =  VectorDot(&f, &eye);
+    view.m[3][0] = -VectorDot(r, eye);
+    view.m[3][1] = -VectorDot(u, eye);
+    view.m[3][2] =  VectorDot(f, eye);
 
     return view;
 }

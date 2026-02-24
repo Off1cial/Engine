@@ -43,9 +43,33 @@
 },
 {
   "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/editor/brush.c.o -c /home/redw0od0/CProjects/Engine/src/editor/brush.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/editor/brush.c",
+  "output": "CMakeFiles/Engine.dir/src/editor/brush.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/c++  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o -c /home/redw0od0/CProjects/Engine/src/editor/editorcamera.cpp",
+  "file": "/home/redw0od0/CProjects/Engine/src/editor/editorcamera.cpp",
+  "output": "CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/c++  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o -c /home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp",
+  "file": "/home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp",
+  "output": "CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
   "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/glad.c.o -c /home/redw0od0/CProjects/Engine/src/glad.c",
   "file": "/home/redw0od0/CProjects/Engine/src/glad.c",
   "output": "CMakeFiles/Engine.dir/src/glad.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/c++  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/imgui_layer.cpp.o -c /home/redw0od0/CProjects/Engine/src/imgui_layer.cpp",
+  "file": "/home/redw0od0/CProjects/Engine/src/imgui_layer.cpp",
+  "output": "CMakeFiles/Engine.dir/src/imgui_layer.cpp.o"
 },
 {
   "directory": "/home/redw0od0/CProjects/Engine/build",
@@ -58,6 +82,24 @@
   "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/main.c.o -c /home/redw0od0/CProjects/Engine/src/main.c",
   "file": "/home/redw0od0/CProjects/Engine/src/main.c",
   "output": "CMakeFiles/Engine.dir/src/main.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/mem.c.o -c /home/redw0od0/CProjects/Engine/src/mem.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/mem.c",
+  "output": "CMakeFiles/Engine.dir/src/mem.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/physics/collider.c.o -c /home/redw0od0/CProjects/Engine/src/physics/collider.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/physics/collider.c",
+  "output": "CMakeFiles/Engine.dir/src/physics/collider.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/physics/rigidbody.c.o -c /home/redw0od0/CProjects/Engine/src/physics/rigidbody.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/physics/rigidbody.c",
+  "output": "CMakeFiles/Engine.dir/src/physics/rigidbody.c.o"
 },
 {
   "directory": "/home/redw0od0/CProjects/Engine/build",

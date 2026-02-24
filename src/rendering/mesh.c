@@ -56,17 +56,14 @@ void MeshPushTriangle(mesh_t* mesh, GLuint i0, GLuint i1, GLuint i2){
   Vector vA = mesh->vertices[i1].pos;
   Vector vB = mesh->vertices[i2].pos;
 
-  VectorSub(&vA, &mesh->vertices[i0].pos, &vA);
-  VectorSub(&vB, &mesh->vertices[i0].pos, &vB);
+  vA = VectorSub(vA, mesh->vertices[i0].pos);
+  vB = VectorSub(vB, mesh->vertices[i0].pos);
+
   
-  Vector cross;
-  VectorCross(vA, vB, &cross);
-  mesh->vertices[i0].normal = VectorZero();
-  mesh->vertices[i1].normal = VectorZero();
-  mesh->vertices[i2].normal = VectorZero();
-  VectorAdd(&mesh->vertices[i0].normal, &cross, &mesh->vertices[i0].normal);
-  VectorAdd(&mesh->vertices[i1].normal, &cross, &mesh->vertices[i1].normal);
-  VectorAdd(&mesh->vertices[i2].normal, &cross, &mesh->vertices[i2].normal);
+  Vector cross = VectorCross(vA, vB);
+  mesh->vertices[i0].normal = VectorAdd(mesh->vertices[i0].normal,cross);
+  mesh->vertices[i1].normal = VectorAdd(mesh->vertices[i1].normal, cross);
+  mesh->vertices[i2].normal = VectorAdd(mesh->vertices[i2].normal, cross);
 
 
   mesh->indices[mesh->index_count++] = i0;
@@ -132,4 +129,23 @@ void MeshDestroy(mesh_t* mesh) {
     mesh->index_capacity = 0;
 }
 
+
+
+// DEBUG LINES
+
+struct dbg_container_t dbg_cont;
+
+void DebugLines_Init(){
+  dbg_cont.capacity = 128;
+  dbg_cont.count = 0;
+  dbg_cont.vertices = malloc(sizeof(struct vertex_debug_t) * dbg_cont.capacity);
+}
+
+void DebugLines_Push(Vector a, Vector b, Vector4 colour){
+  if (dbg_cont.count >= dbg_cont.capacity){ dbg_cont.capacity *= 2; }
+
+  
+  dbg_cont.vertices[dbg_cont.count++] = (struct vertex_debug_t){a, colour};
+  dbg_cont.vertices[dbg_cont.count++] = (struct vertex_debug_t){b, colour};
+}
 

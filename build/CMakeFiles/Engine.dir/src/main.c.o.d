@@ -70,6 +70,11 @@ CMakeFiles/Engine.dir/src/main.c.o: \
  /usr/include/bits/fp-fast.h /usr/include/bits/mathcalls-macros.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h \
+ /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
  /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editorgui.h \
+ /home/redw0od0/CProjects/Engine/include/imgui_layer.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/camera.h \
  /home/redw0od0/CProjects/Engine/include/inputbase.h \
- /home/redw0od0/CProjects/Engine/include/rendering/camera.h
+ /home/redw0od0/CProjects/Engine/include/physics/rigidbody.h \
+ /home/redw0od0/CProjects/Engine/include/physics/collider.h

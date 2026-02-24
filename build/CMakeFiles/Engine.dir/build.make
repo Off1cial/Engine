@@ -170,10 +170,52 @@ CMakeFiles/Engine.dir/src/application.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/application.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/redw0od0/CProjects/Engine/src/application.c -o CMakeFiles/Engine.dir/src/application.c.s
 
+CMakeFiles/Engine.dir/src/editor/brush.c.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/editor/brush.c.o: /home/redw0od0/CProjects/Engine/src/editor/brush.c
+CMakeFiles/Engine.dir/src/editor/brush.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/Engine.dir/src/editor/brush.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/editor/brush.c.o -MF CMakeFiles/Engine.dir/src/editor/brush.c.o.d -o CMakeFiles/Engine.dir/src/editor/brush.c.o -c /home/redw0od0/CProjects/Engine/src/editor/brush.c
+
+CMakeFiles/Engine.dir/src/editor/brush.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/Engine.dir/src/editor/brush.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/redw0od0/CProjects/Engine/src/editor/brush.c > CMakeFiles/Engine.dir/src/editor/brush.c.i
+
+CMakeFiles/Engine.dir/src/editor/brush.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/editor/brush.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/redw0od0/CProjects/Engine/src/editor/brush.c -o CMakeFiles/Engine.dir/src/editor/brush.c.s
+
+CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o: /home/redw0od0/CProjects/Engine/src/editor/editorcamera.cpp
+CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o -MF CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o.d -o CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o -c /home/redw0od0/CProjects/Engine/src/editor/editorcamera.cpp
+
+CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/redw0od0/CProjects/Engine/src/editor/editorcamera.cpp > CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.i
+
+CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/redw0od0/CProjects/Engine/src/editor/editorcamera.cpp -o CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.s
+
+CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o: /home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp
+CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o -MF CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o.d -o CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o -c /home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp
+
+CMakeFiles/Engine.dir/src/editor/editorgui.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Engine.dir/src/editor/editorgui.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp > CMakeFiles/Engine.dir/src/editor/editorgui.cpp.i
+
+CMakeFiles/Engine.dir/src/editor/editorgui.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Engine.dir/src/editor/editorgui.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp -o CMakeFiles/Engine.dir/src/editor/editorgui.cpp.s
+
 CMakeFiles/Engine.dir/src/glad.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/glad.c.o: /home/redw0od0/CProjects/Engine/src/glad.c
 CMakeFiles/Engine.dir/src/glad.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/Engine.dir/src/glad.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/Engine.dir/src/glad.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/glad.c.o -MF CMakeFiles/Engine.dir/src/glad.c.o.d -o CMakeFiles/Engine.dir/src/glad.c.o -c /home/redw0od0/CProjects/Engine/src/glad.c
 
 CMakeFiles/Engine.dir/src/glad.c.i: cmake_force
@@ -184,10 +226,24 @@ CMakeFiles/Engine.dir/src/glad.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/glad.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/redw0od0/CProjects/Engine/src/glad.c -o CMakeFiles/Engine.dir/src/glad.c.s
 
+CMakeFiles/Engine.dir/src/imgui_layer.cpp.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/imgui_layer.cpp.o: /home/redw0od0/CProjects/Engine/src/imgui_layer.cpp
+CMakeFiles/Engine.dir/src/imgui_layer.cpp.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/Engine.dir/src/imgui_layer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/imgui_layer.cpp.o -MF CMakeFiles/Engine.dir/src/imgui_layer.cpp.o.d -o CMakeFiles/Engine.dir/src/imgui_layer.cpp.o -c /home/redw0od0/CProjects/Engine/src/imgui_layer.cpp
+
+CMakeFiles/Engine.dir/src/imgui_layer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Engine.dir/src/imgui_layer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/redw0od0/CProjects/Engine/src/imgui_layer.cpp > CMakeFiles/Engine.dir/src/imgui_layer.cpp.i
+
+CMakeFiles/Engine.dir/src/imgui_layer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Engine.dir/src/imgui_layer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/redw0od0/CProjects/Engine/src/imgui_layer.cpp -o CMakeFiles/Engine.dir/src/imgui_layer.cpp.s
+
 CMakeFiles/Engine.dir/src/inputbase.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/inputbase.c.o: /home/redw0od0/CProjects/Engine/src/inputbase.c
 CMakeFiles/Engine.dir/src/inputbase.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/Engine.dir/src/inputbase.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/Engine.dir/src/inputbase.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/inputbase.c.o -MF CMakeFiles/Engine.dir/src/inputbase.c.o.d -o CMakeFiles/Engine.dir/src/inputbase.c.o -c /home/redw0od0/CProjects/Engine/src/inputbase.c
 
 CMakeFiles/Engine.dir/src/inputbase.c.i: cmake_force
@@ -201,7 +257,7 @@ CMakeFiles/Engine.dir/src/inputbase.c.s: cmake_force
 CMakeFiles/Engine.dir/src/main.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/main.c.o: /home/redw0od0/CProjects/Engine/src/main.c
 CMakeFiles/Engine.dir/src/main.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/Engine.dir/src/main.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/Engine.dir/src/main.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/main.c.o -MF CMakeFiles/Engine.dir/src/main.c.o.d -o CMakeFiles/Engine.dir/src/main.c.o -c /home/redw0od0/CProjects/Engine/src/main.c
 
 CMakeFiles/Engine.dir/src/main.c.i: cmake_force
@@ -212,10 +268,52 @@ CMakeFiles/Engine.dir/src/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/main.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/redw0od0/CProjects/Engine/src/main.c -o CMakeFiles/Engine.dir/src/main.c.s
 
+CMakeFiles/Engine.dir/src/mem.c.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/mem.c.o: /home/redw0od0/CProjects/Engine/src/mem.c
+CMakeFiles/Engine.dir/src/mem.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/Engine.dir/src/mem.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/mem.c.o -MF CMakeFiles/Engine.dir/src/mem.c.o.d -o CMakeFiles/Engine.dir/src/mem.c.o -c /home/redw0od0/CProjects/Engine/src/mem.c
+
+CMakeFiles/Engine.dir/src/mem.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/Engine.dir/src/mem.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/redw0od0/CProjects/Engine/src/mem.c > CMakeFiles/Engine.dir/src/mem.c.i
+
+CMakeFiles/Engine.dir/src/mem.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/mem.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/redw0od0/CProjects/Engine/src/mem.c -o CMakeFiles/Engine.dir/src/mem.c.s
+
+CMakeFiles/Engine.dir/src/physics/collider.c.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/physics/collider.c.o: /home/redw0od0/CProjects/Engine/src/physics/collider.c
+CMakeFiles/Engine.dir/src/physics/collider.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/Engine.dir/src/physics/collider.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/physics/collider.c.o -MF CMakeFiles/Engine.dir/src/physics/collider.c.o.d -o CMakeFiles/Engine.dir/src/physics/collider.c.o -c /home/redw0od0/CProjects/Engine/src/physics/collider.c
+
+CMakeFiles/Engine.dir/src/physics/collider.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/Engine.dir/src/physics/collider.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/redw0od0/CProjects/Engine/src/physics/collider.c > CMakeFiles/Engine.dir/src/physics/collider.c.i
+
+CMakeFiles/Engine.dir/src/physics/collider.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/physics/collider.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/redw0od0/CProjects/Engine/src/physics/collider.c -o CMakeFiles/Engine.dir/src/physics/collider.c.s
+
+CMakeFiles/Engine.dir/src/physics/rigidbody.c.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/physics/rigidbody.c.o: /home/redw0od0/CProjects/Engine/src/physics/rigidbody.c
+CMakeFiles/Engine.dir/src/physics/rigidbody.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/Engine.dir/src/physics/rigidbody.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/physics/rigidbody.c.o -MF CMakeFiles/Engine.dir/src/physics/rigidbody.c.o.d -o CMakeFiles/Engine.dir/src/physics/rigidbody.c.o -c /home/redw0od0/CProjects/Engine/src/physics/rigidbody.c
+
+CMakeFiles/Engine.dir/src/physics/rigidbody.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/Engine.dir/src/physics/rigidbody.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/redw0od0/CProjects/Engine/src/physics/rigidbody.c > CMakeFiles/Engine.dir/src/physics/rigidbody.c.i
+
+CMakeFiles/Engine.dir/src/physics/rigidbody.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/physics/rigidbody.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/redw0od0/CProjects/Engine/src/physics/rigidbody.c -o CMakeFiles/Engine.dir/src/physics/rigidbody.c.s
+
 CMakeFiles/Engine.dir/src/rendering/camera.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/rendering/camera.c.o: /home/redw0od0/CProjects/Engine/src/rendering/camera.c
 CMakeFiles/Engine.dir/src/rendering/camera.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/Engine.dir/src/rendering/camera.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object CMakeFiles/Engine.dir/src/rendering/camera.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/rendering/camera.c.o -MF CMakeFiles/Engine.dir/src/rendering/camera.c.o.d -o CMakeFiles/Engine.dir/src/rendering/camera.c.o -c /home/redw0od0/CProjects/Engine/src/rendering/camera.c
 
 CMakeFiles/Engine.dir/src/rendering/camera.c.i: cmake_force
@@ -229,7 +327,7 @@ CMakeFiles/Engine.dir/src/rendering/camera.c.s: cmake_force
 CMakeFiles/Engine.dir/src/rendering/draw_list.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/rendering/draw_list.c.o: /home/redw0od0/CProjects/Engine/src/rendering/draw_list.c
 CMakeFiles/Engine.dir/src/rendering/draw_list.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/Engine.dir/src/rendering/draw_list.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object CMakeFiles/Engine.dir/src/rendering/draw_list.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/rendering/draw_list.c.o -MF CMakeFiles/Engine.dir/src/rendering/draw_list.c.o.d -o CMakeFiles/Engine.dir/src/rendering/draw_list.c.o -c /home/redw0od0/CProjects/Engine/src/rendering/draw_list.c
 
 CMakeFiles/Engine.dir/src/rendering/draw_list.c.i: cmake_force
@@ -243,7 +341,7 @@ CMakeFiles/Engine.dir/src/rendering/draw_list.c.s: cmake_force
 CMakeFiles/Engine.dir/src/rendering/mesh.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/rendering/mesh.c.o: /home/redw0od0/CProjects/Engine/src/rendering/mesh.c
 CMakeFiles/Engine.dir/src/rendering/mesh.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/Engine.dir/src/rendering/mesh.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object CMakeFiles/Engine.dir/src/rendering/mesh.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/rendering/mesh.c.o -MF CMakeFiles/Engine.dir/src/rendering/mesh.c.o.d -o CMakeFiles/Engine.dir/src/rendering/mesh.c.o -c /home/redw0od0/CProjects/Engine/src/rendering/mesh.c
 
 CMakeFiles/Engine.dir/src/rendering/mesh.c.i: cmake_force
@@ -257,7 +355,7 @@ CMakeFiles/Engine.dir/src/rendering/mesh.c.s: cmake_force
 CMakeFiles/Engine.dir/src/rendering/render_commands.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/rendering/render_commands.c.o: /home/redw0od0/CProjects/Engine/src/rendering/render_commands.c
 CMakeFiles/Engine.dir/src/rendering/render_commands.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/Engine.dir/src/rendering/render_commands.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object CMakeFiles/Engine.dir/src/rendering/render_commands.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/rendering/render_commands.c.o -MF CMakeFiles/Engine.dir/src/rendering/render_commands.c.o.d -o CMakeFiles/Engine.dir/src/rendering/render_commands.c.o -c /home/redw0od0/CProjects/Engine/src/rendering/render_commands.c
 
 CMakeFiles/Engine.dir/src/rendering/render_commands.c.i: cmake_force
@@ -271,7 +369,7 @@ CMakeFiles/Engine.dir/src/rendering/render_commands.c.s: cmake_force
 CMakeFiles/Engine.dir/src/rendering/shader.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/rendering/shader.c.o: /home/redw0od0/CProjects/Engine/src/rendering/shader.c
 CMakeFiles/Engine.dir/src/rendering/shader.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/Engine.dir/src/rendering/shader.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object CMakeFiles/Engine.dir/src/rendering/shader.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/rendering/shader.c.o -MF CMakeFiles/Engine.dir/src/rendering/shader.c.o.d -o CMakeFiles/Engine.dir/src/rendering/shader.c.o -c /home/redw0od0/CProjects/Engine/src/rendering/shader.c
 
 CMakeFiles/Engine.dir/src/rendering/shader.c.i: cmake_force
@@ -285,7 +383,7 @@ CMakeFiles/Engine.dir/src/rendering/shader.c.s: cmake_force
 CMakeFiles/Engine.dir/src/types/types_vector.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/types/types_vector.c.o: /home/redw0od0/CProjects/Engine/src/types/types_vector.c
 CMakeFiles/Engine.dir/src/types/types_vector.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/Engine.dir/src/types/types_vector.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object CMakeFiles/Engine.dir/src/types/types_vector.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/types/types_vector.c.o -MF CMakeFiles/Engine.dir/src/types/types_vector.c.o.d -o CMakeFiles/Engine.dir/src/types/types_vector.c.o -c /home/redw0od0/CProjects/Engine/src/types/types_vector.c
 
 CMakeFiles/Engine.dir/src/types/types_vector.c.i: cmake_force
@@ -305,9 +403,16 @@ Engine_OBJECTS = \
 "CMakeFiles/Engine.dir/include/imgui/imgui_impl_sdl3.cpp.o" \
 "CMakeFiles/Engine.dir/include/imgui/imgui_impl_opengl3.cpp.o" \
 "CMakeFiles/Engine.dir/src/application.c.o" \
+"CMakeFiles/Engine.dir/src/editor/brush.c.o" \
+"CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o" \
+"CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o" \
 "CMakeFiles/Engine.dir/src/glad.c.o" \
+"CMakeFiles/Engine.dir/src/imgui_layer.cpp.o" \
 "CMakeFiles/Engine.dir/src/inputbase.c.o" \
 "CMakeFiles/Engine.dir/src/main.c.o" \
+"CMakeFiles/Engine.dir/src/mem.c.o" \
+"CMakeFiles/Engine.dir/src/physics/collider.c.o" \
+"CMakeFiles/Engine.dir/src/physics/rigidbody.c.o" \
 "CMakeFiles/Engine.dir/src/rendering/camera.c.o" \
 "CMakeFiles/Engine.dir/src/rendering/draw_list.c.o" \
 "CMakeFiles/Engine.dir/src/rendering/mesh.c.o" \
@@ -325,9 +430,16 @@ Engine: CMakeFiles/Engine.dir/include/imgui/imgui_tables.cpp.o
 Engine: CMakeFiles/Engine.dir/include/imgui/imgui_impl_sdl3.cpp.o
 Engine: CMakeFiles/Engine.dir/include/imgui/imgui_impl_opengl3.cpp.o
 Engine: CMakeFiles/Engine.dir/src/application.c.o
+Engine: CMakeFiles/Engine.dir/src/editor/brush.c.o
+Engine: CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o
+Engine: CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o
 Engine: CMakeFiles/Engine.dir/src/glad.c.o
+Engine: CMakeFiles/Engine.dir/src/imgui_layer.cpp.o
 Engine: CMakeFiles/Engine.dir/src/inputbase.c.o
 Engine: CMakeFiles/Engine.dir/src/main.c.o
+Engine: CMakeFiles/Engine.dir/src/mem.c.o
+Engine: CMakeFiles/Engine.dir/src/physics/collider.c.o
+Engine: CMakeFiles/Engine.dir/src/physics/rigidbody.c.o
 Engine: CMakeFiles/Engine.dir/src/rendering/camera.c.o
 Engine: CMakeFiles/Engine.dir/src/rendering/draw_list.c.o
 Engine: CMakeFiles/Engine.dir/src/rendering/mesh.c.o
@@ -337,7 +449,7 @@ Engine: CMakeFiles/Engine.dir/src/types/types_vector.c.o
 Engine: CMakeFiles/Engine.dir/build.make
 Engine: CMakeFiles/Engine.dir/compiler_depend.ts
 Engine: CMakeFiles/Engine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable Engine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/redw0od0/CProjects/Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Linking CXX executable Engine"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Engine.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

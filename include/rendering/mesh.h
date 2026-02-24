@@ -14,6 +14,17 @@ struct vertex_t{
   Vector2 uv;
 };
 
+// Exclusively for deubg lines
+struct vertex_debug_t{ 
+  Vector pos;
+  Vector4 colour;
+};
+
+struct dbg_container_t{
+  struct vertex_debug_t* vertices;
+  size_t count, capacity;
+};
+
 typedef struct {
   GLuint vao, vbo, ebo;
   size_t index_count, index_capacity;
@@ -30,3 +41,7 @@ void MeshUpload(mesh_t* mesh, GLenum usage);
 void MeshDraw(mesh_t* mesh, GLenum mode);
 void MeshDestroy(mesh_t* mesh);
 
+void DebugLines_Init();
+void DebugLines_Push(Vector a, Vector b, Vector4 colour);
+void DebugLines_Upload();
+void DebugLines_Draw();

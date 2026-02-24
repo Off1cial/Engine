@@ -4,28 +4,29 @@
 #include <math.h>
 #include <stdio.h>
 
+camera_t* gCameras[MAX_CAMERAS];
+size_t gCameraCount = 0;
+size_t gCameraIndex = 0;
 
 
-
-void Camera_ToggleWireframe(struct camera_t* cam){
+void Camera_ToggleWireframe(camera_t* cam){
   cam->drawWireframe = !cam->drawWireframe;
 }
 
-void Camera_update(struct camera_t *cam) {
+void Camera_update(camera_t *cam) {
     // 1. Calculate front vector from yaw/pitch
     Vector front;
     front.x = cosf(RAD(cam->yaw)) * cosf(RAD(cam->pitch));
     front.y = sinf(RAD(cam->pitch));
     front.z = sinf(RAD(cam->yaw)) * cosf(RAD(cam->pitch));
-    VectorNormaliseTo(&front, &cam->front);
+    VectorNormaliseTo(front, &cam->front);
 
 
     // 2. Recalculate right and up vectors
-    VectorCrossNormalise(cam->front, cam->worldUp, &cam->right);
-    VectorCrossNormalise(cam->right, cam->front, &cam->up);
+    cam->right = VectorCrossNormalise(cam->front, cam->worldUp);
+    cam->up = VectorCrossNormalise(cam->right, cam->front);
     // 3. Create standard view matrix (yaw/pitch only)
-    Vector centre = VectorZero();
-    VectorAdd(&cam->pos, &cam->front, &centre);
+    Vector centre = VectorAdd(cam->pos, cam->front);
     mat4 viewNoRoll = Mat4LookAt(cam->pos, centre, cam->up);
 
     // 4. Apply roll in camera_t space (around local Z)
@@ -44,7 +45,11 @@ void Camera_update(struct camera_t *cam) {
 
 
 
-void Camera_init(struct camera_t* cam, Vector position, struct Viewport viewport){
+void Camera_init(camera_t* cam, Vector position, struct Viewport viewport){
+  if (gCameraCount >= MAX_CAMERAS){
+    fprintf(stderr, "Camera limit reached\n");
+    exit(1);
+  }
   cam->pos = position;
   cam->worldUp = VectorInit(0, 1, 0); 
   
@@ -64,6 +69,7 @@ void Camera_init(struct camera_t* cam, Vector position, struct Viewport viewport
   Camera_update(cam);
   
   printf("camera_t created at: "); Vector_DPrint(&cam->pos);
+  gCameras[gCameraCount++] = cam;
 
 }
 

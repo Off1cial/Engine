@@ -128,8 +128,10 @@ void Shader_Use(shader_t* shader) {
 }
 
 void Shader_Destroy(shader_t* shader) {
-    glDeleteProgram(shader->program);
-    shader->program = 0;
+  glDeleteProgram(shader->program);
+  shader->program = 0;
+  free(shader);
+  shader = NULL;
 }
 
 // ---- Uniform helpers ----

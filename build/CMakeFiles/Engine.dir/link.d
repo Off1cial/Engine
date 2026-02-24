@@ -11,9 +11,16 @@ Engine: \
   CMakeFiles/Engine.dir/include/imgui/imgui_impl_sdl3.cpp.o \
   CMakeFiles/Engine.dir/include/imgui/imgui_impl_opengl3.cpp.o \
   CMakeFiles/Engine.dir/src/application.c.o \
+  CMakeFiles/Engine.dir/src/editor/brush.c.o \
+  CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o \
+  CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o \
   CMakeFiles/Engine.dir/src/glad.c.o \
+  CMakeFiles/Engine.dir/src/imgui_layer.cpp.o \
   CMakeFiles/Engine.dir/src/inputbase.c.o \
   CMakeFiles/Engine.dir/src/main.c.o \
+  CMakeFiles/Engine.dir/src/mem.c.o \
+  CMakeFiles/Engine.dir/src/physics/collider.c.o \
+  CMakeFiles/Engine.dir/src/physics/rigidbody.c.o \
   CMakeFiles/Engine.dir/src/rendering/camera.c.o \
   CMakeFiles/Engine.dir/src/rendering/draw_list.c.o \
   CMakeFiles/Engine.dir/src/rendering/mesh.c.o \
@@ -118,11 +125,25 @@ CMakeFiles/Engine.dir/include/imgui/imgui_impl_opengl3.cpp.o:
 
 CMakeFiles/Engine.dir/src/application.c.o:
 
+CMakeFiles/Engine.dir/src/editor/brush.c.o:
+
+CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o:
+
+CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o:
+
 CMakeFiles/Engine.dir/src/glad.c.o:
+
+CMakeFiles/Engine.dir/src/imgui_layer.cpp.o:
 
 CMakeFiles/Engine.dir/src/inputbase.c.o:
 
 CMakeFiles/Engine.dir/src/main.c.o:
+
+CMakeFiles/Engine.dir/src/mem.c.o:
+
+CMakeFiles/Engine.dir/src/physics/collider.c.o:
+
+CMakeFiles/Engine.dir/src/physics/rigidbody.c.o:
 
 CMakeFiles/Engine.dir/src/rendering/camera.c.o:
 

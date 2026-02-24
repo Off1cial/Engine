@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include "types/types_vector.h"
+#include <stdlib.h>
 
 #define MAX_CAMERA_ROLL (M_PI * 2)
 
@@ -16,7 +17,7 @@ struct Viewport{
   float x,y,w,h;
 };
 
-struct camera_t {
+typedef struct {
  Vector pos;
  Vector up,front,right;
  Vector worldUp;
@@ -37,8 +38,11 @@ struct camera_t {
 
 
  bool drawWireframe;
-};
+} camera_t;
 
+extern camera_t* gCameras[MAX_CAMERAS];
+extern size_t gCameraCount;
+extern size_t gCameraIndex;
 
 typedef struct {
   Vector origin;
@@ -61,22 +65,22 @@ enum CAM_DIR{
   CAM_BACK
 };
 
-extern struct camera_t* activeCam;
+extern camera_t* activeCam;
 extern Ray* activeCamCursorRay;
 
 
-void Camera_ToggleWireframe(struct camera_t* cam);
+void Camera_ToggleWireframe(camera_t* cam);
 
-void Camera_update(struct camera_t* cam);
-void Camera_init(struct camera_t* cam, Vector position, struct Viewport view);
+void Camera_update(camera_t* cam);
+void Camera_init(camera_t* cam, Vector position, struct Viewport view);
 
-void Camera_Move(struct camera_t* cam, enum CAM_DIR direction, float unit);
+void Camera_Move(camera_t* cam, enum CAM_DIR direction, float unit);
 
 bool RayIntersectsAABB(Vector origin, Vector dir, Vector aabbMin, Vector aabbMax, float *tOut);
 
 bool RayIntersectsPlane(Vector origin, Vector dir, Vector pNormal, Vector pPos, float* t_out);
 
-Ray Camera_ScreenPointToRay(struct camera_t* cam, float mouseX, float mouseY);
+Ray Camera_ScreenPointToRay(camera_t* cam, float mouseX, float mouseY);
 
 
 void Camera2D_Update(struct Camera2D* cam);
