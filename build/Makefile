@@ -321,6 +321,54 @@ src/editor/brush.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/brush.c.s
 .PHONY : src/editor/brush.c.s
 
+src/editor/brush_render.o: src/editor/brush_render.c.o
+.PHONY : src/editor/brush_render.o
+
+# target to build an object file
+src/editor/brush_render.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/brush_render.c.o
+.PHONY : src/editor/brush_render.c.o
+
+src/editor/brush_render.i: src/editor/brush_render.c.i
+.PHONY : src/editor/brush_render.i
+
+# target to preprocess a source file
+src/editor/brush_render.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/brush_render.c.i
+.PHONY : src/editor/brush_render.c.i
+
+src/editor/brush_render.s: src/editor/brush_render.c.s
+.PHONY : src/editor/brush_render.s
+
+# target to generate assembly for a file
+src/editor/brush_render.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/brush_render.c.s
+.PHONY : src/editor/brush_render.c.s
+
+src/editor/editor.o: src/editor/editor.c.o
+.PHONY : src/editor/editor.o
+
+# target to build an object file
+src/editor/editor.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editor.c.o
+.PHONY : src/editor/editor.c.o
+
+src/editor/editor.i: src/editor/editor.c.i
+.PHONY : src/editor/editor.i
+
+# target to preprocess a source file
+src/editor/editor.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editor.c.i
+.PHONY : src/editor/editor.c.i
+
+src/editor/editor.s: src/editor/editor.c.s
+.PHONY : src/editor/editor.s
+
+# target to generate assembly for a file
+src/editor/editor.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editor.c.s
+.PHONY : src/editor/editor.c.s
+
 src/editor/editorcamera.o: src/editor/editorcamera.cpp.o
 .PHONY : src/editor/editorcamera.o
 
@@ -714,6 +762,12 @@ help:
 	@echo "... src/editor/brush.o"
 	@echo "... src/editor/brush.i"
 	@echo "... src/editor/brush.s"
+	@echo "... src/editor/brush_render.o"
+	@echo "... src/editor/brush_render.i"
+	@echo "... src/editor/brush_render.s"
+	@echo "... src/editor/editor.o"
+	@echo "... src/editor/editor.i"
+	@echo "... src/editor/editor.s"
 	@echo "... src/editor/editorcamera.o"
 	@echo "... src/editor/editorcamera.i"
 	@echo "... src/editor/editorcamera.s"

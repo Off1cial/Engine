@@ -12,6 +12,8 @@ Engine: \
   CMakeFiles/Engine.dir/include/imgui/imgui_impl_opengl3.cpp.o \
   CMakeFiles/Engine.dir/src/application.c.o \
   CMakeFiles/Engine.dir/src/editor/brush.c.o \
+  CMakeFiles/Engine.dir/src/editor/brush_render.c.o \
+  CMakeFiles/Engine.dir/src/editor/editor.c.o \
   CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o \
   CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o \
   CMakeFiles/Engine.dir/src/glad.c.o \
@@ -126,6 +128,10 @@ CMakeFiles/Engine.dir/include/imgui/imgui_impl_opengl3.cpp.o:
 CMakeFiles/Engine.dir/src/application.c.o:
 
 CMakeFiles/Engine.dir/src/editor/brush.c.o:
+
+CMakeFiles/Engine.dir/src/editor/brush_render.c.o:
+
+CMakeFiles/Engine.dir/src/editor/editor.c.o:
 
 CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o:
 

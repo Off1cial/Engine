@@ -10,6 +10,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/redw0od0/CProjects/Engine/src/application.c" "CMakeFiles/Engine.dir/src/application.c.o" "gcc" "CMakeFiles/Engine.dir/src/application.c.o.d"
   "/home/redw0od0/CProjects/Engine/src/editor/brush.c" "CMakeFiles/Engine.dir/src/editor/brush.c.o" "gcc" "CMakeFiles/Engine.dir/src/editor/brush.c.o.d"
+  "/home/redw0od0/CProjects/Engine/src/editor/brush_render.c" "CMakeFiles/Engine.dir/src/editor/brush_render.c.o" "gcc" "CMakeFiles/Engine.dir/src/editor/brush_render.c.o.d"
+  "/home/redw0od0/CProjects/Engine/src/editor/editor.c" "CMakeFiles/Engine.dir/src/editor/editor.c.o" "gcc" "CMakeFiles/Engine.dir/src/editor/editor.c.o.d"
   "/home/redw0od0/CProjects/Engine/src/glad.c" "CMakeFiles/Engine.dir/src/glad.c.o" "gcc" "CMakeFiles/Engine.dir/src/glad.c.o.d"
   "/home/redw0od0/CProjects/Engine/src/inputbase.c" "CMakeFiles/Engine.dir/src/inputbase.c.o" "gcc" "CMakeFiles/Engine.dir/src/inputbase.c.o.d"
   "/home/redw0od0/CProjects/Engine/src/main.c" "CMakeFiles/Engine.dir/src/main.c.o" "gcc" "CMakeFiles/Engine.dir/src/main.c.o.d"

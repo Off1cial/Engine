@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include "application.h"
 #include "mem.h"
-#include "editor/editorgui.h"
+#include "editor/editor.h"
 #include "inputbase.h"
 #include "types/types_vector.h"
 #include "rendering/camera.h"
@@ -13,6 +13,13 @@
 #include "rendering/mesh.h"
 #include "rendering/render_commands.h"
 #include "rendering/draw_list.h"
+#include "state.h"
+
+// TOOD
+//
+//  REDUCE STACK USAGE
+//
+//
 
 int main(){
   
@@ -66,7 +73,6 @@ int main(){
   MeshPushTriangle(tri_mesh, i0, i1, i2);
   MeshUpload(tri_mesh, GL_STATIC_DRAW);
 
-  printf("Vertice count: %zu\n", tri_mesh->vertex_count);
   
   camera_t main_cam;
   struct Viewport view = {0, 0, 640, 480 };
@@ -82,14 +88,19 @@ int main(){
   RigidbodyArray_Init(&rb_arr, 128);
   collider_array_dynamic_t collider_arr;
   ColliderArray_Init(&collider_arr, 128);
-  
-  EditorGui_Init(game_container.window, game_container.glContext, &editor_cam);
+
+  brush_array_t* editor_brush_array = malloc(sizeof(brush_array_t));
+  editor_state_t* editor_state = malloc(sizeof(editor_state_t));
+  editor_state->brush_array = editor_brush_array;
+  editor_state->camera = &editor_cam;
+  EditorInit(editor_state, game_container.window, game_container.glContext);
 
   if (NULL == gCameras[gCameraIndex]){
     printf("Null camera\n");
   }
   
-
+  EditorBrush_Create(editor_state->brush_array, VECTOR_ZERO);
+  
   while(app_running){
     MEM_ARENA_RESET(&gMemArena);
     RDrawQueue_Reset(&gDrawQ);
@@ -113,15 +124,8 @@ int main(){
 
     RDrawQueue_Push(&gDrawQ, &rcmd);
     
-    /* 
-    Shader_Use(new_shader);
-    Shader_SetMat4(new_shader, "uView", main_cam.view);
-    Shader_SetMat4(new_shader, "uProj", main_cam.projection);
-    Shader_SetMat4(new_shader, "uModel", Mat4Identity());
      
-    //EditorGui_DrawAll(game_container.window, &editor_cam, input_state.FLAG_WindowResized);
-    MeshDraw(tri_mesh, GL_TRIANGLES); 
-    */
+    EditorGui_DrawAll(game_container.window, &editor_cam, input_state.FLAG_WindowResized);
 
     RDrawQueue_Execute(&gDrawQ);
     SDL_GL_SwapWindow(game_container.window);
@@ -130,6 +134,7 @@ int main(){
   ColliderArray_Destroy(&collider_arr);
   MeshDestroy(tri_mesh);
   free(tri_mesh);
+  EditorDestroy(editor_state);
   Shader_Destroy(new_shader);
   RDrawQueue_Destroy(&gDrawQ);
   MEM_ARENA_DESTROY(&gMemArena);

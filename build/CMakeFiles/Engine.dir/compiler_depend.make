@@ -1507,6 +1507,177 @@ CMakeFiles/Engine.dir/src/editor/brush.c.o: /home/redw0od0/CProjects/Engine/src/
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/xsavesintrin.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/xtestintrin.h
 
+CMakeFiles/Engine.dir/src/editor/brush_render.c.o: /home/redw0od0/CProjects/Engine/src/editor/brush_render.c \
+  /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
+  /home/redw0od0/CProjects/Engine/include/editor/brush.h \
+  /home/redw0od0/CProjects/Engine/include/editor/brush_render.h \
+  /home/redw0od0/CProjects/Engine/include/glad/glad.h \
+  /home/redw0od0/CProjects/Engine/include/headers.h \
+  /home/redw0od0/CProjects/Engine/include/mem.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_base.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
+  /usr/include/bits/floatn-common.h \
+  /usr/include/bits/floatn.h \
+  /usr/include/bits/flt-eval-method.h \
+  /usr/include/bits/fp-fast.h \
+  /usr/include/bits/fp-logb.h \
+  /usr/include/bits/libc-header-start.h \
+  /usr/include/bits/libm-simd-decl-stubs.h \
+  /usr/include/bits/long-double.h \
+  /usr/include/bits/math-vector.h \
+  /usr/include/bits/mathcalls-helper-functions.h \
+  /usr/include/bits/mathcalls-macros.h \
+  /usr/include/bits/mathcalls.h \
+  /usr/include/bits/stdint-intn.h \
+  /usr/include/bits/stdint-least.h \
+  /usr/include/bits/stdint-uintn.h \
+  /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/stdlib-float.h \
+  /usr/include/bits/time64.h \
+  /usr/include/bits/timesize.h \
+  /usr/include/bits/types.h \
+  /usr/include/bits/types/FILE.h \
+  /usr/include/bits/types/__FILE.h \
+  /usr/include/bits/types/__fpos64_t.h \
+  /usr/include/bits/types/__fpos_t.h \
+  /usr/include/bits/types/__mbstate_t.h \
+  /usr/include/bits/types/struct_FILE.h \
+  /usr/include/bits/typesizes.h \
+  /usr/include/bits/wchar.h \
+  /usr/include/bits/wordsize.h \
+  /usr/include/features-time64.h \
+  /usr/include/features.h \
+  /usr/include/gnu/stubs-64.h \
+  /usr/include/gnu/stubs.h \
+  /usr/include/math.h \
+  /usr/include/stdc-predef.h \
+  /usr/include/stdint.h \
+  /usr/include/stdio.h \
+  /usr/include/stdlib.h \
+  /usr/include/string.h \
+  /usr/include/sys/cdefs.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h
+
+CMakeFiles/Engine.dir/src/editor/editor.c.o: /home/redw0od0/CProjects/Engine/src/editor/editor.c \
+  /home/redw0od0/CProjects/Engine/include/editor/brush.h \
+  /home/redw0od0/CProjects/Engine/include/editor/editor.h \
+  /home/redw0od0/CProjects/Engine/include/editor/editorgui.h \
+  /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
+  /home/redw0od0/CProjects/Engine/include/imgui_layer.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/camera.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_base.h \
+  /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
+  /usr/include/SDL3/SDL.h \
+  /usr/include/SDL3/SDL_assert.h \
+  /usr/include/SDL3/SDL_asyncio.h \
+  /usr/include/SDL3/SDL_atomic.h \
+  /usr/include/SDL3/SDL_audio.h \
+  /usr/include/SDL3/SDL_begin_code.h \
+  /usr/include/SDL3/SDL_bits.h \
+  /usr/include/SDL3/SDL_blendmode.h \
+  /usr/include/SDL3/SDL_camera.h \
+  /usr/include/SDL3/SDL_clipboard.h \
+  /usr/include/SDL3/SDL_close_code.h \
+  /usr/include/SDL3/SDL_cpuinfo.h \
+  /usr/include/SDL3/SDL_dialog.h \
+  /usr/include/SDL3/SDL_dlopennote.h \
+  /usr/include/SDL3/SDL_endian.h \
+  /usr/include/SDL3/SDL_error.h \
+  /usr/include/SDL3/SDL_events.h \
+  /usr/include/SDL3/SDL_filesystem.h \
+  /usr/include/SDL3/SDL_gamepad.h \
+  /usr/include/SDL3/SDL_gpu.h \
+  /usr/include/SDL3/SDL_guid.h \
+  /usr/include/SDL3/SDL_haptic.h \
+  /usr/include/SDL3/SDL_hidapi.h \
+  /usr/include/SDL3/SDL_hints.h \
+  /usr/include/SDL3/SDL_init.h \
+  /usr/include/SDL3/SDL_iostream.h \
+  /usr/include/SDL3/SDL_joystick.h \
+  /usr/include/SDL3/SDL_keyboard.h \
+  /usr/include/SDL3/SDL_keycode.h \
+  /usr/include/SDL3/SDL_loadso.h \
+  /usr/include/SDL3/SDL_locale.h \
+  /usr/include/SDL3/SDL_log.h \
+  /usr/include/SDL3/SDL_messagebox.h \
+  /usr/include/SDL3/SDL_metal.h \
+  /usr/include/SDL3/SDL_misc.h \
+  /usr/include/SDL3/SDL_mouse.h \
+  /usr/include/SDL3/SDL_mutex.h \
+  /usr/include/SDL3/SDL_oldnames.h \
+  /usr/include/SDL3/SDL_pen.h \
+  /usr/include/SDL3/SDL_pixels.h \
+  /usr/include/SDL3/SDL_platform.h \
+  /usr/include/SDL3/SDL_platform_defines.h \
+  /usr/include/SDL3/SDL_power.h \
+  /usr/include/SDL3/SDL_process.h \
+  /usr/include/SDL3/SDL_properties.h \
+  /usr/include/SDL3/SDL_rect.h \
+  /usr/include/SDL3/SDL_render.h \
+  /usr/include/SDL3/SDL_scancode.h \
+  /usr/include/SDL3/SDL_sensor.h \
+  /usr/include/SDL3/SDL_stdinc.h \
+  /usr/include/SDL3/SDL_storage.h \
+  /usr/include/SDL3/SDL_surface.h \
+  /usr/include/SDL3/SDL_system.h \
+  /usr/include/SDL3/SDL_thread.h \
+  /usr/include/SDL3/SDL_time.h \
+  /usr/include/SDL3/SDL_timer.h \
+  /usr/include/SDL3/SDL_touch.h \
+  /usr/include/SDL3/SDL_tray.h \
+  /usr/include/SDL3/SDL_version.h \
+  /usr/include/SDL3/SDL_video.h \
+  /usr/include/bits/endian.h \
+  /usr/include/bits/endianness.h \
+  /usr/include/bits/floatn-common.h \
+  /usr/include/bits/floatn.h \
+  /usr/include/bits/flt-eval-method.h \
+  /usr/include/bits/fp-fast.h \
+  /usr/include/bits/fp-logb.h \
+  /usr/include/bits/libc-header-start.h \
+  /usr/include/bits/libm-simd-decl-stubs.h \
+  /usr/include/bits/long-double.h \
+  /usr/include/bits/math-vector.h \
+  /usr/include/bits/mathcalls-helper-functions.h \
+  /usr/include/bits/mathcalls-macros.h \
+  /usr/include/bits/mathcalls.h \
+  /usr/include/bits/stdint-intn.h \
+  /usr/include/bits/stdint-least.h \
+  /usr/include/bits/stdint-uintn.h \
+  /usr/include/bits/stdlib-float.h \
+  /usr/include/bits/time64.h \
+  /usr/include/bits/timesize.h \
+  /usr/include/bits/types.h \
+  /usr/include/bits/types/__FILE.h \
+  /usr/include/bits/types/__mbstate_t.h \
+  /usr/include/bits/types/mbstate_t.h \
+  /usr/include/bits/types/wint_t.h \
+  /usr/include/bits/typesizes.h \
+  /usr/include/bits/wchar.h \
+  /usr/include/bits/wordsize.h \
+  /usr/include/endian.h \
+  /usr/include/features-time64.h \
+  /usr/include/features.h \
+  /usr/include/gnu/stubs-64.h \
+  /usr/include/gnu/stubs.h \
+  /usr/include/inttypes.h \
+  /usr/include/math.h \
+  /usr/include/stdc-predef.h \
+  /usr/include/stdint.h \
+  /usr/include/stdlib.h \
+  /usr/include/string.h \
+  /usr/include/sys/cdefs.h \
+  /usr/include/wchar.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h
+
 CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o: /home/redw0od0/CProjects/Engine/src/editor/editorcamera.cpp \
   /home/redw0od0/CProjects/Engine/include/editor/editorcamera.h \
   /home/redw0od0/CProjects/Engine/include/imgui/imconfig.h \
@@ -2087,7 +2258,10 @@ CMakeFiles/Engine.dir/src/inputbase.c.o: /home/redw0od0/CProjects/Engine/src/inp
 CMakeFiles/Engine.dir/src/main.c.o: /home/redw0od0/CProjects/Engine/src/main.c \
   /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
   /home/redw0od0/CProjects/Engine/include/application.h \
+  /home/redw0od0/CProjects/Engine/include/editor/brush.h \
+  /home/redw0od0/CProjects/Engine/include/editor/editor.h \
   /home/redw0od0/CProjects/Engine/include/editor/editorgui.h \
+  /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
   /home/redw0od0/CProjects/Engine/include/glad/glad.h \
   /home/redw0od0/CProjects/Engine/include/headers.h \
   /home/redw0od0/CProjects/Engine/include/imgui_layer.h \
@@ -2100,6 +2274,7 @@ CMakeFiles/Engine.dir/src/main.c.o: /home/redw0od0/CProjects/Engine/src/main.c \
   /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
   /home/redw0od0/CProjects/Engine/include/rendering/render_commands.h \
   /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
+  /home/redw0od0/CProjects/Engine/include/state.h \
   /home/redw0od0/CProjects/Engine/include/types/types_base.h \
   /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
   /usr/include/SDL3/SDL.h \
@@ -2709,6 +2884,8 @@ Engine: /usr/lib/Scrt1.o \
   CMakeFiles/Engine.dir/include/imgui/imgui_widgets.cpp.o \
   CMakeFiles/Engine.dir/src/application.c.o \
   CMakeFiles/Engine.dir/src/editor/brush.c.o \
+  CMakeFiles/Engine.dir/src/editor/brush_render.c.o \
+  CMakeFiles/Engine.dir/src/editor/editor.c.o \
   CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o \
   CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o \
   CMakeFiles/Engine.dir/src/glad.c.o \
@@ -2774,6 +2951,14 @@ CMakeFiles/Engine.dir/include/imgui/imgui.cpp.o:
 
 /usr/lib/libm.so.6:
 
+/usr/lib/libharfbuzz.so.0:
+
+/usr/lib/libgraphite2.so.3:
+
+/usr/lib/libfreetype.so.6:
+
+/usr/lib/libc_nonshared.a:
+
 CMakeFiles/Engine.dir/src/inputbase.c.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/sgxintrin.h:
@@ -2783,6 +2968,10 @@ CMakeFiles/Engine.dir/src/inputbase.c.o:
 /usr/include/bits/types/clock_t.h:
 
 /usr/include/SDL3/SDL_begin_code.h:
+
+/usr/lib/libglib-2.0.so.0:
+
+/usr/include/SDL3/SDL_iostream.h:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/movrsintrin.h:
 
@@ -3100,8 +3289,6 @@ CMakeFiles/Engine.dir/include/imgui/imgui_impl_sdl3.cpp.o:
 
 /home/redw0od0/CProjects/Engine/include/imgui/imgui_impl_opengl3_loader.h:
 
-/usr/lib/libgraphite2.so.3:
-
 /usr/include/bits/getopt_posix.h:
 
 /usr/include/SDL3/SDL_storage.h:
@@ -3164,10 +3351,6 @@ CMakeFiles/Engine.dir/include/imgui/imgui_impl_sdl3.cpp.o:
 
 /home/redw0od0/CProjects/Engine/include/math/mathlib.h:
 
-/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/clwbintrin.h:
-
-/usr/include/bits/siginfo-consts-arch.h:
-
 /usr/include/c++/15.2.1/bit:
 
 /usr/include/SDL3/SDL_guid.h:
@@ -3208,8 +3391,6 @@ CMakeFiles/Engine.dir/include/imgui/imgui_impl_sdl3.cpp.o:
 
 /usr/include/c++/15.2.1/bits/cpp_type_traits.h:
 
-/usr/lib/libharfbuzz.so.0:
-
 /usr/include/bits/types/stack_t.h:
 
 /usr/include/bits/sigevent-consts.h:
@@ -3243,6 +3424,12 @@ CMakeFiles/Engine.dir/src/rendering/camera.c.o:
 /usr/include/SDL3/SDL_camera.h:
 
 /usr/include/c++/15.2.1/concepts:
+
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/clwbintrin.h:
+
+/usr/include/bits/siginfo-consts-arch.h:
+
+/home/redw0od0/CProjects/Engine/include/state.h:
 
 /usr/include/c++/15.2.1/bits/stl_algobase.h:
 
@@ -3298,8 +3485,6 @@ CMakeFiles/Engine.dir/src/rendering/camera.c.o:
 
 /usr/include/c++/15.2.1/bits/string_view.tcc:
 
-/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/fxsrintrin.h:
-
 /usr/include/c++/15.2.1/stdlib.h:
 
 /usr/include/bits/uintn-identity.h:
@@ -3317,6 +3502,10 @@ CMakeFiles/Engine.dir/src/rendering/camera.c.o:
 CMakeFiles/Engine.dir/src/types/types_vector.c.o:
 
 /usr/include/c++/15.2.1/bits/exception_defines.h:
+
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/fxsrintrin.h:
+
+/home/redw0od0/CProjects/Engine/src/editor/editor.c:
 
 /usr/include/bits/timesize.h:
 
@@ -3441,6 +3630,8 @@ CMakeFiles/Engine.dir/include/imgui/imgui_impl_opengl3.cpp.o:
 CMakeFiles/Engine.dir/src/editor/brush.c.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/tsxldtrkintrin.h:
+
+CMakeFiles/Engine.dir/src/editor/editor.c.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/uintrintrin.h:
 
@@ -3604,6 +3795,8 @@ CMakeFiles/Engine.dir/src/rendering/mesh.c.o:
 
 /home/redw0od0/CProjects/Engine/src/application.c:
 
+CMakeFiles/Engine.dir/src/editor/brush_render.c.o:
+
 /usr/include/c++/15.2.1/istream:
 
 /home/redw0od0/CProjects/Engine/include/application.h:
@@ -3634,9 +3827,11 @@ CMakeFiles/Engine.dir/src/rendering/mesh.c.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h:
 
-/home/redw0od0/CProjects/Engine/include/editor/editorcamera.h:
+/home/redw0od0/CProjects/Engine/src/editor/brush_render.c:
 
-/home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp:
+/home/redw0od0/CProjects/Engine/include/physics/rigidbody.h:
+
+/home/redw0od0/CProjects/Engine/include/editor/brush_render.h:
 
 /usr/include/asm/types.h:
 
@@ -3647,6 +3842,10 @@ CMakeFiles/Engine.dir/src/rendering/mesh.c.o:
 /home/redw0od0/CProjects/Engine/include/rendering/camera.h:
 
 /usr/include/bits/types/struct_tm.h:
+
+/home/redw0od0/CProjects/Engine/include/editor/editorcamera.h:
+
+/home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp:
 
 /usr/include/asm-generic/errno-base.h:
 
@@ -3824,8 +4023,6 @@ CMakeFiles/Engine.dir/src/application.c.o:
 
 /home/redw0od0/CProjects/Engine/include/physics/collider.h:
 
-/home/redw0od0/CProjects/Engine/include/physics/rigidbody.h:
-
 /home/redw0od0/CProjects/Engine/include/rendering/draw_list.h:
 
 /usr/include/errno.h:
@@ -3874,6 +4071,8 @@ CMakeFiles/Engine.dir/src/application.c.o:
 
 /usr/lib/libGLX.so.0:
 
+/home/redw0od0/CProjects/Engine/include/editor/editor.h:
+
 /usr/lib/libX11.so.6:
 
 /usr/lib/libXau.so.6:
@@ -3885,11 +4084,3 @@ CMakeFiles/Engine.dir/src/application.c.o:
 /usr/include/bits/fp-fast.h:
 
 /usr/lib/libc.so.6:
-
-/usr/lib/libc_nonshared.a:
-
-/usr/lib/libfreetype.so.6:
-
-/usr/include/SDL3/SDL_iostream.h:
-
-/usr/lib/libglib-2.0.so.0:

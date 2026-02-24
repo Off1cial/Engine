@@ -9,7 +9,7 @@
 
 #define MAX_LABEL_LENGTH 32
 #define GRID_SPACING_WORLD 10
-
+#define PANEL_SPACING_PX (int)2
 
 ImVec2 imvec2_add(ImVec2 a, ImVec2 b){
   return ImVec2(a.x + b.x, a.y + b.y);
@@ -27,12 +27,11 @@ typedef struct {
 gui_panel_t panels[5];
 
 ImGuiWindowFlags panel_flags = 
-  ImGuiWindowFlags_NoTitleBar |
   ImGuiWindowFlags_NoResize |
   ImGuiWindowFlags_NoMove |
   ImGuiWindowFlags_NoBringToFrontOnFocus |
   ImGuiWindowFlags_NoCollapse;
-
+  // Remove NoTitleBar
 
 
 void RecalculatePanels(int winw, int winh, camera_t* editor_camera){
@@ -96,11 +95,11 @@ void draw_panel_grid(size_t index){
 
   ImVec2 cpos = panels[index].cam_pos;
 
-  float left = cpos.x - half_w;
-  float right = cpos.x + half_w;
+  float left = cpos.x - half_w + (PANEL_SPACING_PX / 2.0f);
+  float right = cpos.x + half_w - (PANEL_SPACING_PX / 2.0f);
 
-  float top = cpos.y + half_h;
-  float bottom = cpos.y - half_h;
+  float top = cpos.y + half_h - (PANEL_SPACING_PX / 2.0f);
+  float bottom = cpos.y - half_h + (PANEL_SPACING_PX / 2.0f);
 
   float start_x = floorf(left / GRID_SPACING_WORLD) * GRID_SPACING_WORLD;
   float start_y = floorf(bottom / GRID_SPACING_WORLD) * GRID_SPACING_WORLD;

@@ -59,6 +59,7 @@ CMakeFiles/Engine.dir/src/main.c.o: \
  /usr/include/SDL3/SDL_version.h /usr/include/SDL3/SDL_oldnames.h \
  /home/redw0od0/CProjects/Engine/include/mem.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editor.h \
  /home/redw0od0/CProjects/Engine/include/editor/editorgui.h \
  /home/redw0od0/CProjects/Engine/include/imgui_layer.h \
  /home/redw0od0/CProjects/Engine/include/rendering/camera.h \
@@ -70,6 +71,8 @@ CMakeFiles/Engine.dir/src/main.c.o: \
  /usr/include/bits/fp-fast.h /usr/include/bits/mathcalls-macros.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
+ /home/redw0od0/CProjects/Engine/include/editor/brush.h \
  /home/redw0od0/CProjects/Engine/include/inputbase.h \
  /home/redw0od0/CProjects/Engine/include/physics/rigidbody.h \
  /home/redw0od0/CProjects/Engine/include/physics/collider.h \
@@ -79,4 +82,9 @@ CMakeFiles/Engine.dir/src/main.c.o: \
  /home/redw0od0/CProjects/Engine/include/types/types_base.h \
  /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
  /home/redw0od0/CProjects/Engine/include/rendering/render_commands.h \
- /home/redw0od0/CProjects/Engine/include/rendering/draw_list.h
+ /home/redw0od0/CProjects/Engine/include/rendering/draw_list.h \
+ /home/redw0od0/CProjects/Engine/include/state.h \
+ /home/redw0od0/CProjects/Engine/include/application.h \
+ /home/redw0od0/CProjects/Engine/include/mem.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/draw_list.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/camera.h

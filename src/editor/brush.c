@@ -57,6 +57,107 @@ int clip_winding_against_plane(const winding_t* in, winding_t* out, const plane_
   return (out->count >= 3);
 }
 
+
+
+int EditorBrushArray_Init(brush_array_t* arr, size_t initial_capacity)
+{
+    if (!arr) {
+        fprintf(stderr, "[BrushArray]: NULL pointer passed to init\n");
+        return 0;
+    }
+
+    if (initial_capacity == 0)
+        initial_capacity = 8;
+
+    memset(arr, 0, sizeof(*arr));
+
+    arr->brush_capacity = initial_capacity;
+    arr->brush_count = 0;
+    arr->total_sides = 0;
+
+    size_t cap = arr->brush_capacity;
+
+    // ---- Allocate transform SoA ----
+    arr->px = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
+    arr->py = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
+    arr->pz = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
+
+    arr->sx = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
+    arr->sy = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
+    arr->sz = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
+
+    arr->qx = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
+    arr->qy = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
+    arr->qz = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
+    arr->qw = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
+
+    arr->side_count = ALIGNED_NEW(sizeof(size_t) * cap).ptr;
+    arr->side_start = ALIGNED_NEW(sizeof(size_t) * cap).ptr;
+
+    // Worst-case sides allocation
+    arr->sides = ALIGNED_NEW(sizeof(brush_side_t) * cap * MAX_BRUSH_FACES).ptr;
+
+    // ---- Validate allocations ----
+    if (!CHECK_VALIDITY(arr->px) || !CHECK_VALIDITY(arr->py) || !CHECK_VALIDITY(arr->pz) ||
+        !CHECK_VALIDITY(arr->sx) || !CHECK_VALIDITY(arr->sy) || !CHECK_VALIDITY(arr->sz) ||
+        !CHECK_VALIDITY(arr->qx) || !CHECK_VALIDITY(arr->qy) ||
+        !CHECK_VALIDITY(arr->qz) || !CHECK_VALIDITY(arr->qw) ||
+        !CHECK_VALIDITY(arr->side_count) || !CHECK_VALIDITY(arr->side_start) ||
+        !CHECK_VALIDITY(arr->sides))
+    {
+        fprintf(stderr, "[BrushArray]: Allocation failure\n");
+        return 0;
+    }
+
+    // ---- Zero memory for deterministic behaviour ----
+    memset(arr->px, 0, sizeof(vec_t) * cap);
+    memset(arr->py, 0, sizeof(vec_t) * cap);
+    memset(arr->pz, 0, sizeof(vec_t) * cap);
+
+    memset(arr->sx, 0, sizeof(vec_t) * cap);
+    memset(arr->sy, 0, sizeof(vec_t) * cap);
+    memset(arr->sz, 0, sizeof(vec_t) * cap);
+
+    memset(arr->qx, 0, sizeof(vec_t) * cap);
+    memset(arr->qy, 0, sizeof(vec_t) * cap);
+    memset(arr->qz, 0, sizeof(vec_t) * cap);
+    memset(arr->qw, 0, sizeof(vec_t) * cap);
+
+    memset(arr->side_count, 0, sizeof(size_t) * cap);
+    memset(arr->side_start, 0, sizeof(size_t) * cap);
+
+    memset(arr->sides, 0, sizeof(brush_side_t) * cap * MAX_BRUSH_FACES);
+
+    return 1;
+}
+
+
+void EditorBrushArray_Destroy(brush_array_t* arr)
+{
+    if (!arr) return;
+
+    ALIGNED_FREE(arr->px);
+    ALIGNED_FREE(arr->py);
+    ALIGNED_FREE(arr->pz);
+
+    ALIGNED_FREE(arr->sx);
+    ALIGNED_FREE(arr->sy);
+    ALIGNED_FREE(arr->sz);
+
+    ALIGNED_FREE(arr->qx);
+    ALIGNED_FREE(arr->qy);
+    ALIGNED_FREE(arr->qz);
+    ALIGNED_FREE(arr->qw);
+
+    ALIGNED_FREE(arr->side_count);
+    ALIGNED_FREE(arr->side_start);
+    ALIGNED_FREE(arr->sides);
+
+    memset(arr, 0, sizeof(*arr));
+}
+
+
+
 static inline aligned_block_t CREATE_ALIGNED_BLOCK(void* ptr, size_t size_bytes) {
     aligned_block_t blk;
     blk.ptr = ptr;
@@ -140,13 +241,19 @@ static Vector get_axis_v(Vector normal){
 }
 
 static brush_side_t create_unit_cube_side(eAXIS axis, Vector centre){
-  brush_side_t side;
+  brush_side_t side = {0};
+  side.winding = ALIGNED_NEW(sizeof(winding_t)).ptr;
+  // Remember to free the above when destroying brushes or converting to .bsp
+  if (!side.winding){
+    fprintf(stderr, "[Brush]: Failed to allocate winding\n");
+    exit(1);
+  }
+  side.winding->count = 0;
   plane_t plane;
   plane.normal = VECTOR_AXES[axis];
   plane.dist = VectorDot(plane.normal, VectorAdd(centre, VectorScale(plane.normal, 0.5)));
 
   float half = 0.5f;  
-  side.winding->count = 0;
   
   Vector u = get_axis_u(VECTOR_AXES[axis]);
   Vector v = get_axis_v(VECTOR_AXES[axis]);
@@ -187,9 +294,9 @@ void EditorBrush_Create(brush_array_t* arr, Vector position){
   // Create sides
   
   arr->side_start[i] = arr->total_sides;
-  
+  size_t start = arr->side_start[i];
   for (int s = 0; s < 6; s++){
-    arr->sides[s] = create_unit_cube_side(s, position);
+    arr->sides[s + start] = create_unit_cube_side(s, position);
   }
 
 

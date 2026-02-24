@@ -66,6 +66,9 @@ typedef struct {
 int clip_winding_against_plane(const winding_t* in, winding_t* out, const plane_t plane);
 
 
+int EditorBrushArray_Init(brush_array_t* arr, size_t initial_capacity);
+void EditorBrushArray_Destroy(brush_array_t* arr);
+
 void EditorBrush_Create(brush_array_t* arr, Vector position);
 
 #endif
