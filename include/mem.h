@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
+#include <stdalign.h>
 
 #define SIMD_ALIGNMENT_BYTES 32
 
@@ -62,5 +64,20 @@ static inline aligned_block_t aligned_realloc_block(aligned_block_t blk, size_t 
 int mem_validity(void* mem);
 
 #define CHECK_VALIDITY(x) (mem_validity(x))
+
+
+typedef void* MEM_BLOCK;
+#define MEM_ARENA_SIZE_BYTES (size_t)2048 // 2kiB
+
+struct mem_arena_t{
+  uint8_t* base;
+  size_t capacity;
+  size_t offset;
+};
+
+void MEM_ARENA_INIT(struct mem_arena_t* arena);
+void MEM_ARENA_RESET(struct mem_arena_t* arena);
+void MEM_ARENA_DESTROY(struct mem_arena_t* arena);
+void* MEM_ARENA_ALLOC(struct mem_arena_t* arena, size_t size, size_t alignment);
 
 #endif

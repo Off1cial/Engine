@@ -34,4 +34,4 @@ CMakeFiles/Engine.dir/src/rendering/mesh.c.o: \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h \
  /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
- /usr/include/bits/stdint-least.h
+ /usr/include/bits/stdint-least.h /usr/include/string.h

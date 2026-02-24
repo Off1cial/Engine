@@ -8,6 +8,7 @@ bool SHADER_isUIDefaultLoaded = false;
 bool SHADER_isDefaultLitLoaded = false;
 bool SHADER_isDefaultBillboardLoaded = false;
 
+
 static char* ReadFile(const char* path) {
     FILE* file = fopen(path, "rb");
     if (!file) { fprintf(stderr, "shader_t: failed to open %s\n", path); return NULL; }

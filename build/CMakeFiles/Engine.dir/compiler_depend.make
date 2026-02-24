@@ -1484,6 +1484,7 @@ CMakeFiles/Engine.dir/src/editor/brush.c.o: /home/redw0od0/CProjects/Engine/src/
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/sm3intrin.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/sm4intrin.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/smmintrin.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
@@ -2091,6 +2092,7 @@ CMakeFiles/Engine.dir/src/main.c.o: /home/redw0od0/CProjects/Engine/src/main.c \
   /home/redw0od0/CProjects/Engine/include/headers.h \
   /home/redw0od0/CProjects/Engine/include/imgui_layer.h \
   /home/redw0od0/CProjects/Engine/include/inputbase.h \
+  /home/redw0od0/CProjects/Engine/include/mem.h \
   /home/redw0od0/CProjects/Engine/include/physics/collider.h \
   /home/redw0od0/CProjects/Engine/include/physics/rigidbody.h \
   /home/redw0od0/CProjects/Engine/include/rendering/camera.h \
@@ -2207,6 +2209,7 @@ CMakeFiles/Engine.dir/src/main.c.o: /home/redw0od0/CProjects/Engine/src/main.c \
   /usr/include/string.h \
   /usr/include/sys/cdefs.h \
   /usr/include/wchar.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
@@ -2218,6 +2221,9 @@ CMakeFiles/Engine.dir/src/mem.c.o: /home/redw0od0/CProjects/Engine/src/mem.c \
   /usr/include/bits/floatn.h \
   /usr/include/bits/libc-header-start.h \
   /usr/include/bits/long-double.h \
+  /usr/include/bits/stdint-intn.h \
+  /usr/include/bits/stdint-least.h \
+  /usr/include/bits/stdint-uintn.h \
   /usr/include/bits/stdio_lim.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/time64.h \
@@ -2230,18 +2236,22 @@ CMakeFiles/Engine.dir/src/mem.c.o: /home/redw0od0/CProjects/Engine/src/mem.c \
   /usr/include/bits/types/__mbstate_t.h \
   /usr/include/bits/types/struct_FILE.h \
   /usr/include/bits/typesizes.h \
+  /usr/include/bits/wchar.h \
   /usr/include/bits/wordsize.h \
   /usr/include/features-time64.h \
   /usr/include/features.h \
   /usr/include/gnu/stubs-64.h \
   /usr/include/gnu/stubs.h \
   /usr/include/stdc-predef.h \
+  /usr/include/stdint.h \
   /usr/include/stdio.h \
   /usr/include/stdlib.h \
   /usr/include/string.h \
   /usr/include/sys/cdefs.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
-  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h
 
 CMakeFiles/Engine.dir/src/physics/collider.c.o: /home/redw0od0/CProjects/Engine/src/physics/collider.c \
   /home/redw0od0/CProjects/Engine/include/mem.h \
@@ -2288,6 +2298,7 @@ CMakeFiles/Engine.dir/src/physics/collider.c.o: /home/redw0od0/CProjects/Engine/
   /usr/include/stdlib.h \
   /usr/include/string.h \
   /usr/include/sys/cdefs.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
@@ -2338,6 +2349,7 @@ CMakeFiles/Engine.dir/src/physics/rigidbody.c.o: /home/redw0od0/CProjects/Engine
   /usr/include/stdlib.h \
   /usr/include/string.h \
   /usr/include/sys/cdefs.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
@@ -2485,6 +2497,7 @@ CMakeFiles/Engine.dir/src/rendering/mesh.c.o: /home/redw0od0/CProjects/Engine/sr
   /usr/include/stdint.h \
   /usr/include/stdio.h \
   /usr/include/stdlib.h \
+  /usr/include/string.h \
   /usr/include/sys/cdefs.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
@@ -2495,6 +2508,7 @@ CMakeFiles/Engine.dir/src/rendering/render_commands.c.o: /home/redw0od0/CProject
   /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
   /home/redw0od0/CProjects/Engine/include/glad/glad.h \
   /home/redw0od0/CProjects/Engine/include/headers.h \
+  /home/redw0od0/CProjects/Engine/include/rendering/camera.h \
   /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
   /home/redw0od0/CProjects/Engine/include/rendering/render_commands.h \
   /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
@@ -2757,6 +2771,8 @@ CMakeFiles/Engine.dir/include/imgui/imgui.cpp.o:
 /usr/lib/libpng16.so.16:
 
 /usr/lib/libpcre2-8.so.0:
+
+/usr/lib/libm.so.6:
 
 CMakeFiles/Engine.dir/src/inputbase.c.o:
 
@@ -3616,6 +3632,8 @@ CMakeFiles/Engine.dir/src/rendering/mesh.c.o:
 
 /usr/include/c++/15.2.1/exception:
 
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h:
+
 /home/redw0od0/CProjects/Engine/include/editor/editorcamera.h:
 
 /home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp:
@@ -3875,5 +3893,3 @@ CMakeFiles/Engine.dir/src/application.c.o:
 /usr/include/SDL3/SDL_iostream.h:
 
 /usr/lib/libglib-2.0.so.0:
-
-/usr/lib/libm.so.6:

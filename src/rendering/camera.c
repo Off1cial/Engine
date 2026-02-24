@@ -69,7 +69,6 @@ void Camera_init(camera_t* cam, Vector position, struct Viewport viewport){
   Camera_update(cam);
   
   printf("camera_t created at: "); Vector_DPrint(&cam->pos);
-  gCameras[gCameraCount++] = cam;
 
 }
 

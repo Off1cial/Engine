@@ -1,5 +1,5 @@
 #include "rendering/mesh.h"
-
+#include <string.h>
 
 
 void MeshInit(mesh_t* mesh, size_t v_capacity, size_t i_capacity){
@@ -13,7 +13,7 @@ void MeshInit(mesh_t* mesh, size_t v_capacity, size_t i_capacity){
     fprintf(stderr, "Failed to allocate vertex array to mesh\n");
     exit(1);
   }
-
+  memset(mesh->vertices, 0, sizeof(struct vertex_t) * v_capacity);
   mesh->indices = malloc(sizeof(GLuint)*i_capacity);
   if (!mesh->indices){
     fprintf(stderr, "Failed to allocate indices to mesh\n");
@@ -42,8 +42,8 @@ size_t MeshPushVertex(mesh_t* mesh, struct vertex_t vertex){
 
 void MeshPushTriangle(mesh_t* mesh, GLuint i0, GLuint i1, GLuint i2){
   // Push 3 indices
-  if (mesh->index_count + 3 >= mesh->index_capacity){
-    size_t new_capacity = mesh->vertex_capacity * 2;
+  if (mesh->index_count + 3 > mesh->index_capacity){
+    size_t new_capacity = mesh->index_capacity * 2;
     GLuint* new = realloc(mesh->indices, sizeof(GLuint)*new_capacity);
     if (!new){
       // Write to log

@@ -15,4 +15,9 @@ CMakeFiles/Engine.dir/src/mem.c.o: \
  /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/floatn.h \
  /usr/include/bits/floatn-common.h /usr/include/stdlib.h \
- /usr/include/bits/stdlib-float.h /usr/include/string.h
+ /usr/include/bits/stdlib-float.h /usr/include/string.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h \
+ /usr/include/stdint.h /usr/include/bits/wchar.h \
+ /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
+ /usr/include/bits/stdint-least.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h

@@ -126,23 +126,40 @@ static void grow_brush_array(brush_array_t* arr) {
     arr->brush_capacity = new_capacity;
 }
 
-static void get_unit_cube_face_vertices(Vector out[4], eAXIS axis, Vector centre){
-  Vector fCentre = VectorAdd(centre, VectorScale(VECTOR_AXES[axis], 0.5f) ); 
 
-} 
+static Vector get_axis_u(Vector normal){
+  if (abs(normal.x == 1)) return VECTOR_AXIS_Y;
+  if (abs(normal.y == 1)) return VECTOR_AXIS_X;
+  return VECTOR_AXIS_X;
+}
+
+static Vector get_axis_v(Vector normal){
+  if (abs(normal.x == 1)) return VECTOR_AXIS_Z;
+  if (abs(normal.y == 1)) return VECTOR_AXIS_Z;
+  return VECTOR_AXIS_Y;
+}
 
 static brush_side_t create_unit_cube_side(eAXIS axis, Vector centre){
   brush_side_t side;
+  plane_t plane;
+  plane.normal = VECTOR_AXES[axis];
+  plane.dist = VectorDot(plane.normal, VectorAdd(centre, VectorScale(plane.normal, 0.5)));
 
+  float half = 0.5f;  
+  side.winding->count = 0;
+  
+  Vector u = get_axis_u(VECTOR_AXES[axis]);
+  Vector v = get_axis_v(VECTOR_AXES[axis]);
 
-  switch(axis){
-    case X_POS:{
-      float dist = centre.x + 0.5f;
-      Vector p_normal = (Vector){1, 0, 0};
-
+  for (int i = -1; i <= 1; i+=2){
+    for (int j = -1; j <= 1; j+=2){
+      Vector a = VectorScale(u, i * half);    
+      Vector b = VectorScale(v, j * half);
+      Vector tmp = VectorAdd(a, b);
+      side.winding->points[side.winding->count++] = VectorAdd(centre, tmp);
     }
   }
-  
+  return side;  
 }
 
 void EditorBrush_Create(brush_array_t* arr, Vector position){
@@ -170,6 +187,12 @@ void EditorBrush_Create(brush_array_t* arr, Vector position){
   // Create sides
   
   arr->side_start[i] = arr->total_sides;
+  
+  for (int s = 0; s < 6; s++){
+    arr->sides[s] = create_unit_cube_side(s, position);
+  }
+
+
   arr->side_count[i] = 6;
   arr->total_sides += 6;
   // return i?

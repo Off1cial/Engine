@@ -36,4 +36,5 @@ CMakeFiles/Engine.dir/src/rendering/render_commands.c.o: \
  /usr/include/stdint.h /usr/include/bits/wchar.h \
  /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
  /usr/include/bits/stdint-least.h \
- /home/redw0od0/CProjects/Engine/include/rendering/shader.h
+ /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/camera.h

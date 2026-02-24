@@ -11,18 +11,21 @@ enum rcmd_type{
 struct rcmd_t{
   enum rcmd_type type;
   union{
-    mesh_t* mesh;
-    shader_t* shader;
-    mat4 model;
-    mat4 view;
-    mat4 projection;
-    GLenum mode;
-    size_t material_index;
-  }draw_mesh;
+    struct{
+      mesh_t* mesh;
+      shader_t* shader;
+      mat4 model;
+      mat4 view;
+      mat4 projection;
+      GLenum mode;
+      size_t material_index;
+    }draw_mesh;
+  };
 };
 
 
-void RCMD_DrawMesh(struct rcmd_t cmd);
+
+void RCMD_DrawMesh(struct rcmd_t* cmd);
 
 
 #endif
