@@ -1,17 +1,29 @@
 #include "inputbase.h"
 #include "imgui_layer.h"
+#include <stdio.h>
 #include <SDL3/SDL.h>
 
-void poll_input(struct inputstate_t* state, int* running_condition){
+
+bool mleft_last = false;
+bool mright_last = false;
+
+void poll_input(struct inputstate_t* state, int* running_condition, int* winw, int* winh){
   
   // Copy keyboard state
   memcpy(state->kPrevious, state->kCurrent, sizeof(state->kPrevious));
   // Copy mouse state
   memcpy(state->mPrevious, state->mCurrent, sizeof(state->mPrevious));
 
-  memset(state, 0, sizeof(*state));
+  mleft_last = state->mbutton_left;
+  mright_last = state->mbutton_right;
 
   state->FLAG_WindowResized = false;
+  state->FLAG_ToggleEditor = false;
+  state->mbutton_left_toggle = false;
+  state->mbutton_right_toggle = false;
+  state->my_rel = 0;
+  state->mx_rel = 0;
+
   SDL_Event event;
   while (SDL_PollEvent(&event)){
     ImGui_PassEvent(&event);
@@ -20,6 +32,8 @@ void poll_input(struct inputstate_t* state, int* running_condition){
     }
     if (event.type == SDL_EVENT_WINDOW_RESIZED){
       state->FLAG_WindowResized = true;
+      *winw = event.window.data1;
+      *winh = event.window.data2;
     }
   }
 
@@ -35,6 +49,16 @@ void poll_input(struct inputstate_t* state, int* running_condition){
   state->mbutton_middle = (mbuttons & SDL_BUTTON_MMASK) != 0;
   state->mbutton_right = (mbuttons & SDL_BUTTON_RMASK) != 0;
 
-  // Update camera
+
+  if (state->mbutton_left  && !mleft_last){
+    state->mbutton_left_toggle = true;
+    printf("M1 toggle\n");
+  }
+  if (state->mbutton_right != mright_last){
+    state->mbutton_right_toggle = true;
+  }
+
+  // Toggle editor
+  state->FLAG_ToggleEditor = state->kCurrent[SDL_SCANCODE_0] && !state->kPrevious[SDL_SCANCODE_0];
 
 }

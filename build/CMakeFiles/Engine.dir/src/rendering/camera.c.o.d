@@ -26,4 +26,10 @@ CMakeFiles/Engine.dir/src/rendering/camera.c.o: \
  /usr/include/bits/types/__mbstate_t.h \
  /usr/include/bits/types/__fpos64_t.h /usr/include/bits/types/__FILE.h \
  /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
- /usr/include/bits/stdio_lim.h
+ /usr/include/bits/stdio_lim.h \
+ /home/redw0od0/CProjects/Engine/include/glad/glad.h \
+ /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdint.h \
+ /usr/include/stdint.h /usr/include/bits/wchar.h \
+ /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
+ /usr/include/bits/stdint-least.h

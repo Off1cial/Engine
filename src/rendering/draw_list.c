@@ -77,16 +77,19 @@ void RDrawQueue_Push(rdrawqueue_t* q, struct rcmd_t* cmd){
 }
 
 void RDrawQueue_Execute(rdrawqueue_t* q){
+  int count = 0;
   while (q->head != q->tail){
     struct rcmd_t* cmd = q->data[q->head];
-
+    //printf("Executing command\n");
     switch(cmd->type){
       case RCMD_DRAW_MESH:{
+        count++;
         RCMD_DrawMesh(cmd);
         break;
       }
     }
-
     q->head = (q->head + 1) % q->capacity;
   }
+  //printf("[RENDER]: %d commands executed\n", count);
+
 }

@@ -10,10 +10,10 @@
 #include "state.h"
 
 // Not drawn in gameplay, just in editor
-mesh_t* EditorBrush_CreateRenderMesh(brush_array_t* arr, size_t brush, struct mem_arena_t* arena);
 
 // Assumes all meshes have already been created
-void EditorBrush_DrawAll(editor_state_t* eState, state_t* state);
+
+//void EditorBrush_DrawAll(brush_array_t* arr, state_t* state, camera_t* camera);
 
 
 

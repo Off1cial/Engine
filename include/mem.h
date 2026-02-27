@@ -9,6 +9,13 @@
 
 #define SIMD_ALIGNMENT_BYTES 32
 
+#define BIT64(n) ((size_t)1ULL << n))
+
+#define SET_FLAG(mask, n)   ((mask) |= BIT64(n))
+#define CLR_FLAG(mask, n)   ((mask) &= ~BIT64(n))
+#define HAS_FLAG(mask, n)   ((mask) & BIT64(n))
+#define TOG_FLAG(mask, n)   ((mask) ^= BIT64(n))
+
 #if defined(_MSC_VER)
 #include <malloc.h>
 #define ALIGNED_ALLOC(alignment, size) _aligned_malloc(size, alignment)
@@ -67,7 +74,7 @@ int mem_validity(void* mem);
 
 
 typedef void* MEM_BLOCK;
-#define MEM_ARENA_SIZE_BYTES (size_t)2048 // 2kiB
+#define MEM_ARENA_SIZE_BYTES (size_t)8192 // 4kiB
 
 struct mem_arena_t{
   uint8_t* base;
@@ -75,9 +82,20 @@ struct mem_arena_t{
   size_t offset;
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+extern struct mem_arena_t* gMemArena;
+
 void MEM_ARENA_INIT(struct mem_arena_t* arena);
 void MEM_ARENA_RESET(struct mem_arena_t* arena);
 void MEM_ARENA_DESTROY(struct mem_arena_t* arena);
 void* MEM_ARENA_ALLOC(struct mem_arena_t* arena, size_t size, size_t alignment);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -1,5 +1,6 @@
 #include "editor/brush_render.h"
 
+/*
 
 void get_winding_vertices(winding_t* in, struct vertex_t* out, size_t vertex_count){
   if (vertex_count != in->count){
@@ -43,9 +44,9 @@ mesh_t* EditorBrush_CreateRenderMesh(brush_array_t* arr, size_t brush, struct me
 }
 
 
-void EditorBrush_DrawAll(editor_state_t* eState, state_t* state ){
-  for (size_t b = 0; b < eState->brush_array->brush_count; b++){
-    if (eState->brush_meshes[b] == NULL){ continue; }
+void EditorBrush_DrawAll(brush_array_t* arr, state_t* state, camera_t* camera ){
+  for (size_t b = 0; b < arr->brush_count; b++){
+    if (arr->editor_meshes[b] == NULL){ continue; }
   
     // Allocate on arena
     struct rcmd_t* cmd = MEM_ARENA_ALLOC(
@@ -55,10 +56,10 @@ void EditorBrush_DrawAll(editor_state_t* eState, state_t* state ){
     // Prepare command
     // Assumes default shader, no material at this point in time
     cmd->type = RCMD_DRAW_MESH;
-    cmd->draw_mesh.mesh = eState->brush_meshes[b];
+    cmd->draw_mesh.mesh = arr->editor_meshes[b];
     cmd->draw_mesh.shader = SHADER_default_shader;
-    cmd->draw_mesh.view = eState->camera->view;
-    cmd->draw_mesh.projection = eState->camera->projection;
+    cmd->draw_mesh.view = camera->view;
+    cmd->draw_mesh.projection = camera->projection;
     cmd->draw_mesh.model = Mat4Identity();
     cmd->draw_mesh.material_index = 0;
     cmd->draw_mesh.mode = GL_TRIANGLES;
@@ -66,3 +67,4 @@ void EditorBrush_DrawAll(editor_state_t* eState, state_t* state ){
     RDrawQueue_Push(state->draw_queue, cmd);
   }
 }
+*/

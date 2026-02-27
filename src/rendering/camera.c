@@ -4,6 +4,8 @@
 #include <math.h>
 #include <stdio.h>
 
+#include <glad/glad.h>
+
 camera_t* gCameras[MAX_CAMERAS];
 size_t gCameraCount = 0;
 size_t gCameraIndex = 0;
@@ -11,6 +13,19 @@ size_t gCameraIndex = 0;
 
 void Camera_ToggleWireframe(camera_t* cam){
   cam->drawWireframe = !cam->drawWireframe;
+}
+
+void Camera_Switch(int index, int winh){
+  if (index > MAX_CAMERAS){ return; }
+
+  gCameraIndex = index;
+  camera_t* cam = gCameras[index];
+  glViewport(
+    cam->viewport.x,
+    winh - cam->viewport.y,
+    cam->viewport.w,
+  cam->viewport.h
+  );
 }
 
 void Camera_update(camera_t *cam) {
@@ -32,7 +47,7 @@ void Camera_update(camera_t *cam) {
     // 4. Apply roll in camera_t space (around local Z)
     if (cam->roll != 0.0f) {
         mat4 rollMatrix = Mat4Rotate(RAD(cam->roll), (Vector){0, 0, -1});
-        Mat4Mul(&rollMatrix, &viewNoRoll, &cam->view);
+        Mat4MulTo(&rollMatrix, &viewNoRoll, &cam->view);
     } else {
         Mat4Copy(viewNoRoll, &cam->view);
     }
@@ -69,6 +84,7 @@ void Camera_init(camera_t* cam, Vector position, struct Viewport viewport){
   Camera_update(cam);
   
   printf("camera_t created at: "); Vector_DPrint(&cam->pos);
+  gCameras[gCameraCount++] = cam;
 
 }
 

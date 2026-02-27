@@ -7,6 +7,13 @@
 
 typedef enum { SOLID_AABB, SOLID_OBB, SOLID_PLANE, SOLID_SPHERE } solid_t;
 
+struct clip_plane_t{
+  Vector centre;
+  Vector tangent, bittangent;
+  Vector2 halfs;
+};
+
+
 typedef struct {
 
   size_t count, capacity;

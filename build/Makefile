@@ -393,6 +393,30 @@ src/editor/editorcamera.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.s
 .PHONY : src/editor/editorcamera.cpp.s
 
+src/editor/editorcmd.o: src/editor/editorcmd.c.o
+.PHONY : src/editor/editorcmd.o
+
+# target to build an object file
+src/editor/editorcmd.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorcmd.c.o
+.PHONY : src/editor/editorcmd.c.o
+
+src/editor/editorcmd.i: src/editor/editorcmd.c.i
+.PHONY : src/editor/editorcmd.i
+
+# target to preprocess a source file
+src/editor/editorcmd.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorcmd.c.i
+.PHONY : src/editor/editorcmd.c.i
+
+src/editor/editorcmd.s: src/editor/editorcmd.c.s
+.PHONY : src/editor/editorcmd.s
+
+# target to generate assembly for a file
+src/editor/editorcmd.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorcmd.c.s
+.PHONY : src/editor/editorcmd.c.s
+
 src/editor/editorgui.o: src/editor/editorgui.cpp.o
 .PHONY : src/editor/editorgui.o
 
@@ -416,6 +440,30 @@ src/editor/editorgui.s: src/editor/editorgui.cpp.s
 src/editor/editorgui.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorgui.cpp.s
 .PHONY : src/editor/editorgui.cpp.s
+
+src/editor/editorgui_actions.o: src/editor/editorgui_actions.cpp.o
+.PHONY : src/editor/editorgui_actions.o
+
+# target to build an object file
+src/editor/editorgui_actions.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorgui_actions.cpp.o
+.PHONY : src/editor/editorgui_actions.cpp.o
+
+src/editor/editorgui_actions.i: src/editor/editorgui_actions.cpp.i
+.PHONY : src/editor/editorgui_actions.i
+
+# target to preprocess a source file
+src/editor/editorgui_actions.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorgui_actions.cpp.i
+.PHONY : src/editor/editorgui_actions.cpp.i
+
+src/editor/editorgui_actions.s: src/editor/editorgui_actions.cpp.s
+.PHONY : src/editor/editorgui_actions.s
+
+# target to generate assembly for a file
+src/editor/editorgui_actions.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/editor/editorgui_actions.cpp.s
+.PHONY : src/editor/editorgui_actions.cpp.s
 
 src/glad.o: src/glad.c.o
 .PHONY : src/glad.o
@@ -771,9 +819,15 @@ help:
 	@echo "... src/editor/editorcamera.o"
 	@echo "... src/editor/editorcamera.i"
 	@echo "... src/editor/editorcamera.s"
+	@echo "... src/editor/editorcmd.o"
+	@echo "... src/editor/editorcmd.i"
+	@echo "... src/editor/editorcmd.s"
 	@echo "... src/editor/editorgui.o"
 	@echo "... src/editor/editorgui.i"
 	@echo "... src/editor/editorgui.s"
+	@echo "... src/editor/editorgui_actions.o"
+	@echo "... src/editor/editorgui_actions.i"
+	@echo "... src/editor/editorgui_actions.s"
 	@echo "... src/glad.o"
 	@echo "... src/glad.i"
 	@echo "... src/glad.s"

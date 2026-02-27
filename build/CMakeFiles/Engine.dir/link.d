@@ -15,7 +15,9 @@ Engine: \
   CMakeFiles/Engine.dir/src/editor/brush_render.c.o \
   CMakeFiles/Engine.dir/src/editor/editor.c.o \
   CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o \
+  CMakeFiles/Engine.dir/src/editor/editorcmd.c.o \
   CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o \
+  CMakeFiles/Engine.dir/src/editor/editorgui_actions.cpp.o \
   CMakeFiles/Engine.dir/src/glad.c.o \
   CMakeFiles/Engine.dir/src/imgui_layer.cpp.o \
   CMakeFiles/Engine.dir/src/inputbase.c.o \
@@ -135,7 +137,11 @@ CMakeFiles/Engine.dir/src/editor/editor.c.o:
 
 CMakeFiles/Engine.dir/src/editor/editorcamera.cpp.o:
 
+CMakeFiles/Engine.dir/src/editor/editorcmd.c.o:
+
 CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o:
+
+CMakeFiles/Engine.dir/src/editor/editorgui_actions.cpp.o:
 
 CMakeFiles/Engine.dir/src/glad.c.o:
 

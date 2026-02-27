@@ -4,13 +4,21 @@
 
 #include "imgui_layer.h"
 #include "rendering/camera.h"
+#include "inputbase.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+
+extern int gEditorGui_HoveredPanel;
+
+void RecalculatePanels(int winw, int winh, camera_t* editor_camera);
+
 void EditorGui_Init(SDL_Window* window, SDL_GLContext glContext, camera_t* editor_camera);
-void EditorGui_DrawAll(SDL_Window* window, camera_t* editor_camera, bool resize_flag);
+void EditorGui_DrawAll(SDL_Window* window, struct inputstate_t* input, camera_t* editor_camera, bool resize_flag);
+
+void EditorGui_HandleBrushInput(struct inputstate_t* input);
 
 
 #ifdef __cplusplus

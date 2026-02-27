@@ -51,4 +51,7 @@ CMakeFiles/Engine.dir/src/inputbase.c.o: \
  /usr/include/SDL3/SDL_render.h /usr/include/SDL3/SDL_storage.h \
  /usr/include/SDL3/SDL_system.h /usr/include/SDL3/SDL_time.h \
  /usr/include/SDL3/SDL_timer.h /usr/include/SDL3/SDL_tray.h \
- /usr/include/SDL3/SDL_version.h /usr/include/SDL3/SDL_oldnames.h
+ /usr/include/SDL3/SDL_version.h /usr/include/SDL3/SDL_oldnames.h \
+ /usr/include/stdio.h /usr/include/bits/types/__fpos_t.h \
+ /usr/include/bits/types/__fpos64_t.h /usr/include/bits/types/FILE.h \
+ /usr/include/bits/types/struct_FILE.h /usr/include/bits/stdio_lim.h

@@ -67,9 +67,21 @@
 },
 {
   "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/cc  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -std=c11 -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/editor/editorcmd.c.o -c /home/redw0od0/CProjects/Engine/src/editor/editorcmd.c",
+  "file": "/home/redw0od0/CProjects/Engine/src/editor/editorcmd.c",
+  "output": "CMakeFiles/Engine.dir/src/editor/editorcmd.c.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
   "command": "/usr/bin/c++  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o -c /home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp",
   "file": "/home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp",
   "output": "CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o"
+},
+{
+  "directory": "/home/redw0od0/CProjects/Engine/build",
+  "command": "/usr/bin/c++  -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/include -I/home/redw0od0/CProjects/Engine/include -g -fsanitize=address -fno-omit-frame-pointer -g -o CMakeFiles/Engine.dir/src/editor/editorgui_actions.cpp.o -c /home/redw0od0/CProjects/Engine/src/editor/editorgui_actions.cpp",
+  "file": "/home/redw0od0/CProjects/Engine/src/editor/editorgui_actions.cpp",
+  "output": "CMakeFiles/Engine.dir/src/editor/editorgui_actions.cpp.o"
 },
 {
   "directory": "/home/redw0od0/CProjects/Engine/build",

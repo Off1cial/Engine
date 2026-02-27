@@ -71,6 +71,8 @@ extern Ray* activeCamCursorRay;
 
 void Camera_ToggleWireframe(camera_t* cam);
 
+
+void Camera_Switch(int index, int winh);
 void Camera_update(camera_t* cam);
 void Camera_init(camera_t* cam, Vector position, struct Viewport view);
 

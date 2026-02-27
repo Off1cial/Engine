@@ -1,7 +1,10 @@
 #include "imgui_layer.h"
 #include "editor/editorgui.h"
 #include "editor/editorcamera.h"
+#include "editor/editorgui_actions.h"
+#include "editor/editorcmd.h"
 #include "editor/editorstate.h"
+#include "inputbase.h"
 #include "imgui/imgui.h"
 #include <iostream>
 #include <SDL3/SDL.h>
@@ -10,6 +13,15 @@
 #define MAX_LABEL_LENGTH 32
 #define GRID_SPACING_WORLD 10
 #define PANEL_SPACING_PX (int)2
+
+
+bool start_up = true;
+// Drawing brushes
+ImVec2 brush_start;
+ImVec2 brush_end;
+bool drawing_brush = false;
+
+int gEditorGui_HoveredPanel = 2;
 
 ImVec2 imvec2_add(ImVec2 a, ImVec2 b){
   return ImVec2(a.x + b.x, a.y + b.y);
@@ -50,21 +62,25 @@ void RecalculatePanels(int winw, int winh, camera_t* editor_camera){
     .size = ImVec2(p0_w, winh),
     .label = "Main panel"
   };
+  // Top left - 3D
   panels[1] = {
     .pos = ImVec2(0, 0),
     .size = rsize,
     .label = "3D"
   };
+  // Top right  -TOP
   panels[2] = {
     .pos = ImVec2(rwidth, 0),
     .size = rsize,
     .label = "TOP"
   };
+  // Bottom right - SIDE
   panels[3] = {
     .pos = ImVec2(rwidth, rheight),
     .size = rsize,
     .label = "SIDE"
   };
+  // Bottom left - FRONT
   panels[4] = {
     .pos = ImVec2(0, rheight),
     .size = rsize,
@@ -77,6 +93,7 @@ void RecalculatePanels(int winw, int winh, camera_t* editor_camera){
   }
 
   editor_camera->viewport = (struct Viewport){0, 0, rsize.x, rsize.y};
+  if (!start_up)glViewport(0, winh - rsize.y, rsize.x, rsize.y);
 }
 
 void EditorGui_Init(SDL_Window* window, SDL_GLContext glContext, camera_t* editor_camera){
@@ -85,6 +102,7 @@ void EditorGui_Init(SDL_Window* window, SDL_GLContext glContext, camera_t* edito
   SDL_GetWindowSize(window, &winw, &winh);
   printf("Editor Window: %dx%d\n", winw, winh);
   RecalculatePanels(winw, winh, editor_camera);
+  start_up = false;
 }
 
 void draw_panel_grid(size_t index){
@@ -134,16 +152,53 @@ void draw_panel_grid(size_t index){
   
 }
 
-void draw_panel(size_t index){
+void draw_main_panel_contents(){
+
+}
+
+void draw_panel(struct inputstate_t* input, size_t index){
   
   ImGui::SetNextWindowPos(panels[index].pos);
   ImGui::SetNextWindowSize(panels[index].size);
   
+  ImGuiWindowFlags flags;
 
+  if (index == 1){
+    flags = panel_flags | ImGuiWindowFlags_NoBackground;
+  }else{
+    flags = panel_flags;
+  }
 
-  ImGui::Begin(panels[index].label, nullptr, panel_flags);
+  ImGui::Begin(panels[index].label, nullptr, flags);
+  
+  if (ImGui::IsWindowHovered()){
+    gEditorGui_HoveredPanel = index;
+  }
 
   draw_panel_grid(index);
+
+  
+
+  /*
+  if (input->mbutton_left_toggle && !drawing_brush){
+    // Begin drawing brush
+    drawing_brush = true;
+    brush_start = ImGui::GetCursorPos();
+  }else if (input->mbutton_left_toggle && drawing_brush){
+    // Finalise brush
+    drawing_brush = false;
+    brush_end = ImGui::GetCursorPos();
+    panel_finalise_brush(
+      index,
+      panels[index].size,
+      brush_start,
+      brush_end,
+      panels[index].cam_pos,
+      panels[index].cam_zoom
+    );
+  }
+  */
+
 
   ImGui::End();
 
@@ -151,7 +206,7 @@ void draw_panel(size_t index){
 
 
 
-void EditorGui_DrawAll(SDL_Window* window, camera_t* editor_camera, bool resize_flag){
+void EditorGui_DrawAll(SDL_Window* window, struct inputstate_t* input, camera_t* editor_camera, bool resize_flag){
   
   if (resize_flag){
     int winw, winh;
@@ -163,10 +218,42 @@ void EditorGui_DrawAll(SDL_Window* window, camera_t* editor_camera, bool resize_
   ImGui_StartFrame();
   
   for (int i = 0; i < 5; i++){
-    draw_panel(i);
+    draw_panel(input, i);
   }
+
 
   ImGui_Render();
 }
 
 
+
+
+void EditorGui_HandleBrushInput(struct inputstate_t* input)
+{
+    static bool drawing = false;
+    static ImVec2 start;
+
+    if (gEditorGui_HoveredPanel < 2 || gEditorGui_HoveredPanel > 4 )
+        return;
+
+    if (input->mbutton_left_toggle && !drawing)
+    {
+        drawing = true;
+        start = ImGui::GetMousePos();
+    }
+    else if (input->mbutton_left_toggle && drawing)
+    {
+        drawing = false;
+
+        ImVec2 end = ImGui::GetMousePos();
+
+        panel_finalise_brush(
+            gEditorGui_HoveredPanel,
+            panels[gEditorGui_HoveredPanel].size,
+            start,
+            end,
+            panels[gEditorGui_HoveredPanel].cam_pos,
+            panels[gEditorGui_HoveredPanel].cam_zoom
+        );
+    }
+}

@@ -116,13 +116,31 @@ CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o: \
  /usr/include/c++/15.2.1/tr1/poly_laguerre.tcc \
  /usr/include/c++/15.2.1/tr1/riemann_zeta.tcc \
  /usr/include/c++/15.2.1/stdlib.h /usr/include/c++/15.2.1/cstdlib \
+ /home/redw0od0/CProjects/Engine/include/inputbase.h \
  /home/redw0od0/CProjects/Engine/include/editor/editorcamera.h \
  /home/redw0od0/CProjects/Engine/include/imgui/imgui.h \
  /home/redw0od0/CProjects/Engine/include/imgui/imconfig.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/float.h \
  /usr/include/assert.h \
- /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editorgui_actions.h \
  /home/redw0od0/CProjects/Engine/include/editor/brush.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
+ /home/redw0od0/CProjects/Engine/include/headers.h /usr/include/stdio.h \
+ /usr/include/bits/types/__fpos_t.h /usr/include/bits/types/__fpos64_t.h \
+ /usr/include/bits/types/struct_FILE.h \
+ /usr/include/bits/types/cookie_io_functions_t.h \
+ /usr/include/bits/stdio_lim.h \
+ /home/redw0od0/CProjects/Engine/include/types/types_base.h \
+ /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
+ /home/redw0od0/CProjects/Engine/include/glad/glad.h \
+ /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/draw_list.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/render_commands.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
+ /home/redw0od0/CProjects/Engine/include/mem.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editorcmd.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
  /usr/include/c++/15.2.1/iostream /usr/include/c++/15.2.1/ostream \
  /usr/include/c++/15.2.1/bits/ostream.h /usr/include/c++/15.2.1/ios \
  /usr/include/c++/15.2.1/iosfwd /usr/include/c++/15.2.1/bits/stringfwd.h \
@@ -179,11 +197,7 @@ CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o: \
  /usr/include/c++/15.2.1/bits/functional_hash.h \
  /usr/include/c++/15.2.1/bits/string_view.tcc \
  /usr/include/c++/15.2.1/ext/string_conversions.h \
- /usr/include/c++/15.2.1/cstdio /usr/include/stdio.h \
- /usr/include/bits/types/__fpos_t.h /usr/include/bits/types/__fpos64_t.h \
- /usr/include/bits/types/struct_FILE.h \
- /usr/include/bits/types/cookie_io_functions_t.h \
- /usr/include/bits/stdio_lim.h /usr/include/c++/15.2.1/cerrno \
+ /usr/include/c++/15.2.1/cstdio /usr/include/c++/15.2.1/cerrno \
  /usr/include/errno.h /usr/include/bits/errno.h \
  /usr/include/linux/errno.h /usr/include/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \

@@ -3,7 +3,7 @@
 
 #include "rendering/render_commands.h"
 
-/*
+#define RDRAW_MASK_EDITOR ((uint64_t)1 << 63)
 
 struct rdraw_sortable_t{
   struct rcmd_t cmd;
@@ -12,7 +12,7 @@ struct rdraw_sortable_t{
 
 
 struct rdrawlist_t{
-  struct rcmd_t* data;
+  struct rcmd_t** data;
   size_t capacity, count;
 };
 
@@ -21,7 +21,7 @@ void RDrawList_Add(struct rdrawlist_t* list, struct rcmd_t cmd);
 void RDrawList_Execute(struct rdrawlist_t* list);
 void RDrawList_Clear(struct rdrawlist_t* list);
 
-*/
+
 
 typedef struct{
   struct rcmd_t** data;

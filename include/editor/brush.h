@@ -6,6 +6,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "types/types_vector.h"
+#include "rendering/camera.h"
+#include "rendering/mesh.h"
+#include "rendering/draw_list.h"
+#include "mem.h"
 
 #define MAX_BRUSH_FACES 64
 #define MAX_WINDING_POINTS 64
@@ -15,19 +19,14 @@ typedef struct {
   vec_t dist;
 } plane_t;
 
-typedef struct{
-  size_t count;
-  Vector points[MAX_WINDING_POINTS];
-} winding_t;
-
+// In-Editor
 typedef struct {
   plane_t plane;
-  winding_t* winding;
   int material;
 
 } brush_side_t;
 
-
+// Post-Editor
 typedef struct {
   Vector vertices[MAX_WINDING_POINTS];
   size_t v_count;
@@ -60,15 +59,26 @@ typedef struct {
   vec_t* qw;
 
   brush_side_t* sides;
+
+  mesh_t** editor_meshes;
   
 } brush_array_t;
 
-int clip_winding_against_plane(const winding_t* in, winding_t* out, const plane_t plane);
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern brush_array_t* gEditorBrushArray;
 
 int EditorBrushArray_Init(brush_array_t* arr, size_t initial_capacity);
 void EditorBrushArray_Destroy(brush_array_t* arr);
 
-void EditorBrush_Create(brush_array_t* arr, Vector position);
+void EditorBrush_Create(brush_array_t* arr, Vector position, Vector scale);
+void EditorBrush_DrawAll(brush_array_t* arr, rdrawqueue_t* q, struct mem_arena_t* arena, camera_t* camera);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

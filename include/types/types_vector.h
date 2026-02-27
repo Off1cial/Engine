@@ -81,13 +81,16 @@ static mat4 Mat4Identity(){
   };
 }
 void Mat4Copy(const mat4 src, mat4* dest);
-void Mat4Mul(mat4* a, mat4* b, mat4* dest);
+mat4 Mat4Mul(mat4* a, mat4* b);
+void Mat4MulTo(mat4* a, mat4* b, mat4* dest);
 mat4 Mat4Translate(Vector* t);
 mat4 Mat4Scale(Vector* s);
 mat4 Mat4Rotate(float angle, Vector axis);
 mat4 Mat4LookAt(Vector eye, Vector center, Vector up);
 mat4 Mat4Perspective(float fovY, float aspect, float znear, float zfar);
+mat4 QuaternionToMat4(float qx, float qy, float qz, float qw);
 Vector Mat4Transform(mat4* m, Vector* v);
+Vector4 QuaternionMultQuaternion(Vector4 a, Vector4 b);
 
 
 inline bool IsValid(Vector* v)
@@ -120,7 +123,8 @@ void VectorNegateTo(Vector a, Vector* dest);
 void VectorNormalise(Vector* a);
 void VectorNormaliseTo(Vector a, Vector* dest);
 
-
+int VectorCompare_Imprecise(Vector a, Vector b, float min, float max);
+int VectorEqual(Vector a, Vector b);
 
 void VectorCopy(Vector a, Vector* dest);
 

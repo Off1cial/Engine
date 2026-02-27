@@ -45,3 +45,17 @@ void DebugLines_Init();
 void DebugLines_Push(Vector a, Vector b, Vector4 colour);
 void DebugLines_Upload();
 void DebugLines_Draw();
+
+
+void MeshDebug_PrintVertex(struct vertex_t* v);
+void MeshDebug_PrintVertices(mesh_t* mesh);
+
+#define MESH_PRIMITIVES_COUNT 1
+#define MESH_PRIMITIVE_CUBE 0
+
+
+extern mesh_t* MESH_PRIMITIVES[MESH_PRIMITIVES_COUNT];
+
+
+void MeshPrimitives_Init();
+void MeshPrimitives_Destroy();

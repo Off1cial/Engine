@@ -13,9 +13,9 @@ void RigidbodyArray_Init(rigidbody_array_t* arr, size_t capacity){
 
 
   // position
-  arr->px = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->py = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->pz = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->px = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->py = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->pz = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
 
   if (!CHECK_VALIDITY(arr->px) || !CHECK_VALIDITY(arr->py) || !CHECK_VALIDITY(arr->pz)){
     fprintf(stderr, "[RigidbodyArray]: Failed to allocate memory to position\n");
@@ -23,81 +23,82 @@ void RigidbodyArray_Init(rigidbody_array_t* arr, size_t capacity){
   }
   
   // Velocity
-  arr->vx = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->vy = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->vz = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->vx = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->vy = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->vz = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
   if (!CHECK_VALIDITY(arr->vx) || !CHECK_VALIDITY(arr->vy) || !CHECK_VALIDITY(arr->vz)){
     fprintf(stderr, "[RigidbodyArray]: Failed to allocate memory to velocity\n");
     exit(1);
   }
 
   // Force
-  arr->fx = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->fy = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->fz = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->fx = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->fy = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->fz = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
   if (!CHECK_VALIDITY(arr->fx) || !CHECK_VALIDITY(arr->fy) || !CHECK_VALIDITY(arr->fz)){
     fprintf(stderr, "[RigidbodyArray]: Failed to allocate memory to force\n");
     exit(1);
   }
   // Torque
-  arr->tx = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->ty = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->tz = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->tx = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->ty = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->tz = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
   if (!CHECK_VALIDITY(arr->tx) || !CHECK_VALIDITY(arr->ty) || !CHECK_VALIDITY(arr->tz)){
     fprintf(stderr, "[RigidbodyArray]: Failed to allocate memory to torque\n");
     exit(1);
   }
   // Angular Velocity
-  arr->avx = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->avy = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->avz = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->avx = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->avy = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->avz = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
   if (!CHECK_VALIDITY(arr->avx) || !CHECK_VALIDITY(arr->avy) || !CHECK_VALIDITY(arr->avz)){
     fprintf(stderr, "[RigidbodyArray]: Failed to allocate memory to angular velocity\n");
     exit(1);
   }
   // Rotation
-  arr->qx = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->qy = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->qz = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->qw = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->qx = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->qy = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->qz = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->qw = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
   if (!CHECK_VALIDITY(arr->qx) || !CHECK_VALIDITY(arr->qy) || !CHECK_VALIDITY(arr->qz) || !CHECK_VALIDITY(arr->qw)){
     fprintf(stderr, "[RigidbodyArray]: Failed to allocate memory to rotation\n");
     exit(1);
   }
   // Inertia
-  arr->inv_inertia_x = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->inv_inertia_y = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->inv_inertia_z = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->inv_inertia_x = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->inv_inertia_y = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->inv_inertia_z = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
   if (!CHECK_VALIDITY(arr->inv_inertia_x) || !CHECK_VALIDITY(arr->inv_inertia_y) || !CHECK_VALIDITY(arr->inv_inertia_z)){
     fprintf(stderr, "[RigidbodyArray]: Failed to allocate memory to inertia\n");
     exit(1);
   }
   // Properties
-  arr->mass = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->mass = ALIGNED_ALLOC(SIMD_ALIGNMENT_BYTES, vec_t_size);
 }
 
+
 void RigidbodyArray_Destroy(rigidbody_array_t* arr){
-  free(arr->px); free(arr->py); free(arr->pz);
+  ALIGNED_FREE(arr->px); ALIGNED_FREE(arr->py); ALIGNED_FREE(arr->pz);
   arr->px = NULL; arr->py = NULL; arr->pz = NULL;
 
-  free(arr->vx); free(arr->vy); free(arr->vz);
+  ALIGNED_FREE(arr->vx); ALIGNED_FREE(arr->vy); ALIGNED_FREE(arr->vz);
   arr->vx = NULL; arr->vy = NULL; arr->vz = NULL;
 
-  free(arr->fx); free(arr->fy); free(arr->fz);
+  ALIGNED_FREE(arr->fx); ALIGNED_FREE(arr->fy); ALIGNED_FREE(arr->fz);
   arr->fx = NULL; arr->fy = NULL; arr->fz = NULL;
 
-  free(arr->tx); free(arr->ty); free(arr->tz);
+  ALIGNED_FREE(arr->tx); ALIGNED_FREE(arr->ty); ALIGNED_FREE(arr->tz);
   arr->tx = NULL; arr->ty = NULL; arr->tz = NULL;
 
-  free(arr->avx); free(arr->avy); free(arr->avz);
+  ALIGNED_FREE(arr->avx); ALIGNED_FREE(arr->avy); ALIGNED_FREE(arr->avz);
   arr->avx = NULL; arr->avy = NULL; arr->avz = NULL;
 
-  free(arr->qx); free(arr->qy); free(arr->qz); free(arr->qw);
+  ALIGNED_FREE(arr->qx); ALIGNED_FREE(arr->qy); ALIGNED_FREE(arr->qz); ALIGNED_FREE(arr->qw);
   arr->qx = NULL; arr->qy = NULL; arr->qz = NULL; arr->qw = NULL;
 
-  free(arr->inv_inertia_x); free(arr->inv_inertia_y); free(arr->inv_inertia_z);
+  ALIGNED_FREE(arr->inv_inertia_x); ALIGNED_FREE(arr->inv_inertia_y); ALIGNED_FREE(arr->inv_inertia_z);
   arr->inv_inertia_x = NULL; arr->inv_inertia_y = NULL; arr->inv_inertia_z = NULL;
 
-  free(arr->mass);
+  ALIGNED_FREE(arr->mass);
   arr->mass = NULL;
 }

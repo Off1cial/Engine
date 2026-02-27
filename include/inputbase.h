@@ -11,10 +11,26 @@ struct inputstate_t{
   bool mCurrent[5];
   bool mPrevious[5];
   bool mbutton_left, mbutton_middle, mbutton_right;
+  bool mbutton_left_toggle, mbutton_right_toggle;
   bool FLAG_WindowResized;
+  bool FLAG_ToggleEditor;
 
   float mx_rel;
   float my_rel;
 };
 
-void poll_input(struct inputstate_t* state, int* running_condition);
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern struct inputstate_t* gInputState;
+
+#ifdef __cplusplus
+}
+#endif
+
+
+
+
+void poll_input(struct inputstate_t* state, int* running_condition, int* winw, int* winh);

@@ -24,6 +24,23 @@ CMakeFiles/Engine.dir/src/editor/brush.c.o: \
  /usr/include/bits/fp-fast.h /usr/include/bits/mathcalls-macros.h \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/camera.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
+ /home/redw0od0/CProjects/Engine/include/headers.h /usr/include/stdio.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
+ /usr/include/bits/types/__fpos_t.h /usr/include/bits/types/__mbstate_t.h \
+ /usr/include/bits/types/__fpos64_t.h /usr/include/bits/types/__FILE.h \
+ /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
+ /usr/include/bits/stdio_lim.h \
+ /home/redw0od0/CProjects/Engine/include/types/types_base.h \
+ /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
+ /home/redw0od0/CProjects/Engine/include/glad/glad.h \
+ /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/draw_list.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/render_commands.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
+ /home/redw0od0/CProjects/Engine/include/mem.h /usr/include/string.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/immintrin.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/x86gprintrin.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/ia32intrin.h \
@@ -136,11 +153,4 @@ CMakeFiles/Engine.dir/src/editor/brush.c.o: \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/avx10_2-512minmaxintrin.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/avx10_2copyintrin.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/movrsintrin.h \
- /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/amxmovrsintrin.h \
- /home/redw0od0/CProjects/Engine/include/mem.h /usr/include/stdio.h \
- /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
- /usr/include/bits/types/__fpos_t.h /usr/include/bits/types/__mbstate_t.h \
- /usr/include/bits/types/__fpos64_t.h /usr/include/bits/types/__FILE.h \
- /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
- /usr/include/bits/stdio_lim.h /usr/include/string.h \
- /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h
+ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/amxmovrsintrin.h

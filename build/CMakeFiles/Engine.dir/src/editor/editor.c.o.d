@@ -63,5 +63,21 @@ CMakeFiles/Engine.dir/src/editor/editor.c.o: \
  /usr/include/bits/mathcalls-helper-functions.h \
  /usr/include/bits/mathcalls.h /usr/include/stdlib.h \
  /usr/include/bits/stdlib-float.h \
+ /home/redw0od0/CProjects/Engine/include/inputbase.h \
  /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
- /home/redw0od0/CProjects/Engine/include/editor/brush.h
+ /home/redw0od0/CProjects/Engine/include/editor/brush.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
+ /home/redw0od0/CProjects/Engine/include/headers.h /usr/include/stdio.h \
+ /usr/include/bits/types/__fpos_t.h /usr/include/bits/types/__fpos64_t.h \
+ /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
+ /usr/include/bits/stdio_lim.h \
+ /home/redw0od0/CProjects/Engine/include/types/types_base.h \
+ /home/redw0od0/CProjects/Engine/include/types/types_vector.h \
+ /home/redw0od0/CProjects/Engine/include/glad/glad.h \
+ /home/redw0od0/CProjects/Engine/include/KHR/khrplatform.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/draw_list.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/render_commands.h \
+ /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
+ /home/redw0od0/CProjects/Engine/include/mem.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editorcmd.h
