@@ -2,6 +2,7 @@
 #include "editor/editorgui.h"
 #include "editor/editorcamera.h"
 #include "editor/editorgui_actions.h"
+#include "editor/editorpanel.h"
 #include "editor/editorcmd.h"
 #include "editor/editorstate.h"
 #include "inputbase.h"
@@ -27,14 +28,6 @@ ImVec2 imvec2_add(ImVec2 a, ImVec2 b){
   return ImVec2(a.x + b.x, a.y + b.y);
 }
 
-
-typedef struct {
-  ImVec2 pos, size;
-  char label[16];
-
-  ImVec2 cam_pos; // World coordinates
-  float cam_zoom;
-} gui_panel_t;
 
 gui_panel_t panels[5];
 
@@ -125,6 +118,7 @@ void draw_panel_grid(size_t index){
   ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
   ImVec2 win_pos = ImGui::GetWindowPos();
+  
 
   for (float x = start_x; x <= right; x += GRID_SPACING_WORLD){
 
@@ -135,7 +129,7 @@ void draw_panel_grid(size_t index){
     scr_a = imvec2_add(scr_a, win_pos);
     scr_b = imvec2_add(scr_b, win_pos);
    // Draw lines 
-    draw_list->AddLine(scr_a, scr_b, IM_COL32(255,255,255,255), 1.0f);
+    draw_list->AddLine(scr_a, scr_b, IM_COL32(255,255,255,150), 0.8f);
   }
 
   for (float y = start_y; y <= top; y += GRID_SPACING_WORLD){
@@ -147,9 +141,79 @@ void draw_panel_grid(size_t index){
 
     scr_a = imvec2_add(scr_a, win_pos);
     scr_b = imvec2_add(scr_b, win_pos);
-    draw_list->AddLine(scr_a, scr_b, IM_COL32(255,255,255,255), 1.0f);
+    draw_list->AddLine(scr_a, scr_b, IM_COL32(255,255,255,150),0.8f);
   }
   
+}
+
+void draw_brush_2d(int panel, size_t brush){
+  if (panel <= 1) return;
+
+  
+  Vector bpos = VectorInit(
+    gEditorBrushArray->px[brush],
+    gEditorBrushArray->py[brush],
+    gEditorBrushArray->pz[brush]
+  );
+
+  Vector scale_half = VectorInit(
+    gEditorBrushArray->sx[brush] * 0.5f,
+    gEditorBrushArray->sy[brush] * 0.5f,
+    gEditorBrushArray->sz[brush] * 0.5f
+  );
+  
+  ImVec2 wrld_a, wrld_b;
+
+  Vector min = VectorSub(bpos, scale_half);
+  Vector max = VectorAdd(bpos, scale_half);
+  
+  switch (panel){
+    case 2 :{ // TOP
+      wrld_a = ImVec2(min.x, min.z);
+      wrld_b = ImVec2(max.x, max.z);
+      break;
+    }
+    case 3 :{ // SIDE
+      wrld_a = ImVec2(min.z, min.y);
+      wrld_b = ImVec2(max.z, max.y);
+      break;
+    }
+    case 4 :{ // FRONT
+      wrld_a = ImVec2(min.x, min.y);
+      wrld_b = ImVec2(max.x, max.y);
+      break;
+    }
+  }
+
+  ImVec2 scr_a = EditorCamera_WorldToScreen(
+    panels[panel].size,
+    panels[panel].cam_pos,
+    panels[panel].cam_zoom,
+    wrld_a
+  );
+
+  ImVec2 scr_b = EditorCamera_WorldToScreen(
+    panels[panel].size,
+    panels[panel].cam_pos,
+    panels[panel].cam_zoom,
+    wrld_b
+  );
+  
+
+  /*
+  printf("SCR_A: (%0.2f, %0.2f)\n", scr_a.x, scr_a.y);
+  printf("SCR_B: (%0.2f, %0.2f)\n", scr_b.x, scr_b.y);
+  */
+
+  ImDrawList* draw_list =  ImGui::GetWindowDrawList();
+  ImVec2 win_pos = ImGui::GetWindowPos();
+  scr_a = imvec2_add(scr_a, win_pos);
+  scr_b = imvec2_add(scr_b, win_pos);
+
+
+  ImVec2 tl(fmin(scr_a.x, scr_b.x), fmin(scr_a.y, scr_b.y));
+  ImVec2 br(fmax(scr_a.x, scr_b.x), fmax(scr_a.y, scr_b.y));
+  draw_list->AddRect(tl, br, IM_COL32(200, 100, 0, 255));
 }
 
 void draw_main_panel_contents(){
@@ -177,27 +241,10 @@ void draw_panel(struct inputstate_t* input, size_t index){
 
   draw_panel_grid(index);
 
-  
+  for (size_t b = 0; b < gEditorBrushArray->brush_count; b++){
+    draw_brush_2d(index, b);
+  } 
 
-  /*
-  if (input->mbutton_left_toggle && !drawing_brush){
-    // Begin drawing brush
-    drawing_brush = true;
-    brush_start = ImGui::GetCursorPos();
-  }else if (input->mbutton_left_toggle && drawing_brush){
-    // Finalise brush
-    drawing_brush = false;
-    brush_end = ImGui::GetCursorPos();
-    panel_finalise_brush(
-      index,
-      panels[index].size,
-      brush_start,
-      brush_end,
-      panels[index].cam_pos,
-      panels[index].cam_zoom
-    );
-  }
-  */
 
 
   ImGui::End();
@@ -240,6 +287,12 @@ void EditorGui_HandleBrushInput(struct inputstate_t* input)
     {
         drawing = true;
         start = ImGui::GetMousePos();
+        start.x =  start.x - panels[gEditorGui_HoveredPanel].pos.x;
+        start.y =  start.y - panels[gEditorGui_HoveredPanel].pos.y;
+
+
+        printf("Start : (%0.2f, %0.2f)\n", start.x, start.y);
+    
     }
     else if (input->mbutton_left_toggle && drawing)
     {
@@ -247,13 +300,33 @@ void EditorGui_HandleBrushInput(struct inputstate_t* input)
 
         ImVec2 end = ImGui::GetMousePos();
 
+        end.x = end.x - panels[gEditorGui_HoveredPanel].pos.x; 
+        end.y = end.y - panels[gEditorGui_HoveredPanel].pos.y; 
+      
+
         panel_finalise_brush(
             gEditorGui_HoveredPanel,
             panels[gEditorGui_HoveredPanel].size,
             start,
             end,
             panels[gEditorGui_HoveredPanel].cam_pos,
-            panels[gEditorGui_HoveredPanel].cam_zoom
+            panels[gEditorGui_HoveredPanel].cam_zoom,
+      GRID_SPACING_WORLD
         );
     }
+}
+
+
+
+void EditorGui_HandlePanelInput(struct inputstate_t* input){
+
+
+  
+  // Handle zoom
+  panels[gEditorGui_HoveredPanel].cam_zoom += input->scrl_y * 0.1f;
+  
+  float* cam_zoom =  &panels[gEditorGui_HoveredPanel].cam_zoom;
+
+  if (*cam_zoom < 0.5f) *cam_zoom = 0.5f;
+  if (*cam_zoom > 5.0f) *cam_zoom = 5.0f;
 }

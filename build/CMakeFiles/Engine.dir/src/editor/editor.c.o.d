@@ -65,6 +65,7 @@ CMakeFiles/Engine.dir/src/editor/editor.c.o: \
  /usr/include/bits/stdlib-float.h \
  /home/redw0od0/CProjects/Engine/include/inputbase.h \
  /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editorinput.h \
  /home/redw0od0/CProjects/Engine/include/editor/brush.h \
  /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
  /home/redw0od0/CProjects/Engine/include/headers.h /usr/include/stdio.h \

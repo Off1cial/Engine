@@ -7,8 +7,9 @@ ImVec2 EditorCamera_WorldToScreen(ImVec2 view_size, ImVec2 cam_pos, float cam_zo
   return ImVec2(x,y);
 }
 
+
 ImVec2 EditorCamera_ScreenToWorld(ImVec2 view_size, ImVec2 cam_pos, float cam_zoom, ImVec2 screen_pos){
   float x = (screen_pos.x - view_size.x / 2.0f) / cam_zoom + cam_pos.x; 
-  float y = (screen_pos.y - view_size.y / 2.0f) / cam_zoom + cam_pos.y;
+  float y = cam_pos.y - (screen_pos.y - view_size.y / 2.0f) / cam_zoom;
   return ImVec2(x,y );
 }

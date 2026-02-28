@@ -1520,6 +1520,7 @@ CMakeFiles/Engine.dir/src/editor/brush_render.c.o: /home/redw0od0/CProjects/Engi
   /home/redw0od0/CProjects/Engine/include/application.h \
   /home/redw0od0/CProjects/Engine/include/editor/brush.h \
   /home/redw0od0/CProjects/Engine/include/editor/brush_render.h \
+  /home/redw0od0/CProjects/Engine/include/editor/editorinput.h \
   /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
   /home/redw0od0/CProjects/Engine/include/glad/glad.h \
   /home/redw0od0/CProjects/Engine/include/headers.h \
@@ -1651,6 +1652,7 @@ CMakeFiles/Engine.dir/src/editor/editor.c.o: /home/redw0od0/CProjects/Engine/src
   /home/redw0od0/CProjects/Engine/include/editor/editor.h \
   /home/redw0od0/CProjects/Engine/include/editor/editorcmd.h \
   /home/redw0od0/CProjects/Engine/include/editor/editorgui.h \
+  /home/redw0od0/CProjects/Engine/include/editor/editorinput.h \
   /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
   /home/redw0od0/CProjects/Engine/include/glad/glad.h \
   /home/redw0od0/CProjects/Engine/include/headers.h \
@@ -1867,6 +1869,8 @@ CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o: /home/redw0od0/CProjects/Engin
   /home/redw0od0/CProjects/Engine/include/editor/editorcmd.h \
   /home/redw0od0/CProjects/Engine/include/editor/editorgui.h \
   /home/redw0od0/CProjects/Engine/include/editor/editorgui_actions.h \
+  /home/redw0od0/CProjects/Engine/include/editor/editorinput.h \
+  /home/redw0od0/CProjects/Engine/include/editor/editorpanel.h \
   /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
   /home/redw0od0/CProjects/Engine/include/glad/glad.h \
   /home/redw0od0/CProjects/Engine/include/headers.h \
@@ -2646,6 +2650,7 @@ CMakeFiles/Engine.dir/src/main.c.o: /home/redw0od0/CProjects/Engine/src/main.c \
   /home/redw0od0/CProjects/Engine/include/editor/brush_render.h \
   /home/redw0od0/CProjects/Engine/include/editor/editor.h \
   /home/redw0od0/CProjects/Engine/include/editor/editorgui.h \
+  /home/redw0od0/CProjects/Engine/include/editor/editorinput.h \
   /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
   /home/redw0od0/CProjects/Engine/include/glad/glad.h \
   /home/redw0od0/CProjects/Engine/include/headers.h \
@@ -3365,6 +3370,10 @@ CMakeFiles/Engine.dir/src/rendering/mesh.c.o:
 /usr/lib/libbz2.so.1.0:
 
 /usr/lib/libbrotlidec.so.1:
+
+/usr/lib/libXdmcp.so.6:
+
+/usr/lib/libXau.so.6:
 
 CMakeFiles/Engine.dir/src/inputbase.c.o:
 
@@ -4256,6 +4265,8 @@ CMakeFiles/Engine.dir/src/editor/brush_render.c.o:
 
 /home/redw0od0/CProjects/Engine/include/editor/brush_render.h:
 
+/home/redw0od0/CProjects/Engine/include/editor/editorinput.h:
+
 /usr/include/asm/types.h:
 
 /usr/include/bits/types/locale_t.h:
@@ -4267,6 +4278,12 @@ CMakeFiles/Engine.dir/src/editor/brush_render.c.o:
 /home/redw0od0/CProjects/Engine/include/editor/editorcamera.h:
 
 /home/redw0od0/CProjects/Engine/src/editor/editorgui.cpp:
+
+/home/redw0od0/CProjects/Engine/include/editor/editorpanel.h:
+
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/avx10_2-512minmaxintrin.h:
+
+/usr/include/c++/15.2.1/bits/ostream.h:
 
 /usr/include/asm-generic/errno-base.h:
 
@@ -4343,10 +4360,6 @@ CMakeFiles/Engine.dir/src/editor/brush_render.c.o:
 /usr/include/bits/siginfo-consts.h:
 
 /usr/include/c++/15.2.1/bits/new_allocator.h:
-
-/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/avx10_2-512minmaxintrin.h:
-
-/usr/include/c++/15.2.1/bits/ostream.h:
 
 CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o:
 
@@ -4493,7 +4506,3 @@ CMakeFiles/Engine.dir/src/application.c.o:
 /home/redw0od0/CProjects/Engine/src/editor/editorcmd.c:
 
 /usr/lib/libX11.so.6:
-
-/usr/lib/libXau.so.6:
-
-/usr/lib/libXdmcp.so.6:

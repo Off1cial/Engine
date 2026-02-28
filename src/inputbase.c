@@ -23,6 +23,7 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
   state->mbutton_right_toggle = false;
   state->my_rel = 0;
   state->mx_rel = 0;
+  state->scrl_y = 0.0f;
 
   SDL_Event event;
   while (SDL_PollEvent(&event)){
@@ -34,6 +35,9 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
       state->FLAG_WindowResized = true;
       *winw = event.window.data1;
       *winh = event.window.data2;
+    }
+    if (event.type == SDL_EVENT_MOUSE_WHEEL){
+      state->scrl_y = event.wheel.y;
     }
   }
 

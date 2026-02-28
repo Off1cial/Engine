@@ -139,8 +139,10 @@ CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o: \
  /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
  /home/redw0od0/CProjects/Engine/include/mem.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdalign.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editorpanel.h \
  /home/redw0od0/CProjects/Engine/include/editor/editorcmd.h \
  /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editorinput.h \
  /usr/include/c++/15.2.1/iostream /usr/include/c++/15.2.1/ostream \
  /usr/include/c++/15.2.1/bits/ostream.h /usr/include/c++/15.2.1/ios \
  /usr/include/c++/15.2.1/iosfwd /usr/include/c++/15.2.1/bits/stringfwd.h \

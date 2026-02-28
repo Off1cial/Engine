@@ -17,6 +17,8 @@ struct inputstate_t{
 
   float mx_rel;
   float my_rel;
+
+  float scrl_y;
 };
 
 

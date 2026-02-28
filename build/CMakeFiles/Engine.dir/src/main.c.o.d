@@ -73,6 +73,7 @@ CMakeFiles/Engine.dir/src/main.c.o: \
  /usr/include/bits/mathcalls.h \
  /home/redw0od0/CProjects/Engine/include/inputbase.h \
  /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editorinput.h \
  /home/redw0od0/CProjects/Engine/include/editor/brush.h \
  /home/redw0od0/CProjects/Engine/include/rendering/mesh.h \
  /home/redw0od0/CProjects/Engine/include/headers.h \

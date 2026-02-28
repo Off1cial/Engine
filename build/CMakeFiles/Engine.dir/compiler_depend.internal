@@ -1529,6 +1529,7 @@ CMakeFiles/Engine.dir/src/editor/brush_render.c.o
  /home/redw0od0/CProjects/Engine/include/application.h
  /home/redw0od0/CProjects/Engine/include/editor/brush.h
  /home/redw0od0/CProjects/Engine/include/editor/brush_render.h
+ /home/redw0od0/CProjects/Engine/include/editor/editorinput.h
  /home/redw0od0/CProjects/Engine/include/editor/editorstate.h
  /home/redw0od0/CProjects/Engine/include/glad/glad.h
  /home/redw0od0/CProjects/Engine/include/headers.h
@@ -1661,6 +1662,7 @@ CMakeFiles/Engine.dir/src/editor/editor.c.o
  /home/redw0od0/CProjects/Engine/include/editor/editor.h
  /home/redw0od0/CProjects/Engine/include/editor/editorcmd.h
  /home/redw0od0/CProjects/Engine/include/editor/editorgui.h
+ /home/redw0od0/CProjects/Engine/include/editor/editorinput.h
  /home/redw0od0/CProjects/Engine/include/editor/editorstate.h
  /home/redw0od0/CProjects/Engine/include/glad/glad.h
  /home/redw0od0/CProjects/Engine/include/headers.h
@@ -1880,6 +1882,8 @@ CMakeFiles/Engine.dir/src/editor/editorgui.cpp.o
  /home/redw0od0/CProjects/Engine/include/editor/editorcmd.h
  /home/redw0od0/CProjects/Engine/include/editor/editorgui.h
  /home/redw0od0/CProjects/Engine/include/editor/editorgui_actions.h
+ /home/redw0od0/CProjects/Engine/include/editor/editorinput.h
+ /home/redw0od0/CProjects/Engine/include/editor/editorpanel.h
  /home/redw0od0/CProjects/Engine/include/editor/editorstate.h
  /home/redw0od0/CProjects/Engine/include/glad/glad.h
  /home/redw0od0/CProjects/Engine/include/headers.h
@@ -2664,6 +2668,7 @@ CMakeFiles/Engine.dir/src/main.c.o
  /home/redw0od0/CProjects/Engine/include/editor/brush_render.h
  /home/redw0od0/CProjects/Engine/include/editor/editor.h
  /home/redw0od0/CProjects/Engine/include/editor/editorgui.h
+ /home/redw0od0/CProjects/Engine/include/editor/editorinput.h
  /home/redw0od0/CProjects/Engine/include/editor/editorstate.h
  /home/redw0od0/CProjects/Engine/include/glad/glad.h
  /home/redw0od0/CProjects/Engine/include/headers.h

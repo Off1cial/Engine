@@ -99,6 +99,9 @@ inline bool IsValid(Vector* v)
 }
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 Vector VectorInit(float x, float y, float z);
 
@@ -133,5 +136,9 @@ Vector VectorZero();
 
 // Debug
 void Vector_DPrint(Vector* a);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

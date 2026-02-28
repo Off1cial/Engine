@@ -108,7 +108,6 @@ int main(){
   brush_array_t* editor_brush_array = malloc(sizeof(brush_array_t));
   gEditorBrushArray = editor_brush_array;
   editor_state_t* editor_state = malloc(sizeof(editor_state_t));
-  editor_state->brush_array = editor_brush_array;
   editor_state->camera = &editor_cam;
   EditorInit(editor_state, game_container.window, game_container.glContext);
 

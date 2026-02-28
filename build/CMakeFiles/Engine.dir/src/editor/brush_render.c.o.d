@@ -44,6 +44,7 @@ CMakeFiles/Engine.dir/src/editor/brush_render.c.o: \
  /home/redw0od0/CProjects/Engine/include/rendering/render_commands.h \
  /home/redw0od0/CProjects/Engine/include/rendering/shader.h \
  /home/redw0od0/CProjects/Engine/include/editor/editorstate.h \
+ /home/redw0od0/CProjects/Engine/include/editor/editorinput.h \
  /home/redw0od0/CProjects/Engine/include/state.h \
  /home/redw0od0/CProjects/Engine/include/application.h \
  /usr/include/SDL3/SDL.h /usr/include/SDL3/SDL_stdinc.h \

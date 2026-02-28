@@ -4,10 +4,11 @@
 #include "mem.h"
 
 void panel_finalise_brush(
-  int panel, 
+  int panel,
   ImVec2 panel_size, 
   ImVec2 start, ImVec2 end, 
-  ImVec2 cam_pos, float cam_zoom
+  ImVec2 cam_pos, float cam_zoom,
+  int grid_spacing
 ){
   float axis_ignore_mask[3] = {1, 1, 1};
 
@@ -26,11 +27,14 @@ void panel_finalise_brush(
     end
   );
 
-
+  w_start.x = roundf(w_start.x / grid_spacing) * grid_spacing;
+  w_start.y = roundf(w_start.y / grid_spacing) * grid_spacing;
+  w_end.x   = roundf(w_end.x / grid_spacing) * grid_spacing;
+  w_end.y   = roundf(w_end.y / grid_spacing) * grid_spacing;
 
   float centre[2] = {
-    (w_end.x - w_start.x) / 2.0f,
-    (w_end.y - w_start.y) / 2.0f
+    (w_end.x + w_start.x) * 0.5f,
+    (w_end.y + w_start.y) * 0.5f
   };
 
   Vector brush_pos;
