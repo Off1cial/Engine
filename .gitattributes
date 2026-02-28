@@ -1,1 +1,1 @@
-include/imgui/imgui_tables.cpp linguist-detectable=false
+include/imgui/* linguist-vendored
