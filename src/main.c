@@ -49,6 +49,7 @@ int main(){
   app_running = !ApplicationInit(&game_container, 640, 480);
   SDL_GL_SetSwapInterval(1);
 
+
   struct mem_arena_t mem_arena;
   gMemArena = &mem_arena;
   MEM_ARENA_INIT(gMemArena);
