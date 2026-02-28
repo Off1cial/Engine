@@ -3,6 +3,8 @@
 
 /*
 
+// Why the fuck are these lines still tracked by git
+
 Index of this file:
 
 // [SECTION] Commentary
