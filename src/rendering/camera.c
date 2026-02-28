@@ -88,6 +88,23 @@ void Camera_init(camera_t* cam, Vector position, struct Viewport viewport){
 
 }
 
+void Camera_Look(camera_t* cam, float xrel, float yrel){
+  if (!cam){ return; }
+
+  cam->yaw += cam->sens * xrel;
+  cam->pitch -= cam->sens * yrel;
+
+  if (cam->pitch > 89.0f){
+    cam->pitch = 89.0f;
+  }
+
+  if (cam->pitch < -89.0f){
+    cam->pitch = -89.0f;
+  }
+  Camera_update(cam); 
+}
+
+
 /*
 void Camera_Move(struct camera_t* cam, enum CAM_DIR direction, float unit){
     vec3 mov;

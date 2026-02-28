@@ -19,7 +19,7 @@ void EditorGui_DrawAll(SDL_Window* window, struct inputstate_t* input, camera_t*
 
 void EditorGui_HandleBrushInput(struct inputstate_t* input);
 
-void EditorGui_HandlePanelInput(struct inputstate_t* input);
+void EditorGui_HandlePanelInput(SDL_Window* window, struct inputstate_t* input);
 
 
 #ifdef __cplusplus

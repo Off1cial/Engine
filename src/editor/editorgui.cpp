@@ -5,6 +5,7 @@
 #include "editor/editorpanel.h"
 #include "editor/editorcmd.h"
 #include "editor/editorstate.h"
+#include "rendering/camera.h"
 #include "inputbase.h"
 #include "imgui/imgui.h"
 #include <iostream>
@@ -23,6 +24,7 @@ ImVec2 brush_end;
 bool drawing_brush = false;
 
 int gEditorGui_HoveredPanel = 2;
+bool gEditorGui_ViewportCaptured = false;
 
 ImVec2 imvec2_add(ImVec2 a, ImVec2 b){
   return ImVec2(a.x + b.x, a.y + b.y);
@@ -35,7 +37,8 @@ ImGuiWindowFlags panel_flags =
   ImGuiWindowFlags_NoResize |
   ImGuiWindowFlags_NoMove |
   ImGuiWindowFlags_NoBringToFrontOnFocus |
-  ImGuiWindowFlags_NoCollapse;
+  ImGuiWindowFlags_NoCollapse |
+  ImGuiWindowFlags_NoTitleBar;
   // Remove NoTitleBar
 
 
@@ -318,7 +321,7 @@ void EditorGui_HandleBrushInput(struct inputstate_t* input)
 
 
 
-void EditorGui_HandlePanelInput(struct inputstate_t* input){
+void EditorGui_HandlePanelInput(SDL_Window* window, struct inputstate_t* input){
 
 
   
@@ -329,4 +332,19 @@ void EditorGui_HandlePanelInput(struct inputstate_t* input){
 
   if (*cam_zoom < 0.5f) *cam_zoom = 0.5f;
   if (*cam_zoom > 5.0f) *cam_zoom = 5.0f;
+
+  // Handle 3D panel relativity
+  if (gEditorGui_HoveredPanel == 1 && input->mbutton_left_toggle){
+    gEditorGui_ViewportCaptured = true;
+    SDL_SetWindowRelativeMouseMode(window, true);
+  }
+  if (gEditorGui_ViewportCaptured && 
+      input->kCurrent[SDL_SCANCODE_ESCAPE] && 
+    !input->kPrevious[SDL_SCANCODE_ESCAPE]){
+    gEditorGui_ViewportCaptured = false;
+    SDL_SetWindowRelativeMouseMode(window, false);
+  }
+  if (gEditorGui_ViewportCaptured){
+    Camera_Look(gCameras[gCameraIndex], input->mx_rel, input->my_rel);
+  }
 }

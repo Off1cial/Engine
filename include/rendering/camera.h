@@ -75,6 +75,7 @@ void Camera_ToggleWireframe(camera_t* cam);
 void Camera_Switch(int index, int winh);
 void Camera_update(camera_t* cam);
 void Camera_init(camera_t* cam, Vector position, struct Viewport view);
+ 
 
 void Camera_Move(camera_t* cam, enum CAM_DIR direction, float unit);
 
@@ -95,4 +96,14 @@ bool isCursorInViewport(float mx, float my, struct Viewport viewport);
 
 
 bool isPosInBounds(float px, float py, float x, float y, float w, float h);
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void Camera_Look(camera_t* cam, float xrel, float yrel);
+
+#ifdef __cplusplus
+}
 #endif

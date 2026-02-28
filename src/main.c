@@ -96,6 +96,7 @@ int main(){
   camera_t editor_cam;
   struct Viewport eView = {0, 0, 640, 480};
   Camera_init(&editor_cam, VECTOR_ONE, eView);
+  editor_cam.sens = 0.04f;
 
   rigidbody_array_t rb_arr;
   RigidbodyArray_Init(&rb_arr, 128);
@@ -131,7 +132,7 @@ int main(){
     poll_input(&input_state, &app_running, &game_container.win_w, &game_container.win_h); 
     // Toggle Editor
     if (input_state.FLAG_ToggleEditor){ EditorToggle(game_container.window); }
-  
+    
 
     struct rcmd_t* rcmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
     rcmd->type = RCMD_DRAW_MESH;

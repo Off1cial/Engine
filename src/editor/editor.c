@@ -38,7 +38,7 @@ void EditorLoop(SDL_Window* window, rdrawqueue_t* draw_q, camera_t* editor_camer
   EditorQueue_Reset(gEditorQueue);
   EditorGui_DrawAll(window, gInputState, editor_camera, gInputState->FLAG_WindowResized);
   EditorGui_HandleBrushInput(gInputState);
-  EditorGui_HandlePanelInput(gInputState);
+  EditorGui_HandlePanelInput(window, gInputState);
   EditorBrush_DrawAll(gEditorBrushArray, draw_q, gMemArena, editor_camera);
   EditorQueue_Execute(gEditorQueue, gEditorBrushArray);
 }
