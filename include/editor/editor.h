@@ -2,9 +2,21 @@
 #define EDITOR_MAIN_H
 
 #include "editor/editorgui.h"
-#include "editor/editorstate.h"
 #include "editor/brush.h"
 
+
+
+
+
+
+
+
+
+typedef struct{
+  camera_t* camera;
+  struct editor_input_t* input;
+  editor_brush_array* b_arr;
+} editor_state_t;
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,10 +28,14 @@ void EditorInit(editor_state_t* eState, SDL_Window* window, SDL_GLContext glCont
 
 void EditorDestroy(editor_state_t* eState);
 
+
+void EditorCreate_Brush(editor_brush_array* b_arr, Vector position, Vector scale);
+
 void EditorLoop(
   SDL_Window* window,
   rdrawqueue_t* draw_q,
-  camera_t* editor_camera
+  camera_t* editor_camera,
+  float mx, float my
 );
 
 void EditorToggle(SDL_Window* window);

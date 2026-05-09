@@ -7,11 +7,11 @@
 
 typedef enum { SOLID_AABB, SOLID_OBB, SOLID_PLANE, SOLID_SPHERE } solid_t;
 
-struct clip_plane_t{
+typedef struct {
   Vector centre;
   Vector tangent, bittangent;
   Vector2 halfs;
-};
+} clip_plane_t;
 
 
 typedef struct {
@@ -39,11 +39,16 @@ typedef struct {
 
 } collider_array_dynamic_t;
 
+extern collider_array_dynamic_t* gColliderArray;
+
 void ColliderArray_Init(collider_array_dynamic_t* arr, size_t capacity);
 void ColliderArray_Destroy(collider_array_dynamic_t* arr);
 
 size_t ColliderArray_AddAABB(collider_array_dynamic_t* arr, Vector min, Vector max);
 size_t ColliderArray_AddOBB(collider_array_dynamic_t* arr, Vector centre, Vector half_extents); // OBB start aligned to Y axis
 size_t ColliderArray_AddSphere(collider_array_dynamic_t* arr, Vector centre, float radius);
+
+
+
 
 #endif

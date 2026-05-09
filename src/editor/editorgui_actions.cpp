@@ -5,108 +5,104 @@
 
 void panel_finalise_brush(
   int panel,
-  ImVec2 panel_size, 
-  ImVec2 start, ImVec2 end, 
-  ImVec2 cam_pos, float cam_zoom,
-  int grid_spacing
-){
-  float axis_ignore_mask[3] = {1, 1, 1};
-
-
+  ImVec2 panel_size,
+  ImVec2 start,
+  ImVec2 end,
+  ImVec2 cam_pos,
+  float cam_zoom,
+  int grid_spacing)
+{
   ImVec2 w_start = EditorCamera_ScreenToWorld(
-    panel_size,
-    cam_pos,
-    cam_zoom, 
-    start
-  );
+      panel_size,
+      cam_pos,
+      cam_zoom,
+      start);
 
   ImVec2 w_end = EditorCamera_ScreenToWorld(
-    panel_size,
-    cam_pos,
-    cam_zoom,
-    end
-  );
+      panel_size,
+      cam_pos,
+      cam_zoom,
+      end);
 
   w_start.x = roundf(w_start.x / grid_spacing) * grid_spacing;
   w_start.y = roundf(w_start.y / grid_spacing) * grid_spacing;
-  w_end.x   = roundf(w_end.x / grid_spacing) * grid_spacing;
-  w_end.y   = roundf(w_end.y / grid_spacing) * grid_spacing;
 
-  float centre[2] = {
-    (w_end.x + w_start.x) * 0.5f,
-    (w_end.y + w_start.y) * 0.5f
-  };
+  w_end.x = roundf(w_end.x / grid_spacing) * grid_spacing;
+  w_end.y = roundf(w_end.y / grid_spacing) * grid_spacing;
 
-  Vector brush_pos;
+  float minx = fminf(w_start.x, w_end.x);
+  float maxx = fmaxf(w_start.x, w_end.x);
+
+  float miny = fminf(w_start.y, w_end.y);
+  float maxy = fmaxf(w_start.y, w_end.y);
+
   float sx, sy, sz;
 
-  switch(panel){
-    case 2: {
-      // TOP - Ignores Y 
-      brush_pos.x = centre[0];
-      brush_pos.y = 0;
-      brush_pos.z = centre[1];
+  Vector world_start = VECTOR_ZERO;
+  Vector world_end = VECTOR_ZERO;
 
-      sx = w_end.x - w_start.x;
+  printf("START SCREEN: %f %f\n", start.x, start.y);
+  printf("END SCREEN: %f %f\n", end.x, end.y);
+
+  printf("WORLD START: %f %f\n", w_start.x, w_start.y);
+  printf("WORLD END: %f %f\n", w_end.x, w_end.y);
+
+  switch(panel)
+  {
+    case 2: // TOP
+      sx = maxx - minx;
       sy = 1.0f;
-      sz = w_end.y - w_start.y;
+      sz = maxy - miny;
 
+      world_start = VectorInit(minx, 0, miny);
+      world_end   = VectorInit(maxx, 1, maxy);
       break;
-    }
-    case 3: {
-      // SIDE - Ignores X
-      brush_pos.x = 0;
-      brush_pos.y = centre[1];
-      brush_pos.z = centre[0];
 
+    case 3: // SIDE
       sx = 1.0f;
-      sy = w_end.y - w_start.y;
-      sz = w_end.x - w_start.x;
+      sy = maxy - miny;
+      sz = maxx - minx;
 
+      world_start = VectorInit(0, miny, minx);
+      world_end   = VectorInit(1, maxy, maxx);
       break;
-    }
-    case 4: {
-      // FRONT - Ignores Z
-      brush_pos.x = centre[0];
-      brush_pos.y = centre[1];
-      brush_pos.z = 0;
 
-      sx = w_end.x - w_start.x;
-      sy = w_end.y - w_start.y;
+    case 4: // FRONT
+      sx = maxx - minx;
+      sy = maxy - miny;
       sz = 1.0f;
 
+      world_start = VectorInit(minx, miny, 0);
+      world_end   = VectorInit(maxx, maxy, 1);
       break;
-    }
-    default: {
+
+    default:
       return;
-    }
   }
 
+  struct editor_cmd_t* cmd = (struct editor_cmd_t*)
+    MEM_ARENA_ALLOC(
+      gMemArena,
+      sizeof(struct editor_cmd_t),
+      alignof(struct editor_cmd_t));
 
-  printf("[Editor]: Attempting to allocate editor command:\n");
-  printf("  Size: %zu\n", sizeof(struct editor_cmd_t));
-  printf("  Alignment: %zu\n", alignof(struct editor_cmd_t));
-  printf("  Current offset: %zu\n", gMemArena->offset);
-  struct editor_cmd_t* cmd = (struct editor_cmd_t*)MEM_ARENA_ALLOC(
-    gMemArena, 
-    sizeof(struct editor_cmd_t), 
-    alignof(struct editor_cmd_t)
-  );
-  
   cmd->type = EDITOR_CMD_BRUSH_CREATE;
 
-  cmd->brush_create.px = brush_pos.x;
-  cmd->brush_create.py = brush_pos.y;
-  cmd->brush_create.pz = brush_pos.z;
+  cmd->brush_create.startx = world_start.x;
+  cmd->brush_create.starty = world_start.y;
+  cmd->brush_create.startz = world_start.z;
+
+  cmd->brush_create.endx = world_end.x;
+  cmd->brush_create.endy = world_end.y;
+  cmd->brush_create.endz = world_end.z;
 
   cmd->brush_create.sx = sx;
   cmd->brush_create.sy = sy;
   cmd->brush_create.sz = sz;
 
-
   cmd->brush_create.rx = 0;
   cmd->brush_create.ry = 0;
   cmd->brush_create.rz = 0;
-   
+
   EditorQueue_Push(gEditorQueue, cmd);
 }

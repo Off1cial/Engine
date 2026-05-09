@@ -9,93 +9,106 @@
 
 #define SIMD_ALIGNMENT_BYTES 32
 
-#define BIT64(n) ((size_t)1ULL << n))
+// -------------------------
+// Bit flags
+// -------------------------
+#define BIT64(n) ((size_t)1ULL << (n))
 
 #define SET_FLAG(mask, n)   ((mask) |= BIT64(n))
 #define CLR_FLAG(mask, n)   ((mask) &= ~BIT64(n))
 #define HAS_FLAG(mask, n)   ((mask) & BIT64(n))
 #define TOG_FLAG(mask, n)   ((mask) ^= BIT64(n))
 
-#if defined(_MSC_VER)
+// -------------------------
+// Aligned allocation (cross-platform unified API)
+// -------------------------
+
+#if defined(_WIN32)
+
 #include <malloc.h>
-#define ALIGNED_ALLOC(alignment, size) _aligned_malloc(size, alignment)
-#define ALIGNED_FREE(ptr) _aligned_free(ptr)
-#define ALIGNED_REALLOC(ptr, new_size) _aligned_realloc(ptr, new_size, SIMD_ALIGNMENT_BYTES)
+
+// Windows aligned allocation
+#define ALIGNED_NEW(size) \
+    _aligned_malloc((size), SIMD_ALIGNMENT_BYTES)
+
+#define ALIGNED_REALLOC(ptr, old_size, new_size) \
+    _aligned_realloc((ptr), (new_size), SIMD_ALIGNMENT_BYTES)
+
+#define ALIGNED_FREE(ptr) \
+    _aligned_free((ptr))
+
 #else
-#include <stdlib.h>
 
-// Simple aligned allocation
-#define ALIGNED_ALLOC(alignment, size) aligned_alloc(alignment, size)
-#define ALIGNED_FREE(ptr) free(ptr)
+// -------------------------
+// POSIX / MSYS2 / Linux fallback
+// -------------------------
 
-// Aligned realloc wrapper storing old size
-typedef struct {
-    void* ptr;
-    size_t size; // size in bytes
-} aligned_block_t;
-
-// Allocate a new aligned block
-static inline aligned_block_t aligned_alloc_block(size_t size, size_t alignment) {
-    size_t padded_size = ((size + alignment - 1) / alignment) * alignment;
-    aligned_block_t blk;
-    blk.ptr = aligned_alloc(alignment, padded_size);
-    blk.size = blk.ptr ? size : 0;
-    return blk;
-}
-
-// Reallocate an aligned block
-static inline aligned_block_t aligned_realloc_block(aligned_block_t blk, size_t new_size, size_t alignment) {
-    size_t padded_size = ((new_size + alignment - 1) / alignment) * alignment;
-    void* new_ptr = aligned_alloc(alignment, padded_size);
-    if (new_ptr) {
-        if (blk.ptr) {
-            size_t copy_size = blk.size < new_size ? blk.size : new_size;
-            memcpy(new_ptr, blk.ptr, copy_size);
-            free(blk.ptr);
-        }
-        blk.ptr = new_ptr;
-        blk.size = new_size;
-    } else {
-        blk.ptr = NULL;
-        blk.size = 0;
+static inline void* aligned_new(size_t size) {
+    void* ptr = NULL;
+    if (posix_memalign(&ptr, SIMD_ALIGNMENT_BYTES, size) != 0) {
+        return NULL;
     }
-    return blk;
+    return ptr;
 }
 
-// Macros for convenience
-#define ALIGNED_REALLOC(blk, new_size) aligned_realloc_block(blk, new_size, SIMD_ALIGNMENT_BYTES)
-#define ALIGNED_NEW(size) aligned_alloc_block(size, SIMD_ALIGNMENT_BYTES)
+static inline void* aligned_realloc(void* ptr, size_t old_size, size_t new_size) {
+    void* new_ptr = aligned_new(new_size);
+    if (!new_ptr) return NULL;
+
+    if (ptr && old_size > 0) {
+        size_t copy_size = old_size < new_size ? old_size : new_size;
+        memcpy(new_ptr, ptr, copy_size);
+        free(ptr);
+    }
+
+    return new_ptr;
+}
+
+#define ALIGNED_NEW(size) \
+    aligned_new((size))
+
+#define ALIGNED_REALLOC(ptr, old_size, new_size) \
+    aligned_realloc((ptr), (old_size), (new_size))
+
+#define ALIGNED_FREE(ptr) \
+    free((ptr))
 
 #endif
 
+// -------------------------
+// Memory validity helper
+// -------------------------
 int mem_validity(void* mem);
 
 #define CHECK_VALIDITY(x) (mem_validity(x))
 
-
+// -------------------------
+// Arena allocator
+// -------------------------
 typedef void* MEM_BLOCK;
-#define MEM_ARENA_SIZE_BYTES (size_t)8192 // 4kiB
 
-struct mem_arena_t{
-  uint8_t* base;
-  size_t capacity;
-  size_t offset;
-};
+#define MEM_ARENA_SIZE_BYTES ((size_t)8192)
+
+typedef struct mem_arena_t {
+    uint8_t* base;
+    size_t capacity;
+    size_t offset;
+} mem_arena_t;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+extern mem_arena_t* gMemArena;
 
-extern struct mem_arena_t* gMemArena;
+void MEM_ARENA_INIT(mem_arena_t* arena);
+void MEM_ARENA_RESET(mem_arena_t* arena);
+void MEM_ARENA_DESTROY(mem_arena_t* arena);
 
-void MEM_ARENA_INIT(struct mem_arena_t* arena);
-void MEM_ARENA_RESET(struct mem_arena_t* arena);
-void MEM_ARENA_DESTROY(struct mem_arena_t* arena);
-void* MEM_ARENA_ALLOC(struct mem_arena_t* arena, size_t size, size_t alignment);
+void* MEM_ARENA_ALLOC(mem_arena_t* arena, size_t size, size_t alignment);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif // MEM_H

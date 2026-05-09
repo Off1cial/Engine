@@ -4,6 +4,8 @@
 #include <SDL3/SDL.h>
 
 
+
+
 bool mleft_last = false;
 bool mright_last = false;
 
@@ -47,6 +49,7 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
   // Mouse control
   state->mx_rel = 0;
   state->my_rel = 0;
+  SDL_GetMouseState(&state->mx, &state->my);
   SDL_MouseButtonFlags mbuttons = SDL_GetRelativeMouseState(&state->mx_rel, &state->my_rel);
 
   state->mbutton_left = (mbuttons & SDL_BUTTON_LMASK) != 0;
@@ -64,5 +67,6 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
 
   // Toggle editor
   state->FLAG_ToggleEditor = state->kCurrent[SDL_SCANCODE_0] && !state->kPrevious[SDL_SCANCODE_0];
+
 
 }

@@ -1,7 +1,14 @@
 #include "rendering/mesh.h"
 #include <string.h>
 
-mesh_t* MESH_PRIMITIVES[MESH_PRIMITIVES_COUNT];
+mesh_t *MESH_PRIMITIVES[MESH_PRIMITIVES_COUNT];
+
+struct vertex_t VectorToVertex(Vector a, float col[3])
+{
+  return (struct vertex_t){
+      {a.x, a.y, a.z},
+      {col[0], col[1], col[2]}};
+}
 
 void MeshDebug_PrintVertex(struct vertex_t *v)
 {
@@ -20,6 +27,21 @@ void MeshDebug_PrintVertices(mesh_t *mesh)
     struct vertex_t vert = mesh->vertices[v];
     printf("V%zu: {%0.3f, %0.3f, %0.3f}\n", v, vert.pos.x, vert.pos.y, vert.pos.z);
   }
+}
+
+void MeshReset(mesh_t *m)
+{
+  if (!m) return;
+
+  m->vertex_count = 0;
+  m->index_count  = 0;
+
+  // IMPORTANT: do NOT free GPU buffers
+  // just reuse existing allocation
+
+  // optional: clear CPU buffers if relying on debug safety
+  memset(m->vertices, 0, m->vertex_capacity * sizeof(struct vertex_t));
+  memset(m->indices, 0, m->index_capacity * sizeof(GLuint));
 }
 
 void MeshInit(mesh_t *mesh, size_t v_capacity, size_t i_capacity)
@@ -259,10 +281,156 @@ void MeshPrimitives_Init()
   // Store globally so brushes can reference it
 }
 
-
-void MeshPrimitives_Destroy(){
-  for (int i = 0; i < MESH_PRIMITIVES_COUNT; i++){
+void MeshPrimitives_Destroy()
+{
+  for (int i = 0; i < MESH_PRIMITIVES_COUNT; i++)
+  {
     MeshDestroy(MESH_PRIMITIVES[i]);
     free(MESH_PRIMITIVES[i]);
   }
+}
+
+void VertexDebug_WriteToFile(struct vertex_t *v, FILE *file)
+{
+  if (!file)
+  {
+    //
+    exit(1);
+  }
+
+  fprintf(file, "v: %f %f %f ", v->pos.x, v->pos.y, v->pos.z);
+  fprintf(file, "%f %f %f ", v->colour.x, v->colour.y, v->colour.z);
+  fprintf(file, "%f %f %f ", v->normal.x, v->normal.y, v->normal.z);
+  fprintf(file, "%f %f\n", v->uv.x, v->uv.y);
+}
+
+void MeshDebug_WriteToFile(mesh_t *mesh, const char *filepath)
+{
+  FILE *file = fopen(filepath, "w");
+  if (!file)
+  {
+    fprintf(stderr, "[MESH]: Failed to open file for writing -> %s\n", filepath);
+    exit(1);
+  }
+
+  fprintf(
+      file, "m: %zu %zu %zu %zu\n",
+      mesh->index_count, mesh->index_capacity,
+      mesh->vertex_count, mesh->vertex_capacity);
+  for (size_t v = 0; v < mesh->vertex_count; v++)
+  {
+    VertexDebug_WriteToFile(&mesh->vertices[v], file);
+  }
+  for (size_t i = 0; i < mesh->index_count; i++)
+  {
+    fprintf(file, "%d ", mesh->indices[i]);
+  }
+  fprintf(file, "\n");
+  fclose(file);
+}
+
+mesh_t *MeshInit_FromFile(const char *filepath)
+{
+  FILE *file = fopen(filepath, "r");
+  if (!file)
+  {
+    fprintf(stderr, "[MESH]: Failed to open file for reading -> %s\n", filepath);
+    return NULL;
+  }
+
+  mesh_t *mesh = malloc(sizeof(mesh_t));
+  if (!mesh)
+  {
+    fprintf(stderr, "[MESH]: Failed to allocate mesh during read\n");
+    fclose(file);
+    return NULL;
+  }
+
+  size_t index_count, index_capacity, vertex_count, vertex_capacity;
+  printf("Reading from mesh file: %s\n", filepath);
+  // Read mesh header
+  if (fscanf(file, "m: %zu %zu %zu %zu\n",
+             &index_count, &index_capacity,
+             &vertex_count, &vertex_capacity) != 4)
+  {
+    fprintf(stderr, "[MESH]: Failed to read mesh header from file: %s\n", filepath);
+    fclose(file);
+    free(mesh);
+    return NULL;
+  }
+
+  MeshInit(mesh, vertex_capacity, index_capacity);
+
+  char linebuff[512];
+  size_t vertices_read = 0;
+  size_t indices_read = 0;
+
+  while (fgets(linebuff, sizeof(linebuff), file))
+  {
+    if (strncmp(linebuff, "v:", 2) == 0)
+    {
+      // Vertex line
+      float px, py, pz;
+      float cr, cg, cb;
+      float nx, ny, nz;
+      float uvx, uvy;
+
+      int res = sscanf(linebuff,
+                       "v: %f %f %f %f %f %f %f %f %f %f %f",
+                       &px, &py, &pz,
+                       &cr, &cg, &cb,
+                       &nx, &ny, &nz,
+                       &uvx, &uvy);
+      if (res != 11)
+      {
+        fprintf(stderr, "[MESH]: Failed to parse vertex line %zu\n", vertices_read);
+        continue;
+      }
+
+      struct vertex_t vertex = {
+          .pos = {px, py, pz},
+          .colour = {cr, cg, cb},
+          .normal = {nx, ny, nz},
+          .uv = {uvx, uvy}};
+      MeshPushVertex(mesh, vertex);
+      vertices_read++;
+    }
+    else
+    {
+      // Indices line
+      // Assuming indices are stored as space-separated numbers
+      char *ptr = linebuff;
+      while (*ptr)
+      {
+        unsigned int idx;
+        int n = 0;
+        if (sscanf(ptr, "%u%n", &idx, &n) == 1)
+        {
+          if (indices_read >= mesh->index_capacity)
+          {
+            // Grow if needed
+            mesh->index_capacity *= 2;
+            mesh->indices = realloc(mesh->indices, sizeof(GLuint) * mesh->index_capacity);
+            if (!mesh->indices)
+            {
+              fprintf(stderr, "[MESH]: Failed to realloc indices\n");
+              fclose(file);
+              free(mesh);
+              return NULL;
+            }
+          }
+          mesh->indices[mesh->index_count++] = idx;
+          indices_read++;
+          ptr += n;
+        }
+        else
+        {
+          break; // no more numbers on this line
+        }
+      }
+    }
+  }
+
+  fclose(file);
+  return mesh;
 }

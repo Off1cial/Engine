@@ -25,9 +25,13 @@ struct editor_cmd_t
     // Potential contents
     struct
     {
-      vec_t px;
-      vec_t py;
-      vec_t pz;
+      vec_t startx;
+      vec_t starty;
+      vec_t startz;
+
+      vec_t endx;
+      vec_t endy;
+      vec_t endz;
 
       vec_t sx;
       vec_t sy;
@@ -73,7 +77,7 @@ extern "C" {
 void EditorQueue_Init(editor_cmd_queue_t* q, size_t capacity);
 void EditorQueue_Reset(editor_cmd_queue_t* q);
 void EditorQueue_Push(editor_cmd_queue_t* q, struct editor_cmd_t* cmd);
-void EditorQueue_Execute(editor_cmd_queue_t* q, brush_array_t* arr);
+void EditorQueue_Execute(editor_cmd_queue_t* q, editor_brush_array* arr);
 void EditorQueue_Destroy(editor_cmd_queue_t* q);
 
 #ifdef __cplusplus

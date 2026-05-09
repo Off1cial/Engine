@@ -12,73 +12,51 @@
 #include "mem.h"
 
 #define MAX_BRUSH_FACES 64
+#define MAX_BRUSHES 2048
 #define MAX_WINDING_POINTS 64
 
 typedef struct {
-  Vector normal;
-  vec_t dist;
-} plane_t;
+  Vector v[MAX_WINDING_POINTS];
+  int count;
+} winding_t;
 
-// In-Editor
+
 typedef struct {
   plane_t plane;
-  int material;
+
+  int material_id;   // texture reference
+  Vector2 uv_origin;
+  Vector uv_axis_u;
+  Vector uv_axis_v;
 
 } brush_side_t;
 
-// Post-Editor
 typedef struct {
-  Vector vertices[MAX_WINDING_POINTS];
-  size_t v_count;
-  size_t planenum;
-  int material;
-} face_t;
+  brush_side_t sides[MAX_BRUSH_FACES]; // Local space to centre
+  int side_count;
+  int dirty;
+  mesh_t editor_mesh;
+
+  Vector pos, rot, scale;
 
 
-// EDITOR
+} brush_t;
 
 typedef struct {
-  size_t brush_count;
-  size_t brush_capacity;
-  // brush faces
-  size_t total_sides;
-  size_t* side_count;
-  size_t* side_start; // Index of first side
-  // Position
-  vec_t* px;
-  vec_t* py;
-  vec_t* pz;
-  // Size
-  vec_t* sx;
-  vec_t* sy;
-  vec_t* sz;
-  // Quaternion rotation
-  vec_t* qx;
-  vec_t* qy;
-  vec_t* qz;
-  vec_t* qw;
+  brush_t* brushes;
+  size_t count, capacity;
+} editor_brush_array;
 
-  brush_side_t* sides;
-
-  mesh_t** editor_meshes;
-  
-} brush_array_t;
+extern editor_brush_array* gEditorBrushArray;
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+void EditorBrushArray_Init(editor_brush_array* arr, size_t capacity);
+void EditorBrushArray_Destroy(editor_brush_array* arr);
 
-extern brush_array_t* gEditorBrushArray;
+mesh_t BrushToMesh(brush_t *b);
+brush_t make_brush_cube(Vector mins, Vector maxs);
 
-int EditorBrushArray_Init(brush_array_t* arr, size_t initial_capacity);
-void EditorBrushArray_Destroy(brush_array_t* arr);
-
-void EditorBrush_Create(brush_array_t* arr, Vector position, Vector scale);
-void EditorBrush_DrawAll(brush_array_t* arr, rdrawqueue_t* q, struct mem_arena_t* arena, camera_t* camera);
-
-#ifdef __cplusplus
-}
-#endif
+void EditorBrush_Draw(brush_t* brush, rdrawqueue_t* drawlist, camera_t* cam);
+bool Brush_Raycast(brush_t* brush, int* out_side, Vector* out_hit, float* out_dist, camera_t* camera, float cursorx, float cursory);
 
 #endif

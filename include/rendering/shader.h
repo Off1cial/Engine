@@ -29,21 +29,17 @@ typedef struct {
 } shader_t;
 
 
-extern shader_t* SHADER_default_shader;
-extern shader_t* SHADER_default_shader_lit;
-extern shader_t* SHADER_default_shader_ui;
-extern shader_t* SHADER_default_shader_billboard;
-extern shader_t* SHADER_current_shader;
-extern bool SHADER_isDefaultLoaded;
-extern bool SHADER_isDefaultLitLoaded;
-extern bool SHADER_isDefaultUILoaded;
-extern bool SHADER_isDefaultBillboardLoaded;
+typedef struct {
+  shader_t** shaders;
+  size_t count;
+  size_t capacity;
+} shader_store_t;
 
-bool Shader_LoadDefaultShader(shader_t* defaultShader, const char* defaultVert, const char* defaultFrag);
-bool Shader_LoadDefaultLit(shader_t* defaultLit, const char* litVert, const char* litFrag);
-bool Shader_LoadDefaultUIShader(shader_t* uiShader, const char* uiVert, const char* uiFrag);
+void ShaderStore_Init(shader_store_t* store, size_t capacity);
+long int ShaderStore_Add(shader_store_t* store, shader_t* shader);
+void ShaderStore_Free(shader_store_t* store);
 
-bool Shader_LoadDefaultBillboard(shader_t* billboardShader, const char* billboardVert, const char* billboardFrag);
+
 bool Shader_Load(shader_t* shader, const char* assetPath, const char* vertexPath, const char* fragmentPath);
 void Shader_Use(shader_t* shader);
 void Shader_Destroy(shader_t* shader);

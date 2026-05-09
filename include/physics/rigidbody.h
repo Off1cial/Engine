@@ -48,7 +48,10 @@ typedef struct {
 
 } rigidbody_array_t;
 
+extern rigidbody_array_t* gRigidbodyArray;
+
 void RigidbodyArray_Init(rigidbody_array_t* arr, size_t capacity);
 void RigidbodyArray_Destroy(rigidbody_array_t* arr);
+void Rigidbody_Create(Vector position, Vector obb_size);
 
 #endif

@@ -4,7 +4,6 @@
 #include "application.h"
 #include "mem.h"
 #include "editor/editor.h"
-#include "editor/brush_render.h"
 #include "inputbase.h"
 #include "types/types_vector.h"
 #include "rendering/camera.h"
@@ -14,6 +13,7 @@
 #include "rendering/mesh.h"
 #include "rendering/render_commands.h"
 #include "rendering/draw_list.h"
+#include "rendering/renderer.h"
 #include "state.h"
 
 // TOOD
@@ -27,21 +27,21 @@
 
 struct mem_arena_t* gMemArena = NULL;
 struct inputstate_t* gInputState = NULL;
-brush_array_t* gEditorBrushArray = NULL;
+renderer_state_t* gRendererState = NULL;
 bool* gEditorActive = NULL;
+editor_brush_array* gEditorBrushArray = NULL;
+rigidbody_array_t* gRigidbodyArray = NULL;
+collider_array_dynamic_t* gColliderArray = NULL;
 
 int main(){
   
   const char* PATH_Assets = "../Assets/";
   
+  shader_store_t shader_store = {0};
+  ShaderStore_Init(&shader_store, 16);
 
-  bool SHADER_isDefaultLoaded = false;
-  bool SHADER_isDefaultLitLoaded = false;
-  bool SHADER_isDefaultUILoaded = false;
-  bool SHADER_isDefaultBillboardLoaded = false;
-  
-
-  shader_t* new_shader = malloc(sizeof(shader_t));
+  shader_t* shader_unlit = malloc(sizeof(shader_t));
+  shader_t* shader_lit = malloc(sizeof(shader_t));
   int app_running;
   struct container_t game_container;
   struct inputstate_t input_state;
@@ -59,73 +59,64 @@ int main(){
   RDrawQueue_Init(&gDrawQ, 128);
 
  
-  Shader_Load(new_shader, PATH_Assets, "Shaders/defaultVert.vs", "Shaders/defaultFrag.fs");
-  SHADER_default_shader = new_shader; 
+  Shader_Load(shader_unlit, PATH_Assets, "Shaders/vert_unlit.vs", "Shaders/frag_unlit.fs");
+  Shader_Load(shader_lit, PATH_Assets, "Shaders/vert_lit.vs", "Shaders/frag_lit.fs");
 
   MeshPrimitives_Init();
 
-  mesh_t* tri_mesh = malloc(sizeof(mesh_t));
-  MeshInit( tri_mesh, 3, 3);
-
-  struct vertex_t v0 = {
-    .pos = {-0.5f, 0.0f, 5.0f},
-    .colour = {1.0f, 0.0f, 0.0f},
-  };
-  struct vertex_t v1 = {
-    .pos = {-0.0f, 0.5f, 5.0f},
-    .colour = {0.0f, 1.0f, 0.0f},
-  };
-  struct vertex_t v2 = {
-    .pos = {0.5f, 0.0f, 5.0f},
-    .colour = {0.0f, 0.0f, 1.0f},
-  };
-
-
-  GLuint i0 = MeshPushVertex(tri_mesh, v0);
-  GLuint i1 = MeshPushVertex(tri_mesh, v1);
-  GLuint i2 = MeshPushVertex(tri_mesh, v2);
-
-  MeshPushTriangle(tri_mesh, i0, i1, i2);
+  mesh_t* tri_mesh = MeshInit_FromFile("../trimesh.mesh");
   MeshUpload(tri_mesh, GL_STATIC_DRAW);
 
-  
+
   camera_t main_cam;
   struct Viewport view = {0, 0, 640, 480 };
-  Camera_init(&main_cam, VectorInit(0, 0, 0), view );
+  Camera_init(&main_cam, VECTOR_ZERO, view );
   gCameraIndex = 0;
 
   camera_t editor_cam;
   struct Viewport eView = {0, 0, 640, 480};
-  Camera_init(&editor_cam, VECTOR_ONE, eView);
+  Camera_init(&editor_cam, VectorInit(0, 10, 0), eView);
   editor_cam.sens = 0.04f;
+
+  renderer_state_t renderer_state = {0};
+  gRendererState = &renderer_state;
+  renderer_state.active_cam = gCameras[gCameraIndex];
+  renderer_state.draw_q = &gDrawQ;
+  renderer_state.shader_store = &shader_store;
+  renderer_state.shader_unlit = renderer_state.shader_store->shaders[ShaderStore_Add(&shader_store, shader_unlit)];
+  renderer_state.shader_lit = renderer_state.shader_store->shaders[ShaderStore_Add(&shader_store, shader_lit)];
 
   rigidbody_array_t rb_arr;
   RigidbodyArray_Init(&rb_arr, 128);
+  gRigidbodyArray = &rb_arr;
   collider_array_dynamic_t collider_arr;
   ColliderArray_Init(&collider_arr, 128);
+  gColliderArray = &collider_arr;
   
+  editor_brush_array brush_array = {0};
+  gEditorBrushArray = &brush_array;
 
   bool editor_active = false;
   gEditorActive = &editor_active;
-  brush_array_t* editor_brush_array = malloc(sizeof(brush_array_t));
-  gEditorBrushArray = editor_brush_array;
   editor_state_t* editor_state = malloc(sizeof(editor_state_t));
   editor_state->camera = &editor_cam;
   EditorInit(editor_state, game_container.window, game_container.glContext);
 
+
   if (NULL == gCameras[gCameraIndex]){
     printf("Null camera\n");
   }
-  
-  EditorBrush_Create(editor_brush_array,  VectorInit(0,0, 3), VECTOR_ONE);
-  EditorBrush_Create(editor_brush_array,  VectorInit(2,0, 3), VectorInit(0.5f, 0.5f, 0.5f));
 
   state_t game_state;
   game_state.app_container = &game_container;
   game_state.arena = gMemArena;
   game_state.draw_queue = &gDrawQ;
   
-  //Camera_Switch(0, game_container.win_h);
+  Camera_Switch(0, game_container.win_h);
+
+  MeshDebug_WriteToFile(tri_mesh, "../meshtest.mesh");
+
+
 
   while(app_running){
     MEM_ARENA_RESET(gMemArena);
@@ -139,20 +130,27 @@ int main(){
     rcmd->type = RCMD_DRAW_MESH;
     rcmd->draw_mesh.mesh = tri_mesh;
     rcmd->draw_mesh.model = Mat4Identity();
-    rcmd->draw_mesh.view = gCameras[gCameraIndex]->view;
-    rcmd->draw_mesh.projection = gCameras[gCameraIndex]->projection;
+    //rcmd->draw_mesh.view = gCameras[gCameraIndex]->view;
+    //rcmd->draw_mesh.projection = gCameras[gCameraIndex]->projection;
     rcmd->draw_mesh.mode = GL_TRIANGLES;
-    rcmd->draw_mesh.material_index = 0;
-    rcmd->draw_mesh.shader = new_shader;
     
-  
+
     // Rendering
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // Test render command
-    if (*gEditorActive) {EditorLoop(game_container.window, &gDrawQ, &editor_cam); }
-    RDrawQueue_Push(&gDrawQ, rcmd);
     
+    if (*gEditorActive){
+      EditorLoop(game_container.window, &gDrawQ, &editor_cam, input_state.mx, input_state.my); 
+    }
+    
+    for(size_t i = 0; i < brush_array.count; i++){
+      EditorBrush_Draw(&brush_array.brushes[i], &gDrawQ, &editor_cam);
+    }
+
+    RDrawQueue_Push(&gDrawQ, rcmd);
+   
+  
      
 
     RDrawQueue_Execute(&gDrawQ);
@@ -163,8 +161,8 @@ int main(){
   MeshPrimitives_Destroy();
   MeshDestroy(tri_mesh);
   free(tri_mesh);
-  EditorDestroy(editor_state);
-  Shader_Destroy(new_shader);
+  //EditorDestroy(editor_state);
+  ShaderStore_Free(gRendererState->shader_store);
   RDrawQueue_Destroy(&gDrawQ);
   MEM_ARENA_DESTROY(gMemArena);
   ApplicationDestroy(&game_container);

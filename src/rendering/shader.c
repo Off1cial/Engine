@@ -163,3 +163,37 @@ void Shader_SetInt(shader_t* shader, const char* name, int value) {
     if (loc != -1) glUniform1i(loc, value);
 }
 
+
+void ShaderStore_Init(shader_store_t* store, size_t capacity){
+  if (!store)
+    return;
+
+  store->shaders = malloc(sizeof(shader_t*) * capacity);
+  store->capacity = capacity;
+  store->count = 0;
+}
+
+long int ShaderStore_Add(shader_store_t* store, shader_t* shader){
+  if (!store || !shader)
+    return -1;
+
+  if (store->count >= store->capacity){
+    printf("[SHADER]: Limit reached\n");
+    return -1; // Failed
+  }
+
+  store->shaders[store->count] = shader;
+  return store->count++;
+}
+
+void ShaderStore_Free(shader_store_t* store){
+  for (size_t s = 0; s < store->count; s++){
+    if (store->shaders[s]){
+      Shader_Destroy(store->shaders[s]);
+    }
+  }
+
+  free(store->shaders);
+  store->capacity = 0;
+  store->count = 0;
+}

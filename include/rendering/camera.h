@@ -44,11 +44,6 @@ extern camera_t* gCameras[MAX_CAMERAS];
 extern size_t gCameraCount;
 extern size_t gCameraIndex;
 
-typedef struct {
-  Vector origin;
-  Vector dir;
-} Ray;
-
 struct Camera2D{
   Vector2 pos;
   float zoom;
@@ -66,24 +61,23 @@ enum CAM_DIR{
 };
 
 extern camera_t* activeCam;
-extern Ray* activeCamCursorRay;
+extern ray_t* activeCamCursorRay;
 
 
 void Camera_ToggleWireframe(camera_t* cam);
 
 
-void Camera_Switch(int index, int winh);
 void Camera_update(camera_t* cam);
 void Camera_init(camera_t* cam, Vector position, struct Viewport view);
  
 
-void Camera_Move(camera_t* cam, enum CAM_DIR direction, float unit);
+void Camera_Move(Vector direction, float scale, camera_t* cam);
 
 bool RayIntersectsAABB(Vector origin, Vector dir, Vector aabbMin, Vector aabbMax, float *tOut);
 
 bool RayIntersectsPlane(Vector origin, Vector dir, Vector pNormal, Vector pPos, float* t_out);
 
-Ray Camera_ScreenPointToRay(camera_t* cam, float mouseX, float mouseY);
+ray_t Camera_ScreenPointToRay(camera_t* cam, float mouseX, float mouseY);
 
 
 void Camera2D_Update(struct Camera2D* cam);

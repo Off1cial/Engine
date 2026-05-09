@@ -1,298 +1,266 @@
 #include "editor/brush.h"
-
-#include <immintrin.h> // AVX
-#include <stddef.h>
 #include "mem.h"
-#include <string.h>
-#include <stdalign.h>
-#include "rendering/shader.h"
-#include "rendering/mesh.h"
-#include "rendering/render_commands.h"
-#include "rendering/draw_list.h"
-#include "rendering/camera.h"
 
-#ifndef EPSILON
-#define EPSILON 1e-6
-#endif
 
-int EditorBrushArray_Init(brush_array_t *arr, size_t initial_capacity)
-{
-  if (!arr)
-  {
-    fprintf(stderr, "[BrushArray]: NULL pointer passed to init\n");
-    return 0;
+void EditorBrushArray_Init(editor_brush_array* arr, size_t capacity){
+  arr->brushes = malloc(sizeof(brush_t) * capacity);
+  if (!arr->brushes){
+    fprintf(stderr, "[EDITOR]: Failed to init brush array\n");
+    exit(1);
   }
 
-  if (initial_capacity == 0)
-    initial_capacity = 8;
+  arr->count = 0;
+  arr->capacity = capacity;
+}
 
-  memset(arr, 0, sizeof(*arr));
 
-  arr->brush_capacity = initial_capacity;
-  arr->brush_count = 0;
-  arr->total_sides = 0;
+void EditorBrushArray_Destroy(editor_brush_array* arr){
+  free(arr->brushes);
+  arr->count = arr->capacity = 0;
+}
 
-  size_t cap = arr->brush_capacity;
 
-  // ---- Allocate transform SoA ----
-  arr->px = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
-  arr->py = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
-  arr->pz = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
 
-  arr->sx = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
-  arr->sy = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
-  arr->sz = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
 
-  arr->qx = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
-  arr->qy = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
-  arr->qz = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
-arr->qw = ALIGNED_NEW(sizeof(vec_t) * cap).ptr;
 
-  arr->side_count = ALIGNED_NEW(sizeof(size_t) * cap).ptr;
-  arr->side_start = ALIGNED_NEW(sizeof(size_t) * cap).ptr;
 
-  // Worst-case sides allocation
-  arr->sides = ALIGNED_NEW(sizeof(brush_side_t) * cap * MAX_BRUSH_FACES).ptr;
 
-  arr->editor_meshes = ALIGNED_NEW(sizeof(mesh_t *) * cap).ptr;
 
-  // ---- Validate allocations ----
-  if (!CHECK_VALIDITY(arr->px) || !CHECK_VALIDITY(arr->py) || !CHECK_VALIDITY(arr->pz) ||
-      !CHECK_VALIDITY(arr->sx) || !CHECK_VALIDITY(arr->sy) || !CHECK_VALIDITY(arr->sz) ||
-      !CHECK_VALIDITY(arr->qx) || !CHECK_VALIDITY(arr->qy) ||
-      !CHECK_VALIDITY(arr->qz) || !CHECK_VALIDITY(arr->qw) ||
-      !CHECK_VALIDITY(arr->side_count) || !CHECK_VALIDITY(arr->side_start) ||
-      !CHECK_VALIDITY(arr->sides))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+static void BrushSide_DefaultUVs(brush_side_t *s)
+{
+  Vector n = s->plane.normal;
+
+  s->uv_origin = (Vector2){0, 0};
+
+  if (fabsf(n.x) > 0.9f)
   {
-    fprintf(stderr, "[BrushArray]: Allocation failure\n");
-    return 0;
+    s->uv_axis_u = VECTOR_AXIS_Y;
+    s->uv_axis_v = VECTOR_AXIS_Z;
   }
-
-  // ---- Zero memory for deterministic behaviour ----
-  memset(arr->px, 0, sizeof(vec_t) * cap);
-  memset(arr->py, 0, sizeof(vec_t) * cap);
-  memset(arr->pz, 0, sizeof(vec_t) * cap);
-
-  memset(arr->sx, 0, sizeof(vec_t) * cap);
-  memset(arr->sy, 0, sizeof(vec_t) * cap);
-  memset(arr->sz, 0, sizeof(vec_t) * cap);
-
-  memset(arr->qx, 0, sizeof(vec_t) * cap);
-  memset(arr->qy, 0, sizeof(vec_t) * cap);
-  memset(arr->qz, 0, sizeof(vec_t) * cap);
-  memset(arr->qw, 0, sizeof(vec_t) * cap);
-
-  memset(arr->side_count, 0, sizeof(size_t) * cap);
-  memset(arr->side_start, 0, sizeof(size_t) * cap);
-
-  memset(arr->sides, 0, sizeof(brush_side_t) * cap * MAX_BRUSH_FACES);
-  memset(arr->editor_meshes, 0, sizeof(mesh_t *) * cap);
-
-  return 1;
-}
-
-void EditorBrushArray_Destroy(brush_array_t *arr)
-{
-  if (!arr)
-    return;
-
-  ALIGNED_FREE(arr->px);
-  ALIGNED_FREE(arr->py);
-  ALIGNED_FREE(arr->pz);
-
-  ALIGNED_FREE(arr->sx);
-  ALIGNED_FREE(arr->sy);
-  ALIGNED_FREE(arr->sz);
-
-  ALIGNED_FREE(arr->qx);
-  ALIGNED_FREE(arr->qy);
-  ALIGNED_FREE(arr->qz);
-  ALIGNED_FREE(arr->qw);
-
-  ALIGNED_FREE(arr->side_count);
-  ALIGNED_FREE(arr->side_start);
-  ALIGNED_FREE(arr->sides);
-  ALIGNED_FREE(arr->editor_meshes);
-
-  memset(arr, 0, sizeof(*arr));
-}
-
-static inline aligned_block_t CREATE_ALIGNED_BLOCK(void *ptr, size_t size_bytes)
-{
-  aligned_block_t blk;
-  blk.ptr = ptr;
-  blk.size = size_bytes;
-  return blk;
-}
-
-static void grow_brush_array(brush_array_t *arr)
-{
-  if (!arr)
-    return;
-  size_t old_capacity = arr->brush_capacity;
-  size_t new_capacity = old_capacity ? old_capacity * 2 : 8; // start with 8 if empty
-
-  // --- Reallocate positions ---
-  aligned_block_t px_blk = {arr->px, old_capacity * sizeof(vec_t)};
-  px_blk = ALIGNED_REALLOC(px_blk, new_capacity * sizeof(vec_t));
-  arr->px = (vec_t *)px_blk.ptr;
-
-  aligned_block_t py_blk = {arr->py, old_capacity * sizeof(vec_t)};
-  py_blk = ALIGNED_REALLOC(py_blk, new_capacity * sizeof(vec_t));
-  arr->py = (vec_t *)py_blk.ptr;
-
-  aligned_block_t pz_blk = {arr->pz, old_capacity * sizeof(vec_t)};
-  pz_blk = ALIGNED_REALLOC(pz_blk, new_capacity * sizeof(vec_t));
-  arr->pz = (vec_t *)pz_blk.ptr;
-
-  // --- Reallocate sizes ---
-  aligned_block_t sx_blk = {arr->sx, old_capacity * sizeof(vec_t)};
-  sx_blk = ALIGNED_REALLOC(sx_blk, new_capacity * sizeof(vec_t));
-  arr->sx = (vec_t *)sx_blk.ptr;
-
-  aligned_block_t sy_blk = {arr->sy, old_capacity * sizeof(vec_t)};
-  sy_blk = ALIGNED_REALLOC(sy_blk, new_capacity * sizeof(vec_t));
-  arr->sy = (vec_t *)sy_blk.ptr;
-
-  aligned_block_t sz_blk = {arr->sz, old_capacity * sizeof(vec_t)};
-  sz_blk = ALIGNED_REALLOC(sz_blk, new_capacity * sizeof(vec_t));
-  arr->sz = (vec_t *)sz_blk.ptr;
-
-  // --- Reallocate quaternion rotation ---
-  aligned_block_t qx_blk = {arr->qx, old_capacity * sizeof(vec_t)};
-  qx_blk = ALIGNED_REALLOC(qx_blk, new_capacity * sizeof(vec_t));
-  arr->qx = (vec_t *)qx_blk.ptr;
-
-  aligned_block_t qy_blk = {arr->qy, old_capacity * sizeof(vec_t)};
-  qy_blk = ALIGNED_REALLOC(qy_blk, new_capacity * sizeof(vec_t));
-  arr->qy = (vec_t *)qy_blk.ptr;
-
-  aligned_block_t qz_blk = {arr->qz, old_capacity * sizeof(vec_t)};
-  qz_blk = ALIGNED_REALLOC(qz_blk, new_capacity * sizeof(vec_t));
-  arr->qz = (vec_t *)qz_blk.ptr;
-
-  aligned_block_t qw_blk = {arr->qw, old_capacity * sizeof(vec_t)};
-  qw_blk = ALIGNED_REALLOC(qw_blk, new_capacity * sizeof(vec_t));
-  arr->qw = (vec_t *)qw_blk.ptr;
-
-  // --- Reallocate side count ---
-  aligned_block_t side_count_blk = {arr->side_count, old_capacity * sizeof(size_t)};
-  side_count_blk = ALIGNED_REALLOC(side_count_blk, new_capacity * sizeof(size_t));
-  arr->side_count = (size_t *)side_count_blk.ptr;
-
-  // --- Reallocate side start ---
-  aligned_block_t side_start_blk = {arr->side_start, old_capacity * sizeof(size_t)};
-  side_start_blk = ALIGNED_REALLOC(side_start_blk, new_capacity * sizeof(size_t));
-  arr->side_start = (size_t *)side_start_blk.ptr;
-
-  aligned_block_t meshes_blk = {arr->editor_meshes, old_capacity * sizeof(mesh_t *)};
-  meshes_blk = ALIGNED_REALLOC(meshes_blk, new_capacity * sizeof(mesh_t *));
-  arr->editor_meshes = (mesh_t **)meshes_blk.ptr;
-  // Update capacity
-  arr->brush_capacity = new_capacity;
-}
-
-mat4 create_brush_model_matrix(brush_array_t* arr, size_t brush){
-  mat4 scale = Mat4Identity();
-  scale.m[0][0] = arr->sx[brush];
-  scale.m[1][1] = arr->sy[brush];
-  scale.m[2][2] = arr->sz[brush];
-
-  
-  mat4 rotation = QuaternionToMat4(arr->qx[brush], arr->qy[brush], arr->qz[brush], arr->qw[brush]);
-
-  mat4 translation = Mat4Identity();
-  translation.m[3][0] = arr->px[brush];
-  translation.m[3][1] = arr->py[brush];
-  translation.m[3][2] = arr->pz[brush];
-  
-  mat4 RS = Mat4Mul(&rotation, &scale);
-  mat4 model = Mat4Mul(&translation, &RS);
-
-  return model;
-}
-
-
-void EditorBrush_DrawAll(brush_array_t *arr, rdrawqueue_t *q, struct mem_arena_t *arena, camera_t *camera)
-{
-  for (size_t b = 0; b < arr->brush_count; b++)
+  else if (fabsf(n.y) > 0.9f)
   {
-    if (arr->editor_meshes[b] == NULL)
+    s->uv_axis_u = VECTOR_AXIS_X;
+    s->uv_axis_v = VECTOR_AXIS_Z;
+  }
+  else
+  {
+    s->uv_axis_u = VECTOR_AXIS_X;
+    s->uv_axis_v = VECTOR_AXIS_Y;
+  }
+}
+
+brush_t make_brush_cube(Vector mins, Vector maxs)
+{
+  brush_t b = {0};
+
+  b.side_count = 6;
+
+  b.sides[0].plane = (plane_t){{1, 0, 0}, maxs.x};
+  b.sides[1].plane = (plane_t){{-1, 0, 0}, -mins.x};
+
+  b.sides[2].plane = (plane_t){{0, 1, 0}, maxs.y};
+  b.sides[3].plane = (plane_t){{0, -1, 0}, -mins.y};
+
+  b.sides[4].plane = (plane_t){{0, 0, 1}, maxs.z};
+  b.sides[5].plane = (plane_t){{0, 0, -1}, -mins.z};
+
+  BrushSide_DefaultUVs(&b.sides[0]);
+  BrushSide_DefaultUVs(&b.sides[1]);
+  BrushSide_DefaultUVs(&b.sides[2]);
+  BrushSide_DefaultUVs(&b.sides[3]);
+  BrushSide_DefaultUVs(&b.sides[4]);
+  BrushSide_DefaultUVs(&b.sides[5]);
+
+  b.pos = VectorScale( VectorAdd(mins, maxs), 0.5f);
+  b.scale = VectorSub(maxs, mins);
+
+  return b;
+}
+winding_t base_winding(plane_t p)
+{
+  winding_t w = {0};
+
+  Vector up = (fabsf(p.normal.y) < 0.9f) ? VECTOR_AXIS_Y : VECTOR_AXIS_X;
+
+  Vector u = VectorCrossNormalise(up, p.normal);
+  Vector v = VectorCrossNormalise(p.normal, u);
+
+  float size = 100.0f;
+
+  Vector centre = VectorScale(p.normal, p.dist);
+
+  Vector au = VectorScale(u, size);
+  Vector av = VectorScale(v, size);
+
+  w.v[0] = VectorAdd(VectorAdd(centre, au), av);
+  w.v[1] = VectorSub(VectorAdd(centre, au), av);
+  w.v[2] = VectorSub(VectorSub(centre, au), av);
+  w.v[3] = VectorAdd(VectorSub(centre, au), av);
+
+  w.count = 4;
+  return w;
+}
+
+winding_t clip_winding(winding_t *in, plane_t p)
+{
+  winding_t out = {0};
+
+  for (int i = 0; i < in->count; i++)
+  {
+    Vector a = in->v[i];
+    Vector b = in->v[(i + 1) % in->count];
+
+    float da = VectorDot(p.normal, a) - p.dist;
+    float db = VectorDot(p.normal, b) - p.dist;
+
+    int ina = (da <= 0);
+    int inb = (db <= 0);
+
+    if (ina)
+      out.v[out.count++] = a;
+
+    if (ina != inb)
     {
-      printf("[RENDER]: Skipping null brush mesh\n");
+      float t = da / (da - db);
+      Vector hit = VectorAdd(a, VectorScale(VectorSub(b, a), t));
+      out.v[out.count++] = hit;
+    }
+  }
+
+  return out;
+}
+
+mesh_t BrushToMesh(brush_t *b)
+{
+  mesh_t m = {0};
+  MeshInit(&m, 24, 24);
+
+  for (int i = 0; i < b->side_count; i++)
+  {
+    winding_t base = base_winding(b->sides[i].plane);
+    if (base.count < 3)
       continue;
+    for (int j = 0; j < b->side_count; j++)
+    {
+      if (j == i)
+        continue;
+
+      base = clip_winding(&base, b->sides[j].plane);
     }
 
-    // Allocate on arena
-
-    struct rcmd_t *cmd = MEM_ARENA_ALLOC(
-        arena, sizeof(struct rcmd_t),
-        alignof(struct rcmd_t));
-    // Prepare command
-    // Assumes default shader, no material at this point in time
-    cmd->type = RCMD_DRAW_MESH;
-    cmd->draw_mesh.mesh = arr->editor_meshes[b];
-    cmd->draw_mesh.shader = SHADER_default_shader;
-    cmd->draw_mesh.view = camera->view;
-    cmd->draw_mesh.projection = camera->projection;
-    cmd->draw_mesh.model = create_brush_model_matrix(arr, b);
-    //cmd->draw_mesh.model = Mat4Identity();
-    cmd->draw_mesh.material_index = 0;
-    cmd->draw_mesh.mode = GL_LINE_LOOP;
-
-
-    RDrawQueue_Push(q, cmd);
+    for (int v = 1; v < base.count - 1; v++)
+    {
+      // Push triangle to mesh
+      GLuint i0 = MeshPushVertex(&m, VectorToVertex(base.v[0], VectorScale(VECTOR_ONE, 0.8f).v) );
+      GLuint i1 = MeshPushVertex(&m, VectorToVertex(base.v[v], VectorScale(VECTOR_ONE, 0.8f).v) );
+      GLuint i2 = MeshPushVertex(&m, VectorToVertex(base.v[v + 1], VectorScale(VECTOR_ONE, 0.8f).v) );
+      MeshPushTriangle(&m, i0, i1, i2);
+    }
   }
+  return m;
 }
 
-static inline brush_side_t create_unit_cube_side(eAXIS axis, Vector centre){
-  // Create plane
-  Vector position = VectorAdd(centre, VectorScale(VECTOR_AXES[axis], 0.5f));
-  float d = VectorDot(
-    VECTOR_AXES[axis], position
-  );
-  plane_t plane = {VECTOR_AXES[axis], d};
-
-  brush_side_t side;
-  side.plane = plane;
-  side.material = 0;
-
-  return side;
+void EditorBrush_Draw(brush_t* brush, rdrawqueue_t* drawlist, camera_t* cam){
+  struct rcmd_t* cmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
+  cmd->type = RCMD_DRAW_MESH;
+  cmd->draw_mesh.mesh = &brush->editor_mesh;
+  cmd->draw_mesh.mode = GL_TRIANGLES;
+  cmd->draw_mesh.model = Mat4Identity();
+  //cmd->draw_mesh.projection = cam->projection;
+  //cmd->draw_mesh.view = cam->view;
+  RDrawQueue_Push(drawlist, cmd);
 }
-void EditorBrush_Create(brush_array_t* arr, Vector position, Vector scale){
 
-  if (arr->brush_count >= arr->brush_capacity){
-    grow_brush_array(arr);
+
+bool point_in_brush(brush_t* brush, Vector p){
+  if (!brush) return false;
+
+
+  for(int i = 0; i < brush->side_count; i++){
+    brush_side_t* side = &brush->sides[i];
+    float d = VectorDot(p, side->plane.normal);
+
+    if (d > side->plane.dist + 0.1f){
+      return false;
+    }
   }
+  return true;
+}
 
-  size_t i = arr->brush_count;
+bool Brush_Raycast(
+    brush_t* brush,
+    int* out_side,
+    Vector* out_hit,
+    float* out_dist,
+    camera_t* cam,
+    float mx,
+    float my)
+{
+    ray_t ray = Camera_ScreenPointToRay(cam, mx, my);
 
-  // Position
-  arr->px[i] = position.x;
-  arr->py[i] = position.y;
-  arr->pz[i] = position.z;
-  // Scale
-  arr->sx[i] = scale.x;
-  arr->sy[i] = scale.y;
-  arr->sz[i] = scale.z;
-  // Quaternion
-  arr->qx[i] = 0;
-  arr->qy[i] = 0;
-  arr->qz[i] = 0;
-  arr->qw[i] = 1;
-  // Sides
-  arr->side_start[i] = arr->total_sides;
-  arr->side_count[i] = 6;
-  for ( int s = 0; s < 6; s++ ){
-    size_t side = s + arr->total_sides;
-    arr->sides[side] = create_unit_cube_side(s, position);
-  }
+    float tmin = -__FLT_MAX__;
+    float tmax = __FLT_MAX__;
 
-  printf("[Editor]: Brush Created\n");
-  printf("  Position: "); Vector_DPrint(&position);
+    int enter_side = -1;
 
+    for (int i = 0; i < brush->side_count; i++)
+    {
+        plane_t* p = &brush->sides[i].plane;
 
-  arr->total_sides += 6;
-  arr->editor_meshes[i] = MESH_PRIMITIVES[MESH_PRIMITIVE_CUBE];
-  arr->brush_count++;
+        float denom = VectorDot(p->normal, ray.dir);
+
+        // correct signed distance (FIX #1)
+        float dist = VectorDot(p->normal, ray.origin) - p->dist;
+
+        if (fabsf(denom) < 1e-6f)
+        {
+            if (dist > 0.0f)
+                return false;
+            continue;
+        }
+
+        float t = -dist / denom;
+
+        if (denom < 0.0f)
+        {
+            // entering plane
+            if (t > tmin)
+            {
+                tmin = t;
+                enter_side = i;
+            }
+        }
+        else
+        {
+            // exiting plane
+            if (t < tmax)
+                tmax = t;
+        }
+
+        if (tmin > tmax)
+            return false;
+    }
+
+    if (enter_side == -1)
+        return false;
+
+    *out_side = enter_side;
+    *out_dist = tmin;
+    *out_hit  = VectorAdd(ray.origin, VectorScale(ray.dir, tmin));
+
+    return true;
 }

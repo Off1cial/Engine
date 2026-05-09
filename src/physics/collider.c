@@ -18,18 +18,18 @@ void ColliderArray_Init(collider_array_dynamic_t* arr, size_t capacity){
   arr->rigidbody_ref = malloc(sizeof(size_t) * capacity);
   
 
-  arr->aabb_min = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->aabb_max = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->aabb_min = ALIGNED_NEW(vec_t_size);
+  arr->aabb_max = ALIGNED_NEW(vec_t_size);
 
 
-  arr->obb_centre = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->obb_half_extents = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->obb_axis_x = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->obb_axis_y= aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->obb_axis_z = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
+  arr->obb_centre = ALIGNED_NEW(vec_t_size);
+  arr->obb_half_extents = ALIGNED_NEW(vec_t_size);
+  arr->obb_axis_x = ALIGNED_NEW(vec_t_size);
+  arr->obb_axis_y= ALIGNED_NEW(vec_t_size);
+  arr->obb_axis_z = ALIGNED_NEW(vec_t_size);
 
-  arr->sphere_centre = aligned_alloc(SIMD_ALIGNMENT_BYTES, vec_t_size);
-  arr->sphere_radius = aligned_alloc(SIMD_ALIGNMENT_BYTES, sizeof(vec_t) * capacity); 
+  arr->sphere_centre = ALIGNED_NEW(vec_t_size);
+  arr->sphere_radius = ALIGNED_NEW(sizeof(vec_t) * capacity); 
 }
 
 void ColliderArray_Destroy(collider_array_dynamic_t* arr){
@@ -105,4 +105,34 @@ size_t ColliderArray_AddOBB(collider_array_dynamic_t* arr, Vector centre, Vector
   return current++;
 }
 
+// Collision detection
+Vector aabb_compute_centre(Vector min, Vector max){
+  return VectorScale(
+    VectorAdd(min, max), 0.5f
+  );
+}
 
+Vector aabb_compute_halfs(Vector min, Vector max){
+  return VectorScale(
+    VectorSub(max, min), 0.5f
+  );
+}
+
+int collisiondetect_aabb_plane(Vector min, Vector max, clip_plane_t plane){
+  Vector normal = VectorCrossNormalise(plane.tangent, plane.bittangent);
+  Vector centre = aabb_compute_centre(min, max);
+
+  float distance = VectorDot(
+    normal, VectorSub(centre, plane.centre)
+  );
+
+  Vector halfs = aabb_compute_halfs(min, max);
+
+  float r = halfs.x * fabsf(normal.x) + halfs.y * fabsf(normal.y) + halfs.z * fabsf(normal.z);
+
+  if (fabsf(distance) > r){
+    return false;
+  }
+
+  return true;
+}
