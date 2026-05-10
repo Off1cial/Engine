@@ -29,10 +29,30 @@ void EditorBrushArray_Destroy(editor_brush_array* arr){
 
 
 
+static void BrushSide_BuildUVBasis(brush_side_t *s)
+{
+  Vector n = s->plane.normal;
+
+  Vector up = (fabsf(n.y) < 0.9f) ? VECTOR_AXIS_Y : VECTOR_AXIS_X;
+
+  s->uv_axis_u = VectorCrossNormalise(up, n);
+  s->uv_axis_v = VectorCrossNormalise(n, s->uv_axis_u);
+
+  s->uv_origin = (Vector2){0, 0};
+}
 
 
+static Vector2 Brush_ComputeUV(brush_side_t *s, Vector p)
+{
+  const float scale = 0.01f; // default scale
+  float u = VectorDot(p, s->uv_axis_u) * scale;
+  float v = VectorDot(p, s->uv_axis_v) * scale;
 
-
+  return (Vector2){
+    u + s->uv_origin.x,
+    v + s->uv_origin.y
+  };
+}
 
 
 
@@ -99,7 +119,7 @@ winding_t base_winding(plane_t p)
   Vector u = VectorCrossNormalise(up, p.normal);
   Vector v = VectorCrossNormalise(p.normal, u);
 
-  float size = 100.0f;
+  float size = 300.0f;
 
   Vector centre = VectorScale(p.normal, p.dist);
 
@@ -152,8 +172,10 @@ mesh_t BrushToMesh(brush_t *b)
   for (int i = 0; i < b->side_count; i++)
   {
     winding_t base = base_winding(b->sides[i].plane);
+
     if (base.count < 3)
       continue;
+
     for (int j = 0; j < b->side_count; j++)
     {
       if (j == i)
@@ -164,24 +186,32 @@ mesh_t BrushToMesh(brush_t *b)
 
     for (int v = 1; v < base.count - 1; v++)
     {
-      // Push triangle to mesh
-      GLuint i0 = MeshPushVertex(&m, VectorToVertex(base.v[0], VectorScale(VECTOR_ONE, 0.8f).v) );
-      GLuint i1 = MeshPushVertex(&m, VectorToVertex(base.v[v], VectorScale(VECTOR_ONE, 0.8f).v) );
-      GLuint i2 = MeshPushVertex(&m, VectorToVertex(base.v[v + 1], VectorScale(VECTOR_ONE, 0.8f).v) );
+      Vector p0 = base.v[0];
+      Vector p1 = base.v[v];
+      Vector p2 = base.v[v + 1];
+
+      Vector2 uv0 = Brush_ComputeUV(&b->sides[i], p0);
+      Vector2 uv1 = Brush_ComputeUV(&b->sides[i], p1);
+      Vector2 uv2 = Brush_ComputeUV(&b->sides[i], p2);
+
+      GLuint i0 = MeshPushVertex(&m, MakeVertex(base.v[0], VectorScale(VECTOR_ONE, 0.8f), uv0));
+      GLuint i1 = MeshPushVertex(&m, MakeVertex(base.v[v], VectorScale(VECTOR_ONE, 0.8f), uv1));
+      GLuint i2 = MeshPushVertex(&m, MakeVertex(base.v[v + 1], VectorScale(VECTOR_ONE, 0.8f), uv2));
+
       MeshPushTriangle(&m, i0, i1, i2);
     }
   }
+
   return m;
 }
-
 void EditorBrush_Draw(brush_t* brush, rdrawqueue_t* drawlist, camera_t* cam){
   struct rcmd_t* cmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
   cmd->type = RCMD_DRAW_MESH;
   cmd->draw_mesh.mesh = &brush->editor_mesh;
   cmd->draw_mesh.mode = GL_TRIANGLES;
   cmd->draw_mesh.model = Mat4Identity();
-  //cmd->draw_mesh.projection = cam->projection;
-  //cmd->draw_mesh.view = cam->view;
+  cmd->draw_mesh.material = gRendererState->materials[0];
+
   RDrawQueue_Push(drawlist, cmd);
 }
 
@@ -192,7 +222,7 @@ bool point_in_brush(brush_t* brush, Vector p){
 
   for(int i = 0; i < brush->side_count; i++){
     brush_side_t* side = &brush->sides[i];
-    float d = VectorDot(p, side->plane.normal);
+    float d = VectorDot(p, side->plane.normal) - side->plane.dist;
 
     if (d > side->plane.dist + 0.1f){
       return false;

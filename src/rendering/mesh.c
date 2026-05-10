@@ -10,6 +10,16 @@ struct vertex_t VectorToVertex(Vector a, float col[3])
       {col[0], col[1], col[2]}};
 }
 
+
+struct vertex_t MakeVertex(Vector pos, Vector colour, Vector2 uv){
+  struct vertex_t v = {
+    .pos=pos,
+    .colour=colour,
+    .uv = uv
+  };
+  return v;
+}
+
 void MeshDebug_PrintVertex(struct vertex_t *v)
 {
   printf("{%0.3f, %0.3f, %0.3f}\n", v->pos.x, v->pos.y, v->pos.z);

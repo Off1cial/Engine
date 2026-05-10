@@ -52,6 +52,7 @@ void DebugLines_Draw();
 
 
 struct vertex_t VectorToVertex(Vector a, float col[3]);
+struct vertex_t MakeVertex(Vector pos, Vector colour, Vector2 uv);
 
 void MeshDebug_PrintVertex(struct vertex_t* v);
 void MeshDebug_PrintVertices(mesh_t* mesh);

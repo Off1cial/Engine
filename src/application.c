@@ -43,7 +43,7 @@ int ApplicationInit(struct container_t* container, int winw, int winh){
   }
   glEnable(GL_DEPTH_TEST);
   //glEnable(GL_CULL_FACE);
-  //glCullFace(GL_FRONT);
+  glCullFace(GL_FRONT);
   printf("OpenGL version: %s\n", glGetString(GL_VERSION));
   printf("GLSL version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 

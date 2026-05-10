@@ -51,29 +51,29 @@ void panel_finalise_brush(
   {
     case 2: // TOP
       sx = maxx - minx;
-      sy = 1.0f;
+      sy = BRUSH_DEFUALT_SCALE;
       sz = maxy - miny;
 
       world_start = VectorInit(minx, 0, miny);
-      world_end   = VectorInit(maxx, 1, maxy);
+      world_end   = VectorInit(maxx, BRUSH_DEFUALT_SCALE, maxy);
       break;
 
     case 3: // SIDE
-      sx = 1.0f;
+      sx = BRUSH_DEFUALT_SCALE;
       sy = maxy - miny;
       sz = maxx - minx;
 
       world_start = VectorInit(0, miny, minx);
-      world_end   = VectorInit(1, maxy, maxx);
+      world_end   = VectorInit(BRUSH_DEFUALT_SCALE, maxy, maxx);
       break;
 
     case 4: // FRONT
       sx = maxx - minx;
       sy = maxy - miny;
-      sz = 1.0f;
+      sz = BRUSH_DEFUALT_SCALE;
 
       world_start = VectorInit(minx, miny, 0);
-      world_end   = VectorInit(maxx, maxy, 1);
+      world_end   = VectorInit(maxx, maxy, BRUSH_DEFUALT_SCALE);
       break;
 
     default:

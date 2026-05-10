@@ -85,6 +85,30 @@ int main(){
   renderer_state.shader_store = &shader_store;
   renderer_state.shader_unlit = renderer_state.shader_store->shaders[ShaderStore_Add(&shader_store, shader_unlit)];
   renderer_state.shader_lit = renderer_state.shader_store->shaders[ShaderStore_Add(&shader_store, shader_lit)];
+  renderer_state.light_count = 0;
+  renderer_state.light_forward_count = 0;
+
+  // Default sun light - testing
+  light_t sunLight = {
+    .type = LIGHT_DIRECTIONAL,
+    .colour = VectorInit(0.8, 0.8, 0.6),
+    .direction = VectorInit(-1, -1, 0),
+    .intensity = 0.8f,
+    .position = VectorInit(0, 50, 0),
+    .radius = 10.0f,
+  };
+
+  renderer_state.lights_forward[0] = &sunLight;
+  renderer_state.light_forward_count++;
+
+
+  material_t* mat_marble = Material_Load("../Assets/Materials/testmaterial.mat");
+  if (!mat_marble){
+    printf("mat_marble = NULL\n");
+    exit(1);
+  }
+  Renderer_AddMaterial(&renderer_state, mat_marble);
+
 
   rigidbody_array_t rb_arr;
   RigidbodyArray_Init(&rb_arr, 128);
@@ -125,6 +149,7 @@ int main(){
     // Toggle Editor
     if (input_state.FLAG_ToggleEditor){ EditorToggle(game_container.window); }
     
+    gRendererState->lights_forward[0]->position = gRendererState->active_cam->pos;
 
     struct rcmd_t* rcmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
     rcmd->type = RCMD_DRAW_MESH;
@@ -136,7 +161,7 @@ int main(){
     
 
     // Rendering
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // Test render command
     

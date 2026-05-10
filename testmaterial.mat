@@ -1,7 +1,0 @@
-Material "TestMaterial"
-{
-  Lit=true
-  Texture="brick.png"
-  UseVertexColour=false
-  Transparent=false
-}

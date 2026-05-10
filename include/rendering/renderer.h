@@ -9,7 +9,7 @@
 
 typedef struct {
   camera_t* active_cam;
-  material_t* materials;
+  
 
   shader_store_t* shader_store;
   shader_t* shader_lit;
@@ -19,6 +19,10 @@ typedef struct {
   light_t lights[MAX_LIGHTS];
   size_t light_count;
 
+  light_t* lights_forward[MAX_FORWARD_LIGHTS];
+  size_t light_forward_count;
+
+  material_t** materials;
   size_t material_count;
   rdrawqueue_t* draw_q;
 
@@ -31,7 +35,7 @@ void Camera_Switch(int index, int winh);
 
 extern renderer_state_t* gRendererState;
 
-
+void Renderer_AddMaterial(renderer_state_t* renderer, material_t* material);
 shader_t* Renderer_ResolveShaderFromMaterial(material_t* material);
 
 #endif

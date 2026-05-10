@@ -5,24 +5,43 @@
 #include "types/types_vector.h"
 #include <stdbool.h>
 
+#define MAX_FORWARD_LIGHTS 8
+
+typedef struct{
+    GLint position;
+    GLint direction;
+
+    GLint colour;
+
+    GLint intensity;
+    GLint radius;
+
+    GLint type;
+} shader_light_uniform_t;
+
+
+
 typedef struct {
-    GLuint program;
-    const char* vertexPath;
-    const char* fragmentPath;
+  GLuint program;
+  const char* vertexPath;
+  const char* fragmentPath;
 
 
-    // Cache
+  // Cache
 
-    GLint uModelLoc;
-    GLint uViewLoc;
-    GLint uProjLoc;
-    GLint uViewPosLoc;
-  
-    GLint uUseTextureLoc;
-    GLint uUseVertexColLoc;
-    GLint uUseVertexColLoc_exclusive;
-    GLint uTextureLoc;
-    GLint uColourLoc;
+  GLint uModelLoc;
+  GLint uViewLoc;
+  GLint uProjLoc;
+  GLint uViewPosLoc;
+
+  GLint uUseTextureLoc;
+  GLint uUseVertexColLoc;
+  GLint uTextureLoc;
+  GLint uColourLoc;
+
+  GLint uLightCountLoc;
+
+  shader_light_uniform_t uLights[MAX_FORWARD_LIGHTS];
 
 
 
@@ -50,6 +69,13 @@ void Shader_SetVec4(shader_t* shader, const char* name, Vector4 vec);
 void Shader_SetVec3(shader_t* shader, const char* name, Vector vec);
 void Shader_SetFloat(shader_t* shader, const char* name, float value);
 void Shader_SetInt(shader_t* shader, const char* name, int value);
+
+// Cached uniform setters
+void Shader_SetMat4Cached(GLint loc, mat4 mat);
+void Shader_SetVec4Cached(GLint loc, Vector4 vec);
+void Shader_SetVec3Cached(GLint loc, Vector vec);
+void Shader_SetFloatCached(GLint loc, float value);
+void Shader_SetIntCached(GLint loc, int value);
 
 #endif
 

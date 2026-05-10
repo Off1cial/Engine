@@ -53,51 +53,81 @@ bool Shader_Load(shader_t* shader, const char* assetPath, const char* vertPath, 
 
   printf("Attempted Path: %s\n", vert);
   printf("Attempted Path: %s\n", frag);
-    char* vertSrc = ReadFile(vert);
-    char* fragSrc = ReadFile(frag);
-    if (!vertSrc || !fragSrc) return false;
+  char* vertSrc = ReadFile(vert);
+  char* fragSrc = ReadFile(frag);
+  if (!vertSrc || !fragSrc) return false;
 
-    
-    GLuint vs = CompileShader(GL_VERTEX_SHADER, vertSrc, vert);
-    GLuint fs = CompileShader(GL_FRAGMENT_SHADER, fragSrc, frag);
+  
+  GLuint vs = CompileShader(GL_VERTEX_SHADER, vertSrc, vert);
+  GLuint fs = CompileShader(GL_FRAGMENT_SHADER, fragSrc, frag);
 
 
-    free(vertSrc);
-    free(fragSrc);
+  free(vertSrc);
+  free(fragSrc);
 
-    if (!vs || !fs) return false;
+  if (!vs || !fs) return false;
 
-    shader->program = glCreateProgram();
-    glAttachShader(shader->program, vs);
-    glAttachShader(shader->program, fs);
-    glLinkProgram(shader->program);
+  shader->program = glCreateProgram();
+  glAttachShader(shader->program, vs);
+  glAttachShader(shader->program, fs);
+  glLinkProgram(shader->program);
 
-    GLint success;
-    glGetProgramiv(shader->program, GL_LINK_STATUS, &success);
-    if (!success) {
-        char infoLog[1024];
-        glGetProgramInfoLog(shader->program, 1024, NULL, infoLog);
-        fprintf(stderr, "[shader_t] Linking failed:\n%s\n", infoLog);
-        glDeleteProgram(shader->program);
-        shader->program = 0;
-        return false;
-    }
+  GLint success;
+  glGetProgramiv(shader->program, GL_LINK_STATUS, &success);
+  if (!success) {
+      char infoLog[1024];
+      glGetProgramInfoLog(shader->program, 1024, NULL, infoLog);
+      fprintf(stderr, "[shader_t] Linking failed:\n%s\n", infoLog);
+      glDeleteProgram(shader->program);
+      shader->program = 0;
+      return false;
+  }
 
-    glDeleteShader(vs);
-    glDeleteShader(fs);
+  glDeleteShader(vs);
+  glDeleteShader(fs);
 
-    shader->uModelLoc = glGetUniformLocation(shader->program, "uModel");
-    shader->uViewLoc = glGetUniformLocation(shader->program, "uView");
-    shader->uProjLoc = glGetUniformLocation(shader->program, "uProj");
-    shader->uColourLoc = glGetUniformLocation(shader->program, "uColour");
-    shader->uTextureLoc = glGetUniformLocation(shader->program, "uTexture");
-    shader->uUseTextureLoc = glGetUniformLocation(shader->program, "uUseTexture");
-    shader->uUseVertexColLoc = glGetUniformLocation(shader->program, "uUseVertexCol");
-    shader->uUseVertexColLoc_exclusive = glGetUniformLocation(shader->program, "uUseVertexCol_exclusive");
+  shader->uModelLoc = glGetUniformLocation(shader->program, "uModel");
+  shader->uViewLoc = glGetUniformLocation(shader->program, "uView");
+  shader->uProjLoc = glGetUniformLocation(shader->program, "uProj");
+  shader->uColourLoc = glGetUniformLocation(shader->program, "uColour");
+  shader->uTextureLoc = glGetUniformLocation(shader->program, "uTexture");
+  shader->uUseTextureLoc = glGetUniformLocation(shader->program, "uUseTexture");
+  shader->uUseVertexColLoc = glGetUniformLocation(shader->program, "uUseVertexCol");
+  shader->uLightCountLoc = glGetUniformLocation(shader->program, "uLightCount");
 
-    shader->vertexPath = vertPath;
-    shader->fragmentPath = fragPath;
-    return true;
+  for (size_t i = 0; i < MAX_FORWARD_LIGHTS; i++){
+    char uniform[128];
+
+    // Position
+    snprintf(uniform, sizeof(uniform), "uLights[%d].position", i);
+    shader->uLights[i].position = glGetUniformLocation(shader->program, uniform);
+
+    // Direction
+    snprintf(uniform, sizeof(uniform), "uLights[%d].direction", i);
+    shader->uLights[i].direction = glGetUniformLocation(shader->program, uniform);
+
+    // Colour
+    snprintf(uniform, sizeof(uniform), "uLights[%d].colour", i);
+    shader->uLights[i].colour = glGetUniformLocation(shader->program, uniform);
+
+    // Intensity
+    snprintf(uniform, sizeof(uniform), "uLights[%d].intensity", i);
+    shader->uLights[i].intensity = glGetUniformLocation(shader->program, uniform);
+
+    // Radius
+    snprintf(uniform, sizeof(uniform), "uLights[%d].radius", i);
+    shader->uLights[i].radius = glGetUniformLocation(shader->program, uniform);
+
+    // Type
+    snprintf(uniform, sizeof(uniform), "uLights[%d].type", i);
+    shader->uLights[i].type = glGetUniformLocation(shader->program, uniform);
+
+  }
+  
+
+  shader->vertexPath = vertPath;
+  shader->fragmentPath = fragPath;
+  return true;
 }
 
 /*
@@ -143,13 +173,25 @@ void Shader_SetMat4(shader_t* shader, const char* name, mat4 mat) {
     if (loc != -1) glUniformMatrix4fv(loc, 1, GL_FALSE, (float*)mat.m);
 }
 
+void Shader_SetMat4Cached(GLint loc, mat4 mat){
+  if (loc != -1) glUniformMatrix4fv(loc, 1, GL_FALSE, (float*)mat.m);
+}
+
 void Shader_SetVec3(shader_t* shader, const char* name, Vector vec) {
     GLint loc = glGetUniformLocation(shader->program, name);
     if (loc != -1) glUniform3fv(loc, 1, vec.v);
 }
 
+void Shader_SetVec3Cached(GLint loc, Vector vec){
+  if (loc != -1) glUniform3fv(loc, 1, vec.v);
+}
+
 void Shader_SetVec4(shader_t* shader, const char* name, Vector4 vec){
   GLint loc = glGetUniformLocation(shader->program, name);
+  if (loc != -1) glUniform4fv(loc, 1, vec.v);
+}
+
+void Shader_SetVec4Cached(GLint loc, Vector4 vec){
   if (loc != -1) glUniform4fv(loc, 1, vec.v);
 }
 
@@ -158,9 +200,17 @@ void Shader_SetFloat(shader_t* shader, const char* name, float value) {
     if (loc != -1) glUniform1f(loc, value);
 }
 
+void Shader_SetFloatCached(GLint loc, float value){
+  if (loc != -1) glUniform1f(loc, value);
+}
+
 void Shader_SetInt(shader_t* shader, const char* name, int value) {
     GLint loc = glGetUniformLocation(shader->program, name);
     if (loc != -1) glUniform1i(loc, value);
+}
+
+void Shader_SetIntCached(GLint loc, int value){
+  if (loc != -1) glUniform1i(loc, value);
 }
 
 

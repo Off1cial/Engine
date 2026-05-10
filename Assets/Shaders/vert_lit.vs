@@ -10,7 +10,9 @@ uniform mat4 uView;
 uniform mat4 uProj;
 
 out vec4 vColour;
+out vec3 vNormal;
 out vec2 vUV;
+out vec3 vPos;
 
 void main()
 {
@@ -22,4 +24,5 @@ void main()
 
     vColour = vec4(aColour, 1.0);
     vUV = aUV;
+    vNormal = aNormal;
 }

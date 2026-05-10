@@ -9,11 +9,13 @@
 #include "rendering/camera.h"
 #include "rendering/mesh.h"
 #include "rendering/draw_list.h"
+#include "rendering/renderer.h"
 #include "mem.h"
 
 #define MAX_BRUSH_FACES 64
 #define MAX_BRUSHES 2048
 #define MAX_WINDING_POINTS 64
+#define BRUSH_DEFUALT_SCALE 2
 
 typedef struct {
   Vector v[MAX_WINDING_POINTS];

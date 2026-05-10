@@ -1,78 +1,139 @@
 #define STB_IMAGE_IMPLEMENTATION
 
-
 #include "rendering/texture.h"
 #include "rendering/stb_image.h"
+
 #include <glad/glad.h>
+
+#include <stdio.h>
 
 texture_t gTextures[MAX_TEXTURES];
 size_t texture_count = 0;
 
-texture_t TextureLoad(const char* filepath){
+texture_t *Texture_Load(const char *filepath)
+{
 
-  unsigned int texture;
+  if (texture_count >= MAX_TEXTURES)
+  {
+    fprintf(stderr, "[Texture]: MAX_TEXTURES exceeded\n");
+    return NULL;
+  }
+
+  int width, height, channels;
+
+  unsigned char *pixels =
+      stbi_load(filepath, &width, &height, &channels, 0);
+
+  if (!pixels)
+  {
+    fprintf(stderr,
+            "[Texture]: Failed to load texture: %s\n",
+            filepath);
+
+    return NULL;
+  }
+
+  GLuint texture;
+
   glGenTextures(1, &texture);
   glBindTexture(GL_TEXTURE_2D, texture);
 
+  glTexParameteri(
+      GL_TEXTURE_2D,
+      GL_TEXTURE_WRAP_S,
+      GL_REPEAT);
 
   glTexParameteri(
-    GL_TEXTURE_2D,
-    GL_TEXTURE_WRAP_S,
-    GL_REPEAT
-  );
-  glTexParameteri(
-    GL_TEXTURE_2D,
-    GL_TEXTURE_WRAP_T,
-    GL_REPEAT
-  );
-  glTexParameteri(
-    GL_TEXTURE_2D,
-    GL_TEXTURE_MIN_FILTER,
-    GL_LINEAR
-  );
+      GL_TEXTURE_2D,
+      GL_TEXTURE_WRAP_T,
+      GL_REPEAT);
 
-  int width, height, channels;
-  
-  unsigned char* pixels = stbi_load(filepath, &width, &height, &channels, 0);
+  glTexParameteri(
+      GL_TEXTURE_2D,
+      GL_TEXTURE_MIN_FILTER,
+      GL_LINEAR_MIPMAP_LINEAR);
 
-  if (!pixels){
-    fprintf(stderr, "[Texutre]: Failed to load texture: %s\n", filepath);
-    exit(1);// No fucking clue if this even does anything
-  }
+  glTexParameteri(
+      GL_TEXTURE_2D,
+      GL_TEXTURE_MAG_FILTER,
+      GL_LINEAR);
 
   GLenum format = GL_RGB;
-  if (channels == 1) format = GL_RED;
-  else if (channels == 3) format = GL_RGB;
-  else if (channels == 4) format = GL_RGBA;
+  GLenum internal = GL_RGB8;
+
+  switch (channels)
+  {
+
+  case 1:
+    format = GL_RED;
+    internal = GL_R8;
+    break;
+
+  case 3:
+    format = GL_RGB;
+    internal = GL_RGB8;
+    break;
+
+  case 4:
+    format = GL_RGBA;
+    internal = GL_RGBA8;
+    break;
+
+  default:
+    fprintf(stderr,
+            "[Texture]: Unsupported channel count: %d\n",
+            channels);
+
+    stbi_image_free(pixels);
+
+    return NULL;
+  }
 
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-  glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-  glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-  glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+
   glTexImage2D(
-    GL_TEXTURE_2D,
-    0,
-    format,
-    width,
-    height,
-    0,
-    format,
-    GL_UNSIGNED_BYTE,
-    pixels
-  );
+      GL_TEXTURE_2D,
+      0,
+      internal,
+      width,
+      height,
+      0,
+      format,
+      GL_UNSIGNED_BYTE,
+      pixels);
+
   glGenerateMipmap(GL_TEXTURE_2D);
+
   stbi_image_free(pixels);
+
+  texture_t tex = {0};
+
+  tex.texid = texture;
+  tex.width = width;
+  tex.height = height;
+  tex.target = GL_TEXTURE_2D;
+  tex.format = format;
+
+  snprintf(
+      tex.debug_name,
+      sizeof(tex.debug_name),
+      "%s",
+      filepath);
+
+  gTextures[texture_count] = tex;
   
-  texture_t tex = {
-    texture, width, height
-  };
-
-  gTextures[texture_count++] = tex;
-
-  return tex;
+  printf("[TEXTURE]: Successfully read texture: %s\n", filepath);
+  return &gTextures[texture_count++];
 }
 
-void Texture_Bind(texture_t* texture, int slot){
+void Texture_Bind(texture_t *texture, int slot)
+{
+
+  if (!texture)
+  {
+    return;
+  }
+
   glActiveTexture(GL_TEXTURE0 + slot);
   glBindTexture(texture->target, texture->texid);
 }
