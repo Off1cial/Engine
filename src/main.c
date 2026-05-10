@@ -91,7 +91,7 @@ int main(){
   // Default sun light - testing
   light_t sunLight = {
     .type = LIGHT_DIRECTIONAL,
-    .colour = VectorInit(0.8, 0.8, 0.6),
+    .colour = VectorInit(0.8, 0.0, 0.1),
     .direction = VectorInit(-1, -1, 0),
     .intensity = 0.8f,
     .position = VectorInit(0, 50, 0),
@@ -158,6 +158,7 @@ int main(){
     //rcmd->draw_mesh.view = gCameras[gCameraIndex]->view;
     //rcmd->draw_mesh.projection = gCameras[gCameraIndex]->projection;
     rcmd->draw_mesh.mode = GL_TRIANGLES;
+    rcmd->draw_mesh.material = gRendererState->materials[0];
     
 
     // Rendering

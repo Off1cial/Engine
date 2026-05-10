@@ -219,15 +219,16 @@ void EditorBrush_Draw(brush_t* brush, rdrawqueue_t* drawlist, camera_t* cam){
 bool point_in_brush(brush_t* brush, Vector p){
   if (!brush) return false;
 
-
   for(int i = 0; i < brush->side_count; i++){
     brush_side_t* side = &brush->sides[i];
+
     float d = VectorDot(p, side->plane.normal) - side->plane.dist;
 
-    if (d > side->plane.dist + 0.1f){
+    if (d > 0.1f){
       return false;
     }
   }
+
   return true;
 }
 

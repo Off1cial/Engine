@@ -112,6 +112,11 @@ material_t* Material_Load(const char* filepath){
         m->colour.w = a / 255.0f;
       }
     }
+
+    else if (strcmp(ident, "Specular") == 0){
+      float spec = Parser_ReadFloat(&parser);
+      m->specular = spec;
+    }
     
     // Transparency
     else if (strcmp(ident, "Transparent") == 0){
@@ -132,6 +137,15 @@ material_t* Material_Load(const char* filepath){
 
   printf("Use Vertex Colour: %d\n",
       (m->flags & MATERIAL_USE_VERTEX_COLOUR) != 0);
+
+  printf("Colour: %d %d %d %d\n",
+         (int)m->colour.x, 
+         (int)m->colour.y, 
+         (int)m->colour.z, 
+         (int)m->colour.w
+         );
+
+  printf("Specular: %f\n", m->specular);
 
   printf("Use Alpha: %d\n",
       (m->flags & MATERIAL_TRANSPARENT) != 0);

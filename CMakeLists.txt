@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(Engine VERSION 1.0 LANGUAGES C CXX)
+add_compile_definitions(_POSIX_C_SOURCE=200112L)
 
 find_package(PkgConfig REQUIRED)
 

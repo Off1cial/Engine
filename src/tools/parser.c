@@ -79,3 +79,55 @@ int Parser_ReadBool(parser_t *p)
 
   return 0;
 }
+
+
+float Parser_ReadFloat(parser_t *p)
+{
+  Parser_SkipWhitespace(p);
+
+  char buffer[64];
+  char *out = buffer;
+
+  // optional sign
+  if (*p->at == '-' || *p->at == '+')
+  {
+    *out++ = *p->at++;
+  }
+
+  // integer part
+  while (isdigit(*p->at))
+  {
+    *out++ = *p->at++;
+  }
+
+  // decimal part
+  if (*p->at == '.')
+  {
+    *out++ = *p->at++;
+
+    while (isdigit(*p->at))
+    {
+      *out++ = *p->at++;
+    }
+  }
+
+  // exponent part
+  if (*p->at == 'e' || *p->at == 'E')
+  {
+    *out++ = *p->at++;
+
+    if (*p->at == '-' || *p->at == '+')
+    {
+      *out++ = *p->at++;
+    }
+
+    while (isdigit(*p->at))
+    {
+      *out++ = *p->at++;
+    }
+  }
+
+  *out = 0;
+
+  return strtof(buffer, NULL);
+}

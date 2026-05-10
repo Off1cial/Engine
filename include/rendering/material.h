@@ -8,11 +8,13 @@
 #define MAX_MATERIALS 128
 
 typedef enum material_flags_t{
-    MATERIAL_USE_TEXTURE      = 1 << 0,
-    MATERIAL_USE_VERTEX_COLOUR= 1 << 1,
-    MATERIAL_TRANSPARENT      = 1 << 2,
-    MATERIAL_DOUBLE_SIDED     = 1 << 3,
-    MATERIAL_UNLIT            = 1 << 4,
+  MATERIAL_USE_TEXTURE      = 1 << 0,
+  MATERIAL_USE_VERTEX_COLOUR= 1 << 1,
+  MATERIAL_TRANSPARENT      = 1 << 2,
+  MATERIAL_DOUBLE_SIDED     = 1 << 3,
+  MATERIAL_UNLIT            = 1 << 4,
+  MATERIAL_SPECULAR         = 1 << 5,
+
 } material_flags_t;
 
 
@@ -20,6 +22,9 @@ typedef struct {
   shader_t* shader; // NULL = use default lit or unlit shader
 
   texture_t* base;
+
+
+  float specular;
 
   Vector4 colour;
   uint32_t flags;

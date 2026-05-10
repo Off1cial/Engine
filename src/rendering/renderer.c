@@ -19,6 +19,10 @@ void Camera_Switch(int index, int winh)
 }
 
 shader_t* Renderer_ResolveShaderFromMaterial(material_t* material){
+  if (!material){
+    return gRendererState->shader_unlit;
+  }
+
   if (Material_HasFlag(material, MATERIAL_UNLIT)){
     return gRendererState->shader_unlit;
   }
