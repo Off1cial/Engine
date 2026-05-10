@@ -41,10 +41,19 @@ typedef struct {
 
   Vector pos, rot, scale;
 
-
 } brush_t;
 
 typedef struct {
+  brush_side_t* side;
+  brush_t* owner_brush;
+  material_t* material;
+  mesh_t mesh;
+
+  int dirty; // Does mesh need recomputing?
+} brush_side_hovered_t;
+
+typedef struct {
+  brush_side_hovered_t hovered_side;
   brush_t* brushes;
   size_t count, capacity;
 } editor_brush_array;
@@ -55,10 +64,12 @@ extern editor_brush_array* gEditorBrushArray;
 void EditorBrushArray_Init(editor_brush_array* arr, size_t capacity);
 void EditorBrushArray_Destroy(editor_brush_array* arr);
 
+void BrushHoveredSideComputeMesh(brush_side_hovered_t* hside);
 mesh_t BrushToMesh(brush_t *b);
 brush_t make_brush_cube(Vector mins, Vector maxs);
 
 void EditorBrush_Draw(brush_t* brush, rdrawqueue_t* drawlist, camera_t* cam);
+void EditorBrush_DrawHoveredSide(brush_side_hovered_t* hside);
 bool Brush_Raycast(brush_t* brush, int* out_side, Vector* out_hit, float* out_dist, camera_t* camera, float cursorx, float cursory);
 
 #endif

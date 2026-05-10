@@ -11,6 +11,15 @@ void EditorBrushArray_Init(editor_brush_array* arr, size_t capacity){
 
   arr->count = 0;
   arr->capacity = capacity;
+
+  arr->hovered_side = (brush_side_hovered_t){0};
+  arr->hovered_side.dirty = 1;
+  arr->hovered_side.side = NULL;
+  arr->hovered_side.owner_brush = NULL;
+  arr->hovered_side.material = gRendererState->materials[1];
+
+  MeshInit(&arr->hovered_side.mesh, 24, 24);
+
 }
 
 
@@ -164,6 +173,53 @@ winding_t clip_winding(winding_t *in, plane_t p)
   return out;
 }
 
+void BrushHoveredSideComputeMesh(brush_side_hovered_t* hside){
+
+  MeshReset(&hside->mesh);
+  mesh_t* m = &hside->mesh;
+
+  if (!hside || !hside->side || !hside->owner_brush){
+    return;
+  }
+
+
+  brush_t* brush = hside->owner_brush;
+  plane_t* plane = &hside->side->plane;
+
+  winding_t base = base_winding(hside->side->plane);
+
+  for (size_t i = 0; i < brush->side_count; i++){
+    if (&brush->sides[i] == hside->side){
+      continue;
+    }
+    base = clip_winding(&base, brush->sides[i].plane);
+  }
+  
+  printf("hovered winding of %d points\n", base.count);
+
+
+  const float vertex_offset = 0.5f;
+  VectorNormalise(&plane->normal);
+  Vector vector_offset = VectorScale(plane->normal, vertex_offset);
+
+  // Vertex creation
+  for (size_t i = 1; i < base.count - 1; i++){
+    Vector p0 = VectorAdd(base.v[0], vector_offset);
+    Vector p1 = VectorAdd(base.v[i], vector_offset);
+    Vector p2 = VectorAdd(base.v[i+1], vector_offset);
+
+    Vector2 uv0 = Brush_ComputeUV(hside->side, p0);
+    Vector2 uv1 = Brush_ComputeUV(hside->side, p1);
+    Vector2 uv2 = Brush_ComputeUV(hside->side, p2);
+
+    GLuint i0 = MeshPushVertex(m, MakeVertex(p0, VectorScale(VECTOR_ONE, 0.8f), uv0));
+    GLuint i1 = MeshPushVertex(m, MakeVertex(p1, VectorScale(VECTOR_ONE, 0.8f), uv1));
+    GLuint i2 = MeshPushVertex(m, MakeVertex(p2, VectorScale(VECTOR_ONE, 0.8f), uv2));
+
+    MeshPushTriangle(m, i0, i1, i2);
+  }
+}
+
 mesh_t BrushToMesh(brush_t *b)
 {
   mesh_t m = {0};
@@ -213,6 +269,32 @@ void EditorBrush_Draw(brush_t* brush, rdrawqueue_t* drawlist, camera_t* cam){
   cmd->draw_mesh.material = gRendererState->materials[0];
 
   RDrawQueue_Push(drawlist, cmd);
+}
+
+void EditorBrush_DrawHoveredSide(brush_side_hovered_t* hside){
+  
+  if (!hside){ return; }
+  if (!hside->side){ return; }
+  if (!hside->owner_brush){ return; }
+
+
+  if (hside->dirty){
+    BrushHoveredSideComputeMesh(hside);
+    MeshUpload(&hside->mesh, GL_STATIC_DRAW);
+    MeshDebug_PrintVertices(&hside->mesh);
+    printf("Hovered mesh created\n");
+    hside->dirty = 0;
+  }
+
+  struct rcmd_t* cmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
+
+  cmd->type = RCMD_DRAW_MESH;
+  cmd->draw_mesh.mesh = &hside->mesh;
+  cmd->draw_mesh.mode = GL_TRIANGLES;
+  cmd->draw_mesh.model = Mat4Identity();
+  cmd->draw_mesh.material = gRendererState->materials[1];
+
+  RDrawQueue_Push(gRendererState->draw_q, cmd);
 }
 
 

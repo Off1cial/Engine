@@ -1,6 +1,6 @@
 Material "TestMaterial"
 {
-  Lit=true
+  Lit=false
   Texture="../Assets/Textures/marble.png"
   UseVertexColour=true
   Colour=255 255 255 255

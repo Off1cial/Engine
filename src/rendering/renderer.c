@@ -21,9 +21,9 @@ void Camera_Switch(int index, int winh)
 shader_t* Renderer_ResolveShaderFromMaterial(material_t* material){
   if (!material){
     return gRendererState->shader_unlit;
-  }
+}
 
-  if (Material_HasFlag(material, MATERIAL_UNLIT)){
+if (Material_HasFlag(material, MATERIAL_UNLIT)){
     return gRendererState->shader_unlit;
   }
 
@@ -42,4 +42,36 @@ void Renderer_AddMaterial(renderer_state_t* renderer, material_t* material){
     return;
   }
   renderer->materials[renderer->material_count++] = material;
+}
+
+
+static void destroy_material(material_t* m){
+  if (!m){
+    return;
+  }
+
+  if (m->shader){
+    Shader_Destroy(m->shader); 
+    m->shader = NULL;
+  }
+  m->base = NULL;
+  m->specular = 0;
+
+  free(m);
+}
+
+void Renderer_Destroy(renderer_state_t* renderer){
+  ShaderStore_Free(renderer->shader_store);
+  
+  for (size_t m = 0; m < renderer->material_count; m++){
+    destroy_material(renderer->materials[m]); 
+  }
+  free(renderer->materials);
+  size_t light_count = 0;
+  size_t light_forward_count = 0;
+  RDrawQueue_Destroy(renderer->draw_q);
+  renderer->draw_q = NULL;
+  renderer->fullbright = false;
+  renderer->wireframe = false;
+
 }

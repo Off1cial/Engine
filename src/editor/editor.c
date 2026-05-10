@@ -50,14 +50,53 @@ void EditorToggle(SDL_Window* window){
   }
 }
 
-void find_hovered_brush(camera_t* camera, float mx, float my, Vector* out_hit, float* out_dist, int* out_side){
-  //printf("mpos {%0.3f, %0.3f}\n", mx, my);
+void find_hovered_brush(
+  camera_t* camera,
+  float mx,
+  float my,
+  Vector* out_hit,
+  float* out_dist,
+  int* out_side)
+{
+  bool hit = false;
+
   for (size_t b = 0; b < gEditorBrushArray->count; b++){
-    if (!Brush_Raycast(&gEditorBrushArray->brushes[b], out_side, out_hit, out_dist, camera, mx, my)) continue;
-    printf("[EDITOR]: Hit side %d of brush %zu\n", *out_side, b);
+    brush_t* brush = &gEditorBrushArray->brushes[b];
+
+    bool ray_hit = Brush_Raycast(
+      brush,
+      out_side,
+      out_hit,
+      out_dist,
+      camera,
+      mx,
+      my
+    );
+
+    if (!ray_hit){
+      continue;
+    }
+
+    hit = true;
+
+    brush_side_t* hovered_side =
+      &brush->sides[*out_side];
+
+    if (hovered_side != gEditorBrushArray->hovered_side.side){
+      gEditorBrushArray->hovered_side.dirty = 1;
+      gEditorBrushArray->hovered_side.side = hovered_side;
+      gEditorBrushArray->hovered_side.owner_brush = brush;
+    }
+
+    break;
+  }
+
+  if (!hit){
+    gEditorBrushArray->hovered_side.side = NULL;
+    gEditorBrushArray->hovered_side.owner_brush = NULL;
+    gEditorBrushArray->hovered_side.dirty = 1;
   }
 }
-
 
 void EditorLoop(SDL_Window* window, rdrawqueue_t* draw_q, camera_t* editor_camera, float mx, float my){
 
@@ -93,6 +132,10 @@ void EditorLoop(SDL_Window* window, rdrawqueue_t* draw_q, camera_t* editor_camer
 
   Camera_Move(mov_dir, 0.5f, editor_camera);
 
+  for (size_t i = 0; i < gEditorBrushArray->count; i++){
+    EditorBrush_Draw(&gEditorBrushArray->brushes[i], gRendererState->draw_q, gRendererState->active_cam);
+  }
+  EditorBrush_DrawHoveredSide(&gEditorBrushArray->hovered_side);
 
   EditorGui_DrawAll(window, gInputState, editor_camera, gInputState->FLAG_WindowResized);
   EditorGui_HandleBrushInput(gInputState);

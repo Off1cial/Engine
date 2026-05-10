@@ -1,0 +1,9 @@
+Material "BrushHover"
+{
+  Lit=false
+  Texture=""
+  UseVertexColour=false
+  Colour=255 200 30 140
+  Specular=0
+  Transparent=true
+}

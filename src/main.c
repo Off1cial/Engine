@@ -90,12 +90,12 @@ int main(){
 
   // Default sun light - testing
   light_t sunLight = {
-    .type = LIGHT_DIRECTIONAL,
+    .type = LIGHT_POINT,
     .colour = VectorInit(0.8, 0.0, 0.1),
     .direction = VectorInit(-1, -1, 0),
     .intensity = 0.8f,
-    .position = VectorInit(0, 50, 0),
-    .radius = 10.0f,
+    .position = VectorInit(0, 2, 0),
+    .radius = 100.0f,
   };
 
   renderer_state.lights_forward[0] = &sunLight;
@@ -108,6 +108,9 @@ int main(){
     exit(1);
   }
   Renderer_AddMaterial(&renderer_state, mat_marble);
+
+  material_t* mat_brushhover = Material_Load("../Assets/Materials/brushhover.mat");
+  Renderer_AddMaterial(&renderer_state, mat_brushhover);
 
 
   rigidbody_array_t rb_arr;
@@ -170,9 +173,11 @@ int main(){
       EditorLoop(game_container.window, &gDrawQ, &editor_cam, input_state.mx, input_state.my); 
     }
     
+    /*
     for(size_t i = 0; i < brush_array.count; i++){
       EditorBrush_Draw(&brush_array.brushes[i], &gDrawQ, &editor_cam);
     }
+    */
 
     RDrawQueue_Push(&gDrawQ, rcmd);
    
@@ -188,8 +193,7 @@ int main(){
   MeshDestroy(tri_mesh);
   free(tri_mesh);
   //EditorDestroy(editor_state);
-  ShaderStore_Free(gRendererState->shader_store);
-  RDrawQueue_Destroy(&gDrawQ);
+  Renderer_Destroy(gRendererState);
   MEM_ARENA_DESTROY(gMemArena);
   ApplicationDestroy(&game_container);
 

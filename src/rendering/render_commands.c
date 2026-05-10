@@ -81,13 +81,18 @@ static void Renderer_BindMaterial(shader_t* shader, material_t* material){
 }
 
 void RCMD_DrawMesh(struct rcmd_t* cmd){
-
-  shader_t* shader_active = Renderer_ResolveShaderFromMaterial(cmd->draw_mesh.material);
   
   if (!cmd->draw_mesh.mesh){
     printf("Mesh is NULL\n");
     exit(1);
   }
+  if (cmd->draw_mesh.mesh->nan){
+    return;
+  }
+
+
+  shader_t* shader_active = Renderer_ResolveShaderFromMaterial(cmd->draw_mesh.material);
+  
 
   
 

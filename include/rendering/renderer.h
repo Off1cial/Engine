@@ -38,4 +38,6 @@ extern renderer_state_t* gRendererState;
 void Renderer_AddMaterial(renderer_state_t* renderer, material_t* material);
 shader_t* Renderer_ResolveShaderFromMaterial(material_t* material);
 
+void Renderer_Destroy(renderer_state_t* renderer);
+
 #endif

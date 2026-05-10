@@ -62,7 +62,7 @@ void MeshInit(mesh_t *mesh, size_t v_capacity, size_t i_capacity)
   mesh->index_count = 0;
   mesh->vertex_capacity = v_capacity;
   mesh->index_capacity = i_capacity;
-
+  mesh->nan = false;
   mesh->vertices = malloc(sizeof(struct vertex_t) * v_capacity);
   if (!mesh->vertices)
   {

@@ -34,6 +34,8 @@ typedef struct {
 
   struct vertex_t* vertices;
   GLuint* indices;
+
+  bool nan;
 } mesh_t;
 
 void MeshInit(mesh_t* mesh, size_t v_capacity, size_t i_capacity);
