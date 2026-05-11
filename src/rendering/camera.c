@@ -15,19 +15,28 @@ void Camera_ToggleWireframe(camera_t *cam)
   cam->drawWireframe = !cam->drawWireframe;
 }
 
-
 void Camera_update(camera_t *cam)
 {
   // 1. Calculate front vector from yaw/pitch
   Vector front;
   front.x = cosf(RAD(cam->yaw)) * cosf(RAD(cam->pitch));
   front.y = sinf(RAD(cam->pitch));
-  front.z = sinf(RAD(cam->yaw)) * cosf(RAD(cam->pitch));
+  front.z = -sinf(RAD(cam->yaw)) * cosf(RAD(cam->pitch));
   VectorNormaliseTo(front, &cam->front);
 
+  Vector back = {-front.x, -front.y, -front.z};
+
   // 2. Recalculate right and up vectors
-  cam->right = VectorCrossNormalise(cam->front, cam->worldUp);
-  cam->up = VectorCrossNormalise(cam->right, cam->front);
+  cam->right = VectorCrossNormalise(cam->worldUp, back);
+  cam->up = VectorCrossNormalise(back, cam->right);
+
+  printf("CAMERA RIGHT: ");
+  Vector_DPrint(&cam->right);
+  printf("CAMERA FRONT: ");
+  Vector_DPrint(&cam->front);
+  printf("CAMERA UP: ");
+  Vector_DPrint(&cam->up);
+
   // 3. Create standard view matrix (yaw/pitch only)
   Vector centre = VectorAdd(cam->pos, cam->front);
   mat4 viewNoRoll = Mat4LookAt(cam->pos, centre, cam->up);
@@ -84,7 +93,7 @@ void Camera_Look(camera_t *cam, float xrel, float yrel)
     return;
   }
 
-  cam->yaw += cam->sens * xrel;
+  cam->yaw -= cam->sens * xrel;
   cam->pitch -= cam->sens * yrel;
 
   if (cam->pitch > 89.0f)
@@ -157,11 +166,16 @@ void Camera2D_Update(struct Camera2D* cam){
 // winW, winH: window size
 // view, proj: camera_t matrices
 // camPos: world-space camera_t position
+
+/*
+
 ray_t Camera_ScreenPointToRay(camera_t *cam, float mouseX, float mouseY)
 {
   ray_t ray;
   ray.dir = VECTOR_NAN;
   ray.origin = VECTOR_NAN;
+
+  //printf("[RAYCAST]: MouseX: %0.2f  : MouseY: %0.2f\n", mouseX, mouseY);
 
   float vx = cam->viewport.x;
   float vy = cam->viewport.y;
@@ -173,6 +187,8 @@ ray_t Camera_ScreenPointToRay(camera_t *cam, float mouseX, float mouseY)
   // Convert mouse to viewport-local coordinates
   float localX = mouseX - vx;
   float localY = mouseY - vy;
+
+
 
   //printf("[RAYCAST]: Input-{%0.3f, %0.3f}, Local-{%0.3f, %0.3f}\n", mouseX, mouseY, localX, localY);
 
@@ -207,6 +223,56 @@ ray_t Camera_ScreenPointToRay(camera_t *cam, float mouseX, float mouseY)
   VectorNormalise(&ray.dir);
 
   ray.origin = cam->pos;
+
+  printf("[RAYCAST]: Ray dot with up: %0.2f\n", VectorDot(ray.dir, cam->up));
+
+  return ray;
+}
+
+*/
+
+ray_t Camera_ScreenPointToRay(camera_t *cam, float mouseX, float mouseY)
+{
+  ray_t ray = {0};
+
+  float vx = cam->viewport.x;
+  float vy = cam->viewport.y;
+  float vw = cam->viewport.w;
+  float vh = cam->viewport.h;
+
+  float localX = mouseX - vx;
+  float localY = mouseY - vy;
+
+  if (localX < 0 || localY < 0 ||
+      localX > vw || localY > vh)
+  {
+    ray.dir = VECTOR_NAN;
+    ray.origin = VECTOR_NAN;
+    return ray;
+  }
+
+  // NDC
+  float ndcX = (2.0f * localX / vw) - 1.0f;
+  float ndcY = 1.0f - (2.0f * localY / vh);
+
+  float aspect = vw / vh;
+
+  float tanFov = tanf(RAD(cam->fov * 0.5f));
+
+  Vector rayDir = cam->front;
+
+  rayDir = VectorAdd(
+      rayDir,
+      VectorScale(cam->right, ndcX * aspect * tanFov));
+
+  rayDir = VectorAdd(
+      rayDir,
+      VectorScale(cam->up, ndcY * tanFov));
+
+  VectorNormalise(&rayDir);
+
+  ray.origin = cam->pos;
+  ray.dir = rayDir;
 
   return ray;
 }
@@ -332,9 +398,12 @@ bool isPosInBounds(float px, float py, float x, float y, float w, float h)
 
 */
 
+void Camera_Move(Vector direction, float scale, camera_t *cam)
+{
+  if (!cam)
+  {
+    return;
+  }
 
-void Camera_Move(Vector direction, float scale, camera_t* cam){
-  if (!cam){return;}
-
-  cam->pos = VectorAdd( VectorScale(direction, scale), cam->pos );
+  cam->pos = VectorAdd(VectorScale(direction, scale), cam->pos);
 }

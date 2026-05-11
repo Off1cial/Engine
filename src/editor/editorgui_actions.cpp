@@ -12,6 +12,8 @@ void panel_finalise_brush(
   float cam_zoom,
   int grid_spacing)
 {
+
+  
   ImVec2 w_start = EditorCamera_ScreenToWorld(
       panel_size,
       cam_pos,

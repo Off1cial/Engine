@@ -97,7 +97,7 @@ void RCMD_DrawMesh(struct rcmd_t* cmd){
   
 
 
-  if (shader_active != gRendererState->shader_current && shader_active != NULL){
+  if ((shader_active != gRendererState->shader_current) && (shader_active != NULL)){
     // swap shader or ordering failed
     printf("Shader swapped\n");
     Shader_Use(shader_active);

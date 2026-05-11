@@ -83,6 +83,7 @@ void RecalculatePanels(int winw, int winh, camera_t *editor_camera)
   }
 
   editor_camera->viewport = (struct Viewport){0, 0, rsize.x, rsize.y};
+  editor_camera->aspect = rsize.x / rsize.y;
   if (!start_up)
     glViewport(0, winh - rsize.y, rsize.x, rsize.y);
 }
@@ -148,6 +149,113 @@ void draw_panel_grid(size_t index)
   }
 }
 
+static ImVec2 ProjectToPanel(Vector v, Vector origin, Vector right, Vector up)
+{
+  return (ImVec2){
+      (float)VectorDot(v, right),
+      -(float)VectorDot(v, up)};
+}
+
+static void draw_edge(ImDrawList* dl,
+                      ImVec2 a, ImVec2 b,
+                      ImVec2 offset)
+{
+    a.x += offset.x; a.y += offset.y;
+    b.x += offset.x; b.y += offset.y;
+
+    dl->AddLine(a, b, IM_COL32(200, 100, 0, 255), 1.0f);
+}
+
+void draw_brush_planes(int panel, brush_t* brush)
+{
+    if (panel <= 1 || !brush)
+        return;
+
+    mesh_t* mesh = &brush->editor_mesh;
+
+    // ----------------------------
+    // Panel basis (replace later with stored camera basis)
+    // ----------------------------
+    Vector origin = brush->pos;
+
+    Vector right, up;
+
+    switch (panel)
+    {
+        case 2: // TOP (X/Z)
+            right = (Vector){1, 0, 0};
+            up    = (Vector){0, 0, -1};
+            break;
+
+        case 3: // SIDE (Z/Y)
+            right = (Vector){0, 0, 1};
+            up    = (Vector){0, 1, 0};
+            break;
+
+        case 4: // FRONT (X/Y)
+            right = (Vector){1, 0, 0};
+            up    = (Vector){0, 1, 0};
+            break;
+
+        default:
+            return;
+    }
+
+    ImDrawList* dl = ImGui::GetWindowDrawList();
+    ImVec2 win_pos = ImGui::GetWindowPos();
+
+    // ----------------------------
+    // TRIANGLE RENDER (no fake edges)
+    // ----------------------------
+    for (size_t i = 0; i + 2 < mesh->index_count; i += 3)
+    {
+        uint32_t i0 = mesh->indices[i + 0];
+        uint32_t i1 = mesh->indices[i + 1];
+        uint32_t i2 = mesh->indices[i + 2];
+
+        Vector v0 = mesh->vertices[i0].pos;
+        Vector v1 = mesh->vertices[i1].pos;
+        Vector v2 = mesh->vertices[i2].pos;
+
+        // Project to panel space
+        ImVec2 p0 = ProjectToPanel(v0, origin, right, up);
+        ImVec2 p1 = ProjectToPanel(v1, origin, right, up);
+        ImVec2 p2 = ProjectToPanel(v2, origin, right, up);
+
+        // Convert to screen space
+        ImVec2 s0 = EditorCamera_WorldToScreen(
+            panels[panel].size,
+            panels[panel].cam_pos,
+            panels[panel].cam_zoom,
+            p0
+        );
+
+        ImVec2 s1 = EditorCamera_WorldToScreen(
+            panels[panel].size,
+            panels[panel].cam_pos,
+            panels[panel].cam_zoom,
+            p1
+        );
+
+        ImVec2 s2 = EditorCamera_WorldToScreen(
+            panels[panel].size,
+            panels[panel].cam_pos,
+            panels[panel].cam_zoom,
+            p2
+        );
+
+        // offset into ImGui window
+        s0.x += win_pos.x; s0.y += win_pos.y;
+        s1.x += win_pos.x; s1.y += win_pos.y;
+        s2.x += win_pos.x; s2.y += win_pos.y;
+
+        // draw triangle wireframe
+        dl->AddLine(s0, s1, IM_COL32(200, 100, 0, 255), 1.0f);
+        dl->AddLine(s1, s2, IM_COL32(200, 100, 0, 255), 1.0f);
+        dl->AddLine(s2, s0, IM_COL32(200, 100, 0, 255), 1.0f);
+    }
+}
+
 void draw_brush_2d(int panel, size_t brush)
 {
   if (panel <= 1)
@@ -167,23 +275,23 @@ void draw_brush_2d(int panel, size_t brush)
 
   switch (panel)
   {
-    case 2:
-      wrld_a = ImVec2(min.x, min.z);
-      wrld_b = ImVec2(max.x, max.z);
-      break;
+  case 2:
+    wrld_a = ImVec2(min.x, min.z);
+    wrld_b = ImVec2(max.x, max.z);
+    break;
 
-    case 3:
-      wrld_a = ImVec2(min.z, min.y);
-      wrld_b = ImVec2(max.z, max.y);
-      break;
+  case 3:
+    wrld_a = ImVec2(min.z, min.y);
+    wrld_b = ImVec2(max.z, max.y);
+    break;
 
-    case 4:
-      wrld_a = ImVec2(min.x, min.y);
-      wrld_b = ImVec2(max.x, max.y);
-      break;
+  case 4:
+    wrld_a = ImVec2(min.x, min.y);
+    wrld_b = ImVec2(max.x, max.y);
+    break;
 
-    default:
-      return;
+  default:
+    return;
   }
 
   ImVec2 scr_a = EditorCamera_WorldToScreen(
@@ -244,7 +352,8 @@ void draw_panel(struct inputstate_t *input, size_t index)
 
   for (size_t b = 0; b < gEditorBrushArray->count; b++)
   {
-    draw_brush_2d(index, b);
+    brush_t *brush = &gEditorBrushArray->brushes[b];
+    draw_brush_planes(index, brush);
   }
 
   ImGui::End();
@@ -297,14 +406,13 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
     end.y -= panels[gEditorGui_HoveredPanel].pos.y;
 
     panel_finalise_brush(
-      gEditorGui_HoveredPanel,
-      panels[gEditorGui_HoveredPanel].size,
-      start,
-      end,
-      panels[gEditorGui_HoveredPanel].cam_pos,
-      panels[gEditorGui_HoveredPanel].cam_zoom,
-      GRID_SPACING_WORLD
-    );
+        gEditorGui_HoveredPanel,
+        panels[gEditorGui_HoveredPanel].size,
+        start,
+        end,
+        panels[gEditorGui_HoveredPanel].cam_pos,
+        panels[gEditorGui_HoveredPanel].cam_zoom,
+        GRID_SPACING_WORLD);
   }
 }
 

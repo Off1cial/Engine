@@ -22,7 +22,8 @@ material_t* Material_Load(const char* filepath){
   char ident[128];
 
   material_t* m = calloc(1, sizeof(material_t));
-
+  int r,g,b,a;
+  // default error colour
   m->colour.x = 1.0f;
   m->colour.y = 0.0f;
   m->colour.z = 1.0f;
@@ -103,7 +104,6 @@ material_t* Material_Load(const char* filepath){
     // Colour
     else if (strcmp(ident, "Colour") == 0)
     {
-      int r, g, b, a;
       if (sscanf(parser.at, "%d %d %d %d", &r, &g, &b, &a) == 4)
       {
         m->colour.x = r / 255.0f;
@@ -139,10 +139,8 @@ material_t* Material_Load(const char* filepath){
       (m->flags & MATERIAL_USE_VERTEX_COLOUR) != 0);
 
   printf("Colour: %d %d %d %d\n",
-         (int)m->colour.x, 
-         (int)m->colour.y, 
-         (int)m->colour.z, 
-         (int)m->colour.w
+         r, g, b, a
+
          );
 
   printf("Specular: %f\n", m->specular);

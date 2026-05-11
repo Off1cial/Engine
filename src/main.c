@@ -90,8 +90,8 @@ int main(){
 
   // Default sun light - testing
   light_t sunLight = {
-    .type = LIGHT_POINT,
-    .colour = VectorInit(0.8, 0.0, 0.1),
+    .type = LIGHT_DIRECTIONAL,
+    .colour = VectorInit(0.8, 0.8, 0.75),
     .direction = VectorInit(-1, -1, 0),
     .intensity = 0.8f,
     .position = VectorInit(0, 2, 0),
@@ -102,7 +102,7 @@ int main(){
   renderer_state.light_forward_count++;
 
 
-  material_t* mat_marble = Material_Load("../Assets/Materials/testmaterial.mat");
+  material_t* mat_marble = Material_Load("../Assets/Materials/brickmaterial.mat");
   if (!mat_marble){
     printf("mat_marble = NULL\n");
     exit(1);

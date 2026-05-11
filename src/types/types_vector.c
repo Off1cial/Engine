@@ -303,31 +303,30 @@ Vector Mat4Transform(mat4* m, Vector* v)
 
 mat4 Mat4LookAt(Vector eye, Vector center, Vector up)
 {
-    Vector f = VectorSub(center, eye);
-    VectorNormalise(&f);
+    Vector back = VectorSub(eye, center);
+    VectorNormalise(&back);
 
-    Vector r = VectorCross(f, up);
-    VectorNormalise(&r);
+    Vector r = VectorCrossNormalise(up, back);
 
-    Vector u = VectorCross(r, f);
+    Vector u = VectorCross(back, r);
 
     mat4 view = Mat4Identity();
 
     view.m[0][0] = r.x;
     view.m[0][1] = u.x;
-    view.m[0][2] = -f.x;
+    view.m[0][2] = back.x;
 
     view.m[1][0] = r.y;
     view.m[1][1] = u.y;
-    view.m[1][2] = -f.y;
+    view.m[1][2] = back.y;
 
     view.m[2][0] = r.z;
     view.m[2][1] = u.z;
-    view.m[2][2] = -f.z;
+    view.m[2][2] = back.z;
 
     view.m[3][0] = -VectorDot(r, eye);
     view.m[3][1] = -VectorDot(u, eye);
-    view.m[3][2] =  VectorDot(f, eye);
+    view.m[3][2] =  -VectorDot(back, eye);
 
     return view;
 }

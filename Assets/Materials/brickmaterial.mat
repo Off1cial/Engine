@@ -1,6 +1,6 @@
 Material "BrickMaterial"
 {
-  Lit=false
+  Lit=true
   Texture="../Assets/Textures/brick1.png"
   UseVertexColour=false
   Colour=255 255 255 255

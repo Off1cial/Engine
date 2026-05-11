@@ -43,6 +43,10 @@ typedef struct {
 
 } brush_t;
 
+
+
+
+
 typedef struct {
   brush_side_t* side;
   brush_t* owner_brush;
@@ -51,6 +55,19 @@ typedef struct {
 
   int dirty; // Does mesh need recomputing?
 } brush_side_hovered_t;
+
+
+// Editor UI
+
+#define EDITOR_UI_BRUSH_SIDE_WIDTH_PX 8
+
+typedef struct {
+  Vector2 a, b;
+  brush_t* brush;
+  brush_side_t* side;
+} brush_edge_ui_t;
+
+
 
 typedef struct {
   brush_side_hovered_t hovered_side;
@@ -71,5 +88,8 @@ brush_t make_brush_cube(Vector mins, Vector maxs);
 void EditorBrush_Draw(brush_t* brush, rdrawqueue_t* drawlist, camera_t* cam);
 void EditorBrush_DrawHoveredSide(brush_side_hovered_t* hside);
 bool Brush_Raycast(brush_t* brush, int* out_side, Vector* out_hit, float* out_dist, camera_t* camera, float cursorx, float cursory);
+
+
+
 
 #endif
