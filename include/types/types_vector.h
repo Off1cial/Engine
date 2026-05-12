@@ -168,7 +168,8 @@ Vector VectorZero();
 
 
 float Vector2Cross(Vector2 o, Vector2 a, Vector2 b);
-
+Vector2 Vector2Add(Vector2 a, Vector2 b);
+Vector2 Vector2Scale(Vector2 v, float scale);
 
 
 // Extras

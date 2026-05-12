@@ -3,6 +3,7 @@
 #include <float.h>
 #include "rendering/render_commands.h"
 #include "rendering/renderer.h"
+#include "rendering/frustum.h"
 #include "types/types_base.h"
 #include "editor/brush.h"
 

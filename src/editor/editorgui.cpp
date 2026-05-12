@@ -22,11 +22,20 @@ ImVec2 brush_end;
 bool drawing_brush = false;
 
 int gEditorGui_HoveredPanel = 2;
+brush_edge_t *edge_hovered = NULL;
+brush_edge_t *edge_selected = NULL;
+ImVec2 edge_hovered_a, edge_hovered_b;
+ImVec2 edge_selected_a, edge_selected_b;
 bool gEditorGui_ViewportCaptured = false;
 
 ImVec2 imvec2_add(ImVec2 a, ImVec2 b)
 {
   return ImVec2(a.x + b.x, a.y + b.y);
+}
+
+static ImVec2 Vector2_ImVec2(Vector2 v)
+{
+  return ImVec2(v.x, v.y);
 }
 
 gui_panel_t panels[5];
@@ -149,113 +158,320 @@ void draw_panel_grid(size_t index)
   }
 }
 
+static void draw_edge(ImDrawList *dl,
+                      ImVec2 a, ImVec2 b,
+                      ImVec2 offset)
+{
+  a.x += offset.x;
+  a.y += offset.y;
+  b.x += offset.x;
+  b.y += offset.y;
+
+  dl->AddLine(a, b, IM_COL32(200, 100, 0, 255), 1.0f);
+}
+
+static float point_segment_distance_sq(ImVec2 p, ImVec2 a, ImVec2 b)
+{
+  float abx = b.x - a.x;
+  float aby = b.y - a.y;
+
+  float apx = p.x - a.x;
+  float apy = p.y - a.y;
+
+  float ab_len_sq = abx * abx + aby * aby;
+
+  float t = 0.0f;
+
+  if (ab_len_sq > 0.0f)
+  {
+    t = (apx * abx + apy * aby) / ab_len_sq;
+  }
+
+  if (t < 0.0f)
+    t = 0.0f;
+  if (t > 1.0f)
+    t = 1.0f;
+
+  float cx = a.x + abx * t;
+  float cy = a.y + aby * t;
+
+  float dx = p.x - cx;
+  float dy = p.y - cy;
+
+  return dx * dx + dy * dy;
+}
+
 static ImVec2 ProjectToPanel(Vector v, Vector origin, Vector right, Vector up)
 {
   return (ImVec2){
       (float)VectorDot(v, right),
-      -(float)VectorDot(v, up)};
+      (float)VectorDot(v, up)};
 }
 
-static void draw_edge(ImDrawList* dl,
-                      ImVec2 a, ImVec2 b,
-                      ImVec2 offset)
+static brush_edge_t *find_hovered_edge(int panel)
 {
-    a.x += offset.x; a.y += offset.y;
-    b.x += offset.x; b.y += offset.y;
+  if (panel < 2 || panel > 4)
+    return NULL;
 
-    dl->AddLine(a, b, IM_COL32(200, 100, 0, 255), 1.0f);
+  Vector right, up;
+
+  switch (panel)
+  {
+  case 2:
+    right = VECTOR_AXIS_X;
+    up = VECTOR_AXIS_Z_NEG;
+    break;
+
+  case 3:
+    right = VECTOR_AXIS_Z;
+    up = VECTOR_AXIS_Y;
+    break;
+
+  case 4:
+    right = VECTOR_AXIS_X;
+    up = VECTOR_AXIS_Y;
+    break;
+
+  default:
+    return NULL;
+  }
+
+  ImVec2 mouse = ImGui::GetMousePos();
+
+  brush_edge_t *best_edge = NULL;
+
+  float best_dist = FLT_MAX;
+
+  const float threshold = 6.0f;
+  const float threshold_sq = threshold * threshold;
+
+  for (size_t b = 0; b < gEditorBrushArray->count; b++)
+  {
+    brush_t *brush = &gEditorBrushArray->brushes[b];
+
+    for (size_t e = 0; e < brush->edge_count; e++)
+    {
+      brush_edge_t *edge = &brush->edges[e];
+
+      // WORLD → PANEL
+      ImVec2 a2 = ProjectToPanel(
+          edge->a,
+          VECTOR_ZERO,
+          right,
+          up);
+
+      ImVec2 b2 = ProjectToPanel(
+          edge->b,
+          VECTOR_ZERO,
+          right,
+          up);
+
+      // PANEL → SCREEN
+      ImVec2 sa = EditorCamera_WorldToScreen(
+          panels[panel].size,
+          panels[panel].cam_pos,
+          panels[panel].cam_zoom,
+          a2);
+
+      ImVec2 sb = EditorCamera_WorldToScreen(
+          panels[panel].size,
+          panels[panel].cam_pos,
+          panels[panel].cam_zoom,
+          b2);
+
+      // WINDOW OFFSET
+      ImVec2 win_pos = ImGui::GetWindowPos();
+
+      sa.x += win_pos.x;
+      sa.y += win_pos.y;
+
+      sb.x += win_pos.x;
+      sb.y += win_pos.y;
+
+      float dist_sq =
+          point_segment_distance_sq(mouse, sa, sb);
+
+      if (dist_sq < threshold_sq &&
+          dist_sq < best_dist)
+      {
+        best_dist = dist_sq;
+        best_edge = edge;
+        edge_hovered_a = sa;
+        edge_hovered_b = sb;
+      }
+    }
+  }
+
+  return best_edge;
 }
 
-void draw_brush_planes(int panel, brush_t* brush)
+static void draw_brush_edges(brush_t *brush, int panel)
 {
-    if (panel <= 1 || !brush)
-        return;
+  if (panel < 2 || panel > 4)
+    return;
 
-    mesh_t* mesh = &brush->editor_mesh;
+  Vector right, up;
 
-    // ----------------------------
-    // Panel basis (replace later with stored camera basis)
-    // ----------------------------
-    Vector origin = brush->pos;
+  switch (panel)
+  {
+  case 2: // TOP (X/Z)
+    right = VECTOR_AXIS_X;
+    up = VECTOR_AXIS_Z_NEG;
+    break;
 
-    Vector right, up;
+  case 3: // SIDE (Z/Y)
+    right = VECTOR_AXIS_Z;
+    up = VECTOR_AXIS_Y;
+    break;
 
-    switch (panel)
-    {
-        case 2: // TOP (X/Z)
-            right = (Vector){1, 0, 0};
-            up    = (Vector){0, 0, -1};
-            break;
+  case 4: // FRONT (X/Y)
+    right = VECTOR_AXIS_X;
+    up = VECTOR_AXIS_Y;
+    break;
 
-        case 3: // SIDE (Z/Y)
-            right = (Vector){0, 0, 1};
-            up    = (Vector){0, 1, 0};
-            break;
+  default:
+    return;
+  }
 
-        case 4: // FRONT (X/Y)
-            right = (Vector){1, 0, 0};
-            up    = (Vector){0, 1, 0};
-            break;
+  ImDrawList *dl = ImGui::GetWindowDrawList();
+  ImVec2 win_pos = ImGui::GetWindowPos();
 
-        default:
-            return;
-    }
+  for (size_t e = 0; e < brush->edge_count; e++)
+  {
+    brush_edge_t *edge = &brush->edges[e];
 
-    ImDrawList* dl = ImGui::GetWindowDrawList();
-    ImVec2 win_pos = ImGui::GetWindowPos();
+    // WORLD → PANEL SPACE
+    ImVec2 a2 = ProjectToPanel(
+        edge->a,
+        VECTOR_ZERO,
+        right,
+        up);
 
-    // ----------------------------
-    // TRIANGLE RENDER (no fake edges)
-    // ----------------------------
-    for (size_t i = 0; i + 2 < mesh->index_count; i += 3)
-    {
-        uint32_t i0 = mesh->indices[i + 0];
-        uint32_t i1 = mesh->indices[i + 1];
-        uint32_t i2 = mesh->indices[i + 2];
+    ImVec2 b2 = ProjectToPanel(
+        edge->b,
+        VECTOR_ZERO,
+        right,
+        up);
 
-        Vector v0 = mesh->vertices[i0].pos;
-        Vector v1 = mesh->vertices[i1].pos;
-        Vector v2 = mesh->vertices[i2].pos;
+    // PANEL SPACE → SCREEN SPACE
+    ImVec2 sa = EditorCamera_WorldToScreen(
+        panels[panel].size,
+        panels[panel].cam_pos,
+        panels[panel].cam_zoom,
+        a2);
 
-        // Project to panel space
-        ImVec2 p0 = ProjectToPanel(v0, origin, right, up);
-        ImVec2 p1 = ProjectToPanel(v1, origin, right, up);
-        ImVec2 p2 = ProjectToPanel(v2, origin, right, up);
+    ImVec2 sb = EditorCamera_WorldToScreen(
+        panels[panel].size,
+        panels[panel].cam_pos,
+        panels[panel].cam_zoom,
+        b2);
 
-        // Convert to screen space
-        ImVec2 s0 = EditorCamera_WorldToScreen(
-            panels[panel].size,
-            panels[panel].cam_pos,
-            panels[panel].cam_zoom,
-            p0
-        );
+    // WINDOW OFFSET
+    sa.x += win_pos.x;
+    sa.y += win_pos.y;
 
-        ImVec2 s1 = EditorCamera_WorldToScreen(
-            panels[panel].size,
-            panels[panel].cam_pos,
-            panels[panel].cam_zoom,
-            p1
-        );
+    sb.x += win_pos.x;
+    sb.y += win_pos.y;
 
-        ImVec2 s2 = EditorCamera_WorldToScreen(
-            panels[panel].size,
-            panels[panel].cam_pos,
-            panels[panel].cam_zoom,
-            p2
-        );
-
-        // offset into ImGui window
-        s0.x += win_pos.x; s0.y += win_pos.y;
-        s1.x += win_pos.x; s1.y += win_pos.y;
-        s2.x += win_pos.x; s2.y += win_pos.y;
-
-        // draw triangle wireframe
-        dl->AddLine(s0, s1, IM_COL32(200, 100, 0, 255), 1.0f);
-        dl->AddLine(s1, s2, IM_COL32(200, 100, 0, 255), 1.0f);
-        dl->AddLine(s2, s0, IM_COL32(200, 100, 0, 255), 1.0f);
-    }
+    dl->AddLine(
+        sa,
+        sb,
+        IM_COL32(200, 100, 0, 255),
+        1.0f);
+  }
 }
 
+void draw_brush_planes(brush_t *brush, int panel)
+{
+  if (panel <= 1 || !brush)
+    return;
+
+  mesh_t *mesh = &brush->editor_mesh;
+
+  // ----------------------------
+  // Panel basis (replace later with stored camera basis)
+  // ----------------------------
+  Vector origin = brush->pos;
+
+  Vector right, up;
+
+  switch (panel)
+  {
+  case 2: // TOP (X/Z)
+    right = (Vector){1, 0, 0};
+    up = (Vector){0, 0, -1};
+    break;
+
+  case 3: // SIDE (Z/Y)
+    right = (Vector){0, 0, 1};
+    up = (Vector){0, 1, 0};
+    break;
+
+  case 4: // FRONT (X/Y)
+    right = (Vector){1, 0, 0};
+    up = (Vector){0, 1, 0};
+    break;
+
+  default:
+    return;
+  }
+
+  ImDrawList *dl = ImGui::GetWindowDrawList();
+  ImVec2 win_pos = ImGui::GetWindowPos();
+
+  // ----------------------------
+  // TRIANGLE RENDER (no fake edges)
+  // ----------------------------
+  for (size_t i = 0; i + 2 < mesh->index_count; i += 3)
+  {
+    uint32_t i0 = mesh->indices[i + 0];
+    uint32_t i1 = mesh->indices[i + 1];
+    uint32_t i2 = mesh->indices[i + 2];
+
+    Vector v0 = mesh->vertices[i0].pos;
+    Vector v1 = mesh->vertices[i1].pos;
+    Vector v2 = mesh->vertices[i2].pos;
+
+    // Project to panel space
+    ImVec2 p0 = ProjectToPanel(v0, origin, right, up);
+    ImVec2 p1 = ProjectToPanel(v1, origin, right, up);
+    ImVec2 p2 = ProjectToPanel(v2, origin, right, up);
+
+    // Convert to screen space
+    ImVec2 s0 = EditorCamera_WorldToScreen(
+        panels[panel].size,
+        panels[panel].cam_pos,
+        panels[panel].cam_zoom,
+        p0);
+
+    ImVec2 s1 = EditorCamera_WorldToScreen(
+        panels[panel].size,
+        panels[panel].cam_pos,
+        panels[panel].cam_zoom,
+        p1);
+
+    ImVec2 s2 = EditorCamera_WorldToScreen(
+        panels[panel].size,
+        panels[panel].cam_pos,
+        panels[panel].cam_zoom,
+        p2);
+
+    // offset into ImGui window
+    s0.x += win_pos.x;
+    s0.y += win_pos.y;
+    s1.x += win_pos.x;
+    s1.y += win_pos.y;
+    s2.x += win_pos.x;
+    s2.y += win_pos.y;
+
+    // draw triangle wireframe
+    dl->AddLine(s0, s1, IM_COL32(200, 100, 0, 255), 1.0f);
+    dl->AddLine(s1, s2, IM_COL32(200, 100, 0, 255), 1.0f);
+    dl->AddLine(s2, s0, IM_COL32(200, 100, 0, 255), 1.0f);
+  }
+}
+
+/*
 void draw_brush_2d(int panel, size_t brush)
 {
   if (panel <= 1)
@@ -319,6 +535,7 @@ void draw_brush_2d(int panel, size_t brush)
       br,
       IM_COL32(200, 100, 0, 255));
 }
+*/
 
 void draw_main_panel_contents()
 {
@@ -349,11 +566,32 @@ void draw_panel(struct inputstate_t *input, size_t index)
   }
 
   draw_panel_grid(index);
+  edge_hovered = find_hovered_edge(index);
 
   for (size_t b = 0; b < gEditorBrushArray->count; b++)
   {
     brush_t *brush = &gEditorBrushArray->brushes[b];
-    draw_brush_planes(index, brush);
+    draw_brush_edges(brush, index);
+  }
+
+  if (edge_hovered)
+  {
+    ImGui::GetWindowDrawList()->AddLine(
+        edge_hovered_a,
+        edge_hovered_b,
+        IM_COL32(0, 200, 30, 255));
+  }
+
+
+
+  
+
+  if (edge_selected)
+  {
+    ImGui::GetWindowDrawList()->AddLine(
+        edge_selected_a,
+        edge_selected_b,
+        IM_COL32(0, 200, 180, 255));
   }
 
   ImGui::End();
@@ -387,14 +625,18 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
   if (gEditorGui_HoveredPanel < 2 || gEditorGui_HoveredPanel > 4)
     return;
 
-  if (input->mbutton_left_toggle && !drawing)
+  bool isTopPanel = (gEditorGui_HoveredPanel == 2);
+
+  if (input->mbutton_left_toggle && !drawing && !edge_hovered && !edge_selected)
   {
     drawing = true;
 
     start = ImGui::GetMousePos();
 
     start.x -= panels[gEditorGui_HoveredPanel].pos.x;
-    start.y -= panels[gEditorGui_HoveredPanel].pos.y;
+    // start.y -= panels[gEditorGui_HoveredPanel].pos.y;
+
+    start.y = (isTopPanel) ? panels[2].size.y - start.y : start.y - panels[gEditorGui_HoveredPanel].pos.y;
   }
   else if (input->mbutton_left_toggle && drawing)
   {
@@ -403,7 +645,9 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
     ImVec2 end = ImGui::GetMousePos();
 
     end.x -= panels[gEditorGui_HoveredPanel].pos.x;
-    end.y -= panels[gEditorGui_HoveredPanel].pos.y;
+    // end.y -= panels[gEditorGui_HoveredPanel].pos.y;
+
+    end.y = (isTopPanel) ? panels[2].size.y - end.y : end.y - panels[gEditorGui_HoveredPanel].pos.y;
 
     panel_finalise_brush(
         gEditorGui_HoveredPanel,
@@ -413,6 +657,19 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
         panels[gEditorGui_HoveredPanel].cam_pos,
         panels[gEditorGui_HoveredPanel].cam_zoom,
         GRID_SPACING_WORLD);
+  }
+
+  // Edge selection
+  if (input->mbutton_left_toggle && edge_hovered)
+  {
+    edge_selected = edge_hovered;
+
+    edge_selected_a = edge_hovered_a;
+    edge_selected_b = edge_hovered_b;
+  }
+  else if (input->mbutton_left_toggle && !drawing && !edge_hovered)
+  {
+    edge_selected = NULL;
   }
 }
 

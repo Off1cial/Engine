@@ -9,6 +9,7 @@ typedef struct {
 
   ImVec2 cam_pos; // World coordinates
   float cam_zoom;
+
 } gui_panel_t;
 
 extern gui_panel_t panels[5];

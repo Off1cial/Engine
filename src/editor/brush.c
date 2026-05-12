@@ -102,59 +102,7 @@ brush_t make_brush_cube(Vector mins, Vector maxs)
   return b;
 }
 
-winding_t base_winding(plane_t p)
-{
-  winding_t w = {0};
 
-  Vector up = (fabsf(p.normal.y) < 0.9f) ? VECTOR_AXIS_Y : VECTOR_AXIS_X;
-
-  Vector u = VectorCrossNormalise(up, p.normal);
-  Vector v = VectorCrossNormalise(p.normal, u);
-
-  float size = 1000.0f;
-
-  Vector centre = VectorScale(p.normal, p.dist);
-
-  Vector au = VectorScale(u, size);
-  Vector av = VectorScale(v, size);
-
-  w.v[0] = VectorAdd(VectorAdd(centre, au), av);
-  w.v[1] = VectorSub(VectorAdd(centre, au), av);
-  w.v[2] = VectorSub(VectorSub(centre, au), av);
-  w.v[3] = VectorAdd(VectorSub(centre, au), av);
-
-  w.count = 4;
-  return w;
-}
-
-winding_t clip_winding(winding_t *in, plane_t p)
-{
-  winding_t out = {0};
-
-  for (int i = 0; i < in->count; i++)
-  {
-    Vector a = in->v[i];
-    Vector b = in->v[(i + 1) % in->count];
-
-    float da = VectorDot(p.normal, a) - p.dist;
-    float db = VectorDot(p.normal, b) - p.dist;
-
-    int ina = (da <= 0);
-    int inb = (db <= 0);
-
-    if (ina)
-      out.v[out.count++] = a;
-
-    if (ina != inb)
-    {
-      float t = da / (da - db);
-      Vector hit = VectorAdd(a, VectorScale(VectorSub(b, a), t));
-      out.v[out.count++] = hit;
-    }
-  }
-
-  return out;
-}
 
 void BrushHoveredSideComputeMesh(brush_side_hovered_t *hside)
 {
@@ -211,6 +159,8 @@ mesh_t BrushToMesh(brush_t *b)
   mesh_t m = {0};
   MeshInit(&m, 24, 24);
 
+  b->edge_count = 0;
+
   for (int i = 0; i < b->side_count; i++)
   {
     winding_t base = base_winding(b->sides[i].plane);
@@ -224,6 +174,24 @@ mesh_t BrushToMesh(brush_t *b)
         continue;
 
       base = clip_winding(&base, b->sides[j].plane);
+    }
+
+    for (int e = 0; e < base.count; e++)
+    {
+        if (b->edge_count >= MAX_BRUSH_EDGES)
+            break;
+
+        Vector a = base.v[e];
+        Vector bpos = base.v[(e + 1) % base.count];
+
+        brush_edge_t* edge =
+            &b->edges[b->edge_count++];
+
+        edge->a = a;
+        edge->b = bpos;
+
+        edge->side_a = &b->sides[i];
+        edge->side_b = NULL;
     }
 
     for (int v = 1; v < base.count - 1; v++)

@@ -189,6 +189,14 @@ float Vector2Cross(Vector2 o, Vector2 a, Vector2 b){
     (a.x - b.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
 }
 
+Vector2 Vector2Add(Vector2 a, Vector2 b){
+    return (Vector2){a.x + b.x, a.y + b.y};
+}
+
+Vector2 Vector2Scale(Vector2 v, float scale){
+    return (Vector2){v.x * scale, v.y * scale};
+}
+
 /* ============================================================
    MATRIX HELPERS (COLUMN MAJOR)
    ============================================================ */

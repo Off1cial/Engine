@@ -16,6 +16,7 @@
 #define MAX_BRUSHES 2048
 #define MAX_WINDING_POINTS 64
 #define BRUSH_DEFUALT_SCALE 2
+#define MAX_BRUSH_EDGES 256
 
 typedef struct {
   Vector v[MAX_WINDING_POINTS];
@@ -33,10 +34,23 @@ typedef struct {
 
 } brush_side_t;
 
+
+typedef struct {
+  Vector a, b;
+
+  brush_side_t* side_a;
+  brush_side_t* side_b;
+} brush_edge_t;
+
+
 typedef struct {
   brush_side_t sides[MAX_BRUSH_FACES]; // Local space to centre
+  brush_edge_t edges[MAX_BRUSH_EDGES];
+  int edge_count;
+
   int side_count;
   int dirty;
+  int dirty_ui_edges;
   mesh_t editor_mesh;
 
   Vector pos, rot, scale;
@@ -54,6 +68,7 @@ typedef struct {
   mesh_t mesh;
 
   int dirty; // Does mesh need recomputing?
+
 } brush_side_hovered_t;
 
 
@@ -61,11 +76,6 @@ typedef struct {
 
 #define EDITOR_UI_BRUSH_SIDE_WIDTH_PX 8
 
-typedef struct {
-  Vector2 a, b;
-  brush_t* brush;
-  brush_side_t* side;
-} brush_edge_ui_t;
 
 
 
@@ -89,7 +99,59 @@ void EditorBrush_Draw(brush_t* brush, rdrawqueue_t* drawlist, camera_t* cam);
 void EditorBrush_DrawHoveredSide(brush_side_hovered_t* hside);
 bool Brush_Raycast(brush_t* brush, int* out_side, Vector* out_hit, float* out_dist, camera_t* camera, float cursorx, float cursory);
 
+static winding_t base_winding(plane_t p)
+{
+  winding_t w = {0};
 
+  Vector up = (fabsf(p.normal.y) < 0.9f) ? VECTOR_AXIS_Y : VECTOR_AXIS_X;
+
+  Vector u = VectorCrossNormalise(up, p.normal);
+  Vector v = VectorCrossNormalise(p.normal, u);
+
+  float size = 1000.0f;
+
+  Vector centre = VectorScale(p.normal, p.dist);
+
+  Vector au = VectorScale(u, size);
+  Vector av = VectorScale(v, size);
+
+  w.v[0] = VectorAdd(VectorAdd(centre, au), av);
+  w.v[1] = VectorSub(VectorAdd(centre, au), av);
+  w.v[2] = VectorSub(VectorSub(centre, au), av);
+  w.v[3] = VectorAdd(VectorSub(centre, au), av);
+
+  w.count = 4;
+  return w;
+}
+
+static winding_t clip_winding(winding_t *in, plane_t p)
+{
+  winding_t out = {0};
+
+  for (int i = 0; i < in->count; i++)
+  {
+    Vector a = in->v[i];
+    Vector b = in->v[(i + 1) % in->count];
+
+    float da = VectorDot(p.normal, a) - p.dist;
+    float db = VectorDot(p.normal, b) - p.dist;
+
+    int ina = (da <= 0);
+    int inb = (db <= 0);
+
+    if (ina)
+      out.v[out.count++] = a;
+
+    if (ina != inb)
+    {
+      float t = da / (da - db);
+      Vector hit = VectorAdd(a, VectorScale(VectorSub(b, a), t));
+      out.v[out.count++] = hit;
+    }
+  }
+
+  return out;
+}
 
 
 #endif

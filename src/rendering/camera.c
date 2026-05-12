@@ -30,13 +30,15 @@ void Camera_update(camera_t *cam)
   cam->right = VectorCrossNormalise(cam->worldUp, back);
   cam->up = VectorCrossNormalise(back, cam->right);
 
+  /*
   printf("CAMERA RIGHT: ");
   Vector_DPrint(&cam->right);
   printf("CAMERA FRONT: ");
   Vector_DPrint(&cam->front);
   printf("CAMERA UP: ");
   Vector_DPrint(&cam->up);
-
+  */
+ 
   // 3. Create standard view matrix (yaw/pitch only)
   Vector centre = VectorAdd(cam->pos, cam->front);
   mat4 viewNoRoll = Mat4LookAt(cam->pos, centre, cam->up);
