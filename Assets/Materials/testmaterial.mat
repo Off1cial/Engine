@@ -5,6 +5,6 @@ Material "TestMaterial"
   UseVertexColour=true
   Colour=255 255 255 255
   Specular=8
-  Shininess=64
+  Shininess=16
   Transparent=false
 }

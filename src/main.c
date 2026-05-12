@@ -95,7 +95,7 @@ int main(){
   // Default sun light - testing
   light_t sunLight = {
     .type = LIGHT_POINT,
-    .colour = VectorInit(0.8, 0.8, 0.75),
+    .colour = VectorInit(0.8, 0.3, 0.75),
     .direction = VectorInit(-1, -1, 0),
     .intensity = 0.8f,
     .position = VectorInit(0, -8, 0),
@@ -194,7 +194,7 @@ int main(){
   ColliderArray_Destroy(&collider_arr);
   MeshPrimitives_Destroy();
   MeshDestroy(tri_mesh);
-  free(tri_mesh);
+  //free(tri_mesh);
   //EditorDestroy(editor_state);
   Renderer_Destroy(gRendererState);
   MEM_ARENA_DESTROY(gMemArena);

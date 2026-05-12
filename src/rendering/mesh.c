@@ -224,6 +224,8 @@ void MeshDestroy(mesh_t *mesh)
   mesh->index_count = 0;
   mesh->vertex_capacity = 0;
   mesh->index_capacity = 0;
+
+  free(mesh);
 }
 
 // DEBUG LINES
