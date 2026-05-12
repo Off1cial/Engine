@@ -71,6 +71,16 @@ static void Renderer_BindMaterial(shader_t* shader, material_t* material){
     glDisable(GL_BLEND);
   }
 
+  // Specular/Shininess
+
+  if ((material->flags & MATERIAL_SPECULAR) != 0){
+    Shader_SetFloatCached(shader->uSpecularLoc, material->specular);
+    Shader_SetFloatCached(shader->uShininessLoc, material->shininess);
+  }else{
+    Shader_SetFloatCached(shader->uSpecularLoc, 0.0f);
+    Shader_SetFloatCached(shader->uShininessLoc, 0.0f);
+  }
+
   // Double sided
   if ((material->flags & MATERIAL_DOUBLE_SIDED) != 0){
     glDisable(GL_CULL_FACE);
@@ -106,6 +116,8 @@ void RCMD_DrawMesh(struct rcmd_t* cmd){
 
   Renderer_BindMaterial(shader_active, cmd->draw_mesh.material);
 
+
+  Shader_SetVec3Cached(shader_active->uViewPosLoc, gRendererState->active_cam->pos);
   Shader_SetMat4Cached(shader_active->uViewLoc, gRendererState->active_cam->view);
   Shader_SetMat4Cached(shader_active->uProjLoc, gRendererState->active_cam->projection);
   Shader_SetMat4Cached(shader_active->uModelLoc, cmd->draw_mesh.model);

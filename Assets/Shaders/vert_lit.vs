@@ -24,5 +24,6 @@ void main()
 
     vColour = vec4(aColour, 1.0);
     vUV = aUV;
-    vNormal = aNormal;
+    vNormal  = mat3(transpose(inverse(uModel))) * aNormal;
+    vPos = vec3(uModel * vec4(aPos, 1.0));
 }

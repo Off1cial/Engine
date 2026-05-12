@@ -42,6 +42,7 @@ void MeshInit(mesh_t* mesh, size_t v_capacity, size_t i_capacity);
 mesh_t* MeshInit_FromFile(const char* filepath);
 size_t MeshPushVertex(mesh_t* mesh, struct vertex_t vertex);
 void MeshPushTriangle(mesh_t* mesh, GLuint i0, GLuint i1, GLuint i2);
+void MeshRecalculateNormals(mesh_t* mesh);
 void MeshUpload(mesh_t* mesh, GLenum usage);
 void MeshDraw(mesh_t* mesh, GLenum mode);
 void MeshDestroy(mesh_t* mesh);

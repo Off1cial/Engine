@@ -26,6 +26,8 @@ typedef struct {
   size_t material_count;
   rdrawqueue_t* draw_q;
 
+  
+
   bool fullbright;
   bool wireframe;
 

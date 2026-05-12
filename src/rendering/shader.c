@@ -88,12 +88,16 @@ bool Shader_Load(shader_t* shader, const char* assetPath, const char* vertPath, 
 
   shader->uModelLoc = glGetUniformLocation(shader->program, "uModel");
   shader->uViewLoc = glGetUniformLocation(shader->program, "uView");
+  shader->uViewPosLoc = glGetUniformLocation(shader->program, "uViewPos");
   shader->uProjLoc = glGetUniformLocation(shader->program, "uProj");
   shader->uColourLoc = glGetUniformLocation(shader->program, "uColour");
   shader->uTextureLoc = glGetUniformLocation(shader->program, "uTexture");
   shader->uUseTextureLoc = glGetUniformLocation(shader->program, "uUseTexture");
   shader->uUseVertexColLoc = glGetUniformLocation(shader->program, "uUseVertexCol");
   shader->uLightCountLoc = glGetUniformLocation(shader->program, "uLightCount");
+
+  shader->uSpecularLoc = glGetUniformLocation(shader->program, "uSpecular");
+  shader->uShininessLoc = glGetUniformLocation(shader->program, "uShininess");
 
   for (size_t i = 0; i < MAX_FORWARD_LIGHTS; i++){
     char uniform[128];

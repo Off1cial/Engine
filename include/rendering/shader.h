@@ -39,6 +39,9 @@ typedef struct {
   GLint uTextureLoc;
   GLint uColourLoc;
 
+  GLint uSpecularLoc;
+  GLint uShininessLoc;
+
   GLint uLightCountLoc;
 
   shader_light_uniform_t uLights[MAX_FORWARD_LIGHTS];

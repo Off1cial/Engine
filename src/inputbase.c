@@ -1,5 +1,6 @@
 #include "inputbase.h"
 #include "imgui_layer.h"
+#include "rendering/renderer.h"
 #include <stdio.h>
 #include <SDL3/SDL.h>
 
@@ -68,5 +69,8 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
   // Toggle editor
   state->FLAG_ToggleEditor = state->kCurrent[SDL_SCANCODE_0] && !state->kPrevious[SDL_SCANCODE_0];
 
+  if (state->kCurrent[SDL_SCANCODE_8] && !state->kPrevious[SDL_SCANCODE_8]){
+    gRendererState->wireframe = !gRendererState->wireframe;
+  }
 
 }

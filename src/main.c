@@ -65,6 +65,7 @@ int main(){
   MeshPrimitives_Init();
 
   mesh_t* tri_mesh = MeshInit_FromFile("../trimesh.mesh");
+  MeshRecalculateNormals(tri_mesh);
   MeshUpload(tri_mesh, GL_STATIC_DRAW);
 
 
@@ -88,21 +89,24 @@ int main(){
   renderer_state.light_count = 0;
   renderer_state.light_forward_count = 0;
 
+  renderer_state.wireframe = false;
+  renderer_state.fullbright = false;
+
   // Default sun light - testing
   light_t sunLight = {
-    .type = LIGHT_DIRECTIONAL,
+    .type = LIGHT_POINT,
     .colour = VectorInit(0.8, 0.8, 0.75),
     .direction = VectorInit(-1, -1, 0),
     .intensity = 0.8f,
-    .position = VectorInit(0, 2, 0),
-    .radius = 100.0f,
+    .position = VectorInit(0, -8, 0),
+    .radius = 30.0f,
   };
 
   renderer_state.lights_forward[0] = &sunLight;
   renderer_state.light_forward_count++;
 
 
-  material_t* mat_marble = Material_Load("../Assets/Materials/brickmaterial.mat");
+  material_t* mat_marble = Material_Load("../Assets/Materials/testmaterial.mat");
   if (!mat_marble){
     printf("mat_marble = NULL\n");
     exit(1);
@@ -163,7 +167,6 @@ int main(){
     rcmd->draw_mesh.mode = GL_TRIANGLES;
     rcmd->draw_mesh.material = gRendererState->materials[0];
     
-
     // Rendering
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

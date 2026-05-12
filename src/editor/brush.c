@@ -131,7 +131,7 @@ void BrushHoveredSideComputeMesh(brush_side_hovered_t *hside)
 
   printf("hovered winding of %d points\n", base.count);
 
-  const float vertex_offset = 0.03f;
+  const float vertex_offset = 0.08f;
   VectorNormalise(&plane->normal);
   Vector vector_offset = VectorScale(plane->normal, vertex_offset);
 
@@ -154,10 +154,10 @@ void BrushHoveredSideComputeMesh(brush_side_hovered_t *hside)
   }
 }
 
-mesh_t BrushToMesh(brush_t *b)
+void BrushToMesh(brush_t *b, mesh_t* mesh_out)
 {
-  mesh_t m = {0};
-  MeshInit(&m, 24, 24);
+  MeshReset(mesh_out);
+  MeshInit(mesh_out, 24, 24);
 
   b->edge_count = 0;
 
@@ -204,22 +204,30 @@ mesh_t BrushToMesh(brush_t *b)
       Vector2 uv1 = Brush_ComputeUV(&b->sides[i], p1);
       Vector2 uv2 = Brush_ComputeUV(&b->sides[i], p2);
 
-      GLuint i0 = MeshPushVertex(&m, MakeVertex(base.v[0], VectorScale(VECTOR_ONE, 0.8f), uv0));
-      GLuint i1 = MeshPushVertex(&m, MakeVertex(base.v[v], VectorScale(VECTOR_ONE, 0.8f), uv1));
-      GLuint i2 = MeshPushVertex(&m, MakeVertex(base.v[v + 1], VectorScale(VECTOR_ONE, 0.8f), uv2));
+      GLuint i0 = MeshPushVertex(mesh_out, MakeVertex(base.v[0], VectorScale(VECTOR_ONE, 0.8f), uv0));
+      GLuint i1 = MeshPushVertex(mesh_out, MakeVertex(base.v[v], VectorScale(VECTOR_ONE, 0.8f), uv1));
+      GLuint i2 = MeshPushVertex(mesh_out, MakeVertex(base.v[v + 1], VectorScale(VECTOR_ONE, 0.8f), uv2));
 
-      MeshPushTriangle(&m, i0, i1, i2);
+      MeshPushTriangle(mesh_out, i0, i1, i2);
     }
   }
-
-  return m;
 }
 void EditorBrush_Draw(brush_t *brush, rdrawqueue_t *drawlist, camera_t *cam)
 {
+  if (brush->dirty){
+    MeshReset(&brush->editor_mesh);
+    BrushToMesh(brush, &brush->editor_mesh);
+    MeshRecalculateNormals(&brush->editor_mesh);
+    MeshUpload(&brush->editor_mesh, GL_STATIC_DRAW);
+    brush->dirty = 0;
+  }
+
+
+
   struct rcmd_t *cmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
   cmd->type = RCMD_DRAW_MESH;
   cmd->draw_mesh.mesh = &brush->editor_mesh;
-  cmd->draw_mesh.mode = GL_TRIANGLES;
+  cmd->draw_mesh.mode = (!gRendererState->wireframe) ? GL_TRIANGLES : GL_LINES;
   cmd->draw_mesh.model = Mat4Identity();
   cmd->draw_mesh.material = gRendererState->materials[0];
 
@@ -245,6 +253,7 @@ void EditorBrush_DrawHoveredSide(brush_side_hovered_t *hside)
   if (hside->dirty)
   {
     BrushHoveredSideComputeMesh(hside);
+    MeshRecalculateNormals(&hside->mesh);
     MeshUpload(&hside->mesh, GL_STATIC_DRAW);
     MeshDebug_PrintVertices(&hside->mesh);
     printf("Hovered mesh created\n");

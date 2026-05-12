@@ -115,7 +115,13 @@ material_t* Material_Load(const char* filepath){
 
     else if (strcmp(ident, "Specular") == 0){
       float spec = Parser_ReadFloat(&parser);
+      m->flags |= MATERIAL_SPECULAR;
       m->specular = spec;
+    }
+
+    else if (strcmp(ident, "Shininess") == 0){
+      float shin = Parser_ReadFloat(&parser);
+      m->shininess = shin;
     }
     
     // Transparency

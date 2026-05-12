@@ -92,7 +92,7 @@ void EditorBrushArray_Init(editor_brush_array* arr, size_t capacity);
 void EditorBrushArray_Destroy(editor_brush_array* arr);
 
 void BrushHoveredSideComputeMesh(brush_side_hovered_t* hside);
-mesh_t BrushToMesh(brush_t *b);
+void BrushToMesh(brush_t *b, mesh_t* mesh_out);
 brush_t make_brush_cube(Vector mins, Vector maxs);
 
 void EditorBrush_Draw(brush_t* brush, rdrawqueue_t* drawlist, camera_t* cam);

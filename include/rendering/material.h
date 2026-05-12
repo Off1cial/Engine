@@ -25,6 +25,7 @@ typedef struct {
 
 
   float specular;
+  float shininess;
 
   Vector4 colour;
   uint32_t flags;

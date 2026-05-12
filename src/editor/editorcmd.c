@@ -41,7 +41,8 @@ void EditorCreate_Brush(editor_brush_array* b_arr, Vector start, Vector end, Vec
   };
 
   brush_t new_brush = make_brush_cube(mins,maxs);
-  new_brush.editor_mesh = BrushToMesh(&new_brush);
+  BrushToMesh(&new_brush, &new_brush.editor_mesh);
+  MeshRecalculateNormals(&new_brush.editor_mesh);
   MeshUpload(&new_brush.editor_mesh, GL_STATIC_DRAW);
   new_brush.dirty = 0;
 

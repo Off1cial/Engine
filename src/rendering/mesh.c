@@ -10,13 +10,12 @@ struct vertex_t VectorToVertex(Vector a, float col[3])
       {col[0], col[1], col[2]}};
 }
 
-
-struct vertex_t MakeVertex(Vector pos, Vector colour, Vector2 uv){
+struct vertex_t MakeVertex(Vector pos, Vector colour, Vector2 uv)
+{
   struct vertex_t v = {
-    .pos=pos,
-    .colour=colour,
-    .uv = uv
-  };
+      .pos = pos,
+      .colour = colour,
+      .uv = uv};
   return v;
 }
 
@@ -41,10 +40,11 @@ void MeshDebug_PrintVertices(mesh_t *mesh)
 
 void MeshReset(mesh_t *m)
 {
-  if (!m) return;
+  if (!m)
+    return;
 
   m->vertex_count = 0;
-  m->index_count  = 0;
+  m->index_count = 0;
 
   // IMPORTANT: do NOT free GPU buffers
   // just reuse existing allocation
@@ -116,6 +116,7 @@ void MeshPushTriangle(mesh_t *mesh, GLuint i0, GLuint i1, GLuint i2)
     mesh->index_capacity = new_capacity;
   }
 
+  /*
   Vector vA = mesh->vertices[i1].pos;
   Vector vB = mesh->vertices[i2].pos;
 
@@ -123,13 +124,47 @@ void MeshPushTriangle(mesh_t *mesh, GLuint i0, GLuint i1, GLuint i2)
   vB = VectorSub(vB, mesh->vertices[i0].pos);
 
   Vector cross = VectorCross(vA, vB);
+
   mesh->vertices[i0].normal = VectorAdd(mesh->vertices[i0].normal, cross);
   mesh->vertices[i1].normal = VectorAdd(mesh->vertices[i1].normal, cross);
   mesh->vertices[i2].normal = VectorAdd(mesh->vertices[i2].normal, cross);
+  */
 
   mesh->indices[mesh->index_count++] = i0;
   mesh->indices[mesh->index_count++] = i1;
   mesh->indices[mesh->index_count++] = i2;
+}
+
+void MeshRecalculateNormals(mesh_t *mesh)
+{
+  // reset
+  for (size_t i = 0; i < mesh->vertex_count; i++)
+    mesh->vertices[i].normal = VECTOR_ZERO;
+
+  // accumulate face normals
+  for (size_t i = 0; i < mesh->index_count; i += 3)
+  {
+    GLuint i0 = mesh->indices[i];
+    GLuint i1 = mesh->indices[i + 1];
+    GLuint i2 = mesh->indices[i + 2];
+
+    Vector p0 = mesh->vertices[i0].pos;
+    Vector p1 = mesh->vertices[i1].pos;
+    Vector p2 = mesh->vertices[i2].pos;
+
+    Vector e1 = VectorSub(p1, p0);
+    Vector e2 = VectorSub(p2, p0);
+
+    Vector n = VectorCross(e1, e2);
+
+    mesh->vertices[i0].normal = VectorAdd(mesh->vertices[i0].normal, n);
+    mesh->vertices[i1].normal = VectorAdd(mesh->vertices[i1].normal, n);
+    mesh->vertices[i2].normal = VectorAdd(mesh->vertices[i2].normal, n);
+  }
+
+  // normalize
+  for (size_t i = 0; i < mesh->vertex_count; i++)
+    VectorNormalise(&mesh->vertices[i].normal);
 }
 
 void MeshUpload(mesh_t *mesh, GLenum usage)
@@ -286,6 +321,7 @@ void MeshPrimitives_Init()
   */
 
   // Upload to GPU once (GL_STATIC_DRAW)
+  MeshRecalculateNormals(mCube);
   MeshUpload(mCube, GL_STATIC_DRAW);
   MESH_PRIMITIVES[MESH_PRIMITIVE_CUBE] = mCube;
   // Store globally so brushes can reference it
