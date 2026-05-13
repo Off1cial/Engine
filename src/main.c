@@ -24,6 +24,8 @@
 //
 
 
+// Source Engine SDK 2013 https://github.com/ValveSoftware/source-sdk-2013/tree/3300848d8a25ef6403c91f82a4cd97d6daefbc06
+
 
 struct mem_arena_t* gMemArena = NULL;
 struct inputstate_t* gInputState = NULL;
