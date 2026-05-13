@@ -119,8 +119,15 @@ typedef struct {
 
 typedef struct {
   brush_side_hovered_t hovered_side;
+  brush_handle_t handles[128];
+  /*
+  32 is more than enough - 
+  clicking on a plane in one panel will give one handle for each edge,
+  one for position which can be interchanged for rotation depending on tool selected
+  */
   brush_t* brushes;
   size_t count, capacity;
+  size_t handle_count;
 } editor_brush_array;
 
 extern editor_brush_array* gEditorBrushArray;

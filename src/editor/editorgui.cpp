@@ -48,6 +48,14 @@ ImGuiWindowFlags panel_flags =
     ImGuiWindowFlags_NoTitleBar;
 // Remove NoTitleBar
 
+
+static ImVec2 ProjectToPanel(Vector v, Vector origin, Vector right, Vector up)
+{
+  return (ImVec2){
+      (float)VectorDot(v, right),
+      (float)VectorDot(v, up)};
+}
+
 void RecalculatePanels(int winw, int winh, camera_t *editor_camera)
 {
 
@@ -158,6 +166,65 @@ void draw_panel_grid(size_t index)
   }
 }
 
+static void draw_handle(brush_handle_t* handle, int panel){
+  if (!handle)
+    return;
+
+  if (panel < 2 || panel > 4)
+    return;
+
+
+  ImDrawList* dl = ImGui::GetWindowDrawList();
+  ImVec2 win_pos = ImGui::GetWindowPos();
+
+  switch(handle->type){
+    case BRUSH_HANDLE_SIDE:
+      // Draw a selectable square on the line centre
+      Vector right, up;
+      // TOP VIEW
+      if (panel == 2){
+        right = VECTOR_AXIS_X;
+        up = VECTOR_AXIS_Z_NEG;
+      }else if (panel == 3){
+        // SIDE
+        right = VECTOR_AXIS_Z;
+        up = VECTOR_AXIS_Y;
+      }else if (panel == 4){
+        right = VECTOR_AXIS_X;
+        up = VECTOR_AXIS_Y;
+      }
+      
+      ImVec2 line_a = ProjectToPanel(
+          handle->side_handle.edge->a,
+          VECTOR_ZERO,
+          right,
+          up);
+
+      ImVec2 line_b = ProjectToPanel(
+          handle->side_handle.edge->b,
+          VECTOR_ZERO,
+          right,
+          up
+          );
+
+      ImVec2 centre = ImVec2(line_a.x + line_b.x, line_a.y + line_b.y);
+      centre.x *= 0.5f;
+      centre.y *= 0.5f;
+      
+      centre.x += win_pos.x;
+      centre.y += win_pos.y;
+
+      const float rectsize_half = 4.0f;
+
+      ImVec2 minp = ImVec2(centre.x - rectsize_half, centre.y + rectsize_half);
+      ImVec2 maxp = ImVec2(centre.x + rectsize_half, centre.y + rectsize_half);
+
+      dl->AddRectFilled(minp, maxp, IM_COL32(0, 255, 0, 255));
+
+
+  }
+}
+
 static void draw_edge(ImDrawList *dl,
                       ImVec2 a, ImVec2 b,
                       ImVec2 offset)
@@ -201,12 +268,6 @@ static float point_segment_distance_sq(ImVec2 p, ImVec2 a, ImVec2 b)
   return dx * dx + dy * dy;
 }
 
-static ImVec2 ProjectToPanel(Vector v, Vector origin, Vector right, Vector up)
-{
-  return (ImVec2){
-      (float)VectorDot(v, right),
-      (float)VectorDot(v, up)};
-}
 
 static brush_edge_t *find_hovered_edge(int panel)
 {
