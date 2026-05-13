@@ -42,6 +42,23 @@ typedef struct {
   brush_side_t* side_b;
 } brush_edge_t;
 
+
+
+
+typedef struct {
+  brush_side_t sides[MAX_BRUSH_FACES]; // Local space to centre
+  brush_edge_t edges[MAX_BRUSH_EDGES];
+  int edge_count;
+
+  int side_count;
+  int dirty;
+  int dirty_ui_edges;
+  mesh_t editor_mesh;
+
+  Vector pos, rot, scale;
+
+} brush_t;
+
 typedef enum {
   BRUSH_HANDLE_SIDE,
   BRUSH_HANDLE_POSITION,
@@ -77,19 +94,6 @@ typedef struct {
 } brush_handle_t;
 
 
-typedef struct {
-  brush_side_t sides[MAX_BRUSH_FACES]; // Local space to centre
-  brush_edge_t edges[MAX_BRUSH_EDGES];
-  int edge_count;
-
-  int side_count;
-  int dirty;
-  int dirty_ui_edges;
-  mesh_t editor_mesh;
-
-  Vector pos, rot, scale;
-
-} brush_t;
 
 
 
