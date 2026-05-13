@@ -200,6 +200,13 @@ void MeshUpload(mesh_t *mesh, GLenum usage)
   // Normal attribute
   glEnableVertexAttribArray(3);
   glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(struct vertex_t), (void *)OFFSETOF(struct vertex_t, normal));
+  
+  // Tangent attribute
+  glEnableVertexAttribArray(4);
+  glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(struct vertex_t), (void*)OFFSETOF(struct vertex_t, tangent));
+
+
+
   glBindVertexArray(0);
 }
 

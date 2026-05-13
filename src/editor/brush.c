@@ -204,9 +204,39 @@ void BrushToMesh(brush_t *b, mesh_t* mesh_out)
       Vector2 uv1 = Brush_ComputeUV(&b->sides[i], p1);
       Vector2 uv2 = Brush_ComputeUV(&b->sides[i], p2);
 
+      struct vertex_t v0 = {
+        .pos = base.v[0],
+        .colour = VECTOR_ONE,
+        .uv = uv0,
+        .tangent = b->sides[i].uv_axis_u
+      };
+
+      struct vertex_t v1 = {
+        .pos = base.v[v],
+        .colour = VECTOR_ONE,
+        .uv = uv1,
+        .tangent = b->sides[i].uv_axis_u
+      };
+
+
+      struct vertex_t v2 = {
+        .pos = base.v[v+1],
+        .colour = VECTOR_ONE,
+        .uv = uv2,
+        .tangent = b->sides[i].uv_axis_u
+      };
+
+      
+      /*
       GLuint i0 = MeshPushVertex(mesh_out, MakeVertex(base.v[0], VectorScale(VECTOR_ONE, 0.8f), uv0));
       GLuint i1 = MeshPushVertex(mesh_out, MakeVertex(base.v[v], VectorScale(VECTOR_ONE, 0.8f), uv1));
       GLuint i2 = MeshPushVertex(mesh_out, MakeVertex(base.v[v + 1], VectorScale(VECTOR_ONE, 0.8f), uv2));
+      */
+      
+      GLuint i0 = MeshPushVertex(mesh_out, v0);
+      GLuint i1 = MeshPushVertex(mesh_out, v1);
+      GLuint i2 = MeshPushVertex(mesh_out, v2);
+      
 
       MeshPushTriangle(mesh_out, i0, i1, i2);
     }

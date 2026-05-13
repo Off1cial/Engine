@@ -73,4 +73,8 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
     gRendererState->wireframe = !gRendererState->wireframe;
   }
 
+  if (state->kCurrent[SDL_SCANCODE_7] && !state->kPrevious[SDL_SCANCODE_7]){
+    gRendererState->draw_normal_maps = !gRendererState->draw_normal_maps;
+  }
+
 }

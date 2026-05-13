@@ -89,24 +89,25 @@ int main(){
   renderer_state.light_count = 0;
   renderer_state.light_forward_count = 0;
 
+  renderer_state.draw_normal_maps = true;
   renderer_state.wireframe = false;
   renderer_state.fullbright = false;
 
   // Default sun light - testing
   light_t sunLight = {
     .type = LIGHT_POINT,
-    .colour = VectorInit(0.8, 0.3, 0.75),
-    .direction = VectorInit(-1, -1, 0),
+    .colour = VectorInit(0.9, 0.9, 0.9),
+    .direction = VectorInit(3, -1, 0),
     .intensity = 0.8f,
     .position = VectorInit(0, -8, 0),
-    .radius = 30.0f,
+    .radius = 50.0f,
   };
 
   renderer_state.lights_forward[0] = &sunLight;
   renderer_state.light_forward_count++;
 
 
-  material_t* mat_marble = Material_Load("../Assets/Materials/testmaterial.mat");
+  material_t* mat_marble = Material_Load("../Assets/Materials/brickmaterial.mat");
   if (!mat_marble){
     printf("mat_marble = NULL\n");
     exit(1);

@@ -12,6 +12,12 @@ uniform bool uUseTexture;
 uniform bool uUseVertexColour;
 uniform sampler2D uTexture;
 
+uniform sampler2D uNormalMap;
+uniform bool uUseNormalMap;
+
+in mat3 vTBN;
+
+
 uniform vec3 uViewPos;
 uniform float uSpecular;
 uniform float uShininess;
@@ -33,7 +39,19 @@ uniform int uLightCount;
 
 void main()
 {
-  vec3 normal = normalize(-vNormal);
+  vec3 normal;
+
+  if (uUseNormalMap)
+  {
+      vec3 tangentNormal =
+          texture(uNormalMap, vUV).xyz * 2.0 - 1.0;
+
+      normal = -normalize(vTBN * tangentNormal);
+  }
+  else
+  {
+      normal = -normalize(vNormal);
+  }
   vec3 viewDir = normalize(uViewPos - vPos);
 
   vec3 ambient = vec3(0.05);
@@ -89,4 +107,6 @@ void main()
   finalRGB = pow(finalRGB, vec3(1.0 / 2.2));
 
   FragColour = vec4(finalRGB, finalColour.a * texColour.a);
+
+
 }

@@ -14,6 +14,7 @@ typedef enum material_flags_t{
   MATERIAL_DOUBLE_SIDED     = 1 << 3,
   MATERIAL_UNLIT            = 1 << 4,
   MATERIAL_SPECULAR         = 1 << 5,
+  MATERIAL_USE_NORMAL       = 1 << 6,
 
 } material_flags_t;
 
@@ -22,6 +23,7 @@ typedef struct {
   shader_t* shader; // NULL = use default lit or unlit shader
 
   texture_t* base;
+  texture_t* normal;
 
 
   float specular;

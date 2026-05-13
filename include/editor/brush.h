@@ -42,6 +42,40 @@ typedef struct {
   brush_side_t* side_b;
 } brush_edge_t;
 
+typedef enum {
+  BRUSH_HANDLE_SIDE,
+  BRUSH_HANDLE_POSITION,
+  BRUSH_HANDLE_ROTATE
+} brush_handle_type_t;
+
+typedef struct {
+
+  brush_handle_type_t type;
+
+  union{
+    // Used to drag brush edges
+    struct {
+      Vector2 positon; // GUI Position
+      brush_edge_t* edge;
+      float delta; // Distance to move along normal
+    } side_handle;
+    // Used to drag brushes by their centre
+    struct {
+      Vector2 position; // GUI Position
+      brush_t* brush;
+      Vector2 delta;
+    } pos_handle;
+    // Used to rotate brushes around their centre
+    struct {
+      Vector2 position; // GUI Position
+      brush_t* brush;
+      float delta_2d; // Radians to rotate brush by in GUI
+      Vector delta_3d; // Radians to rotate by each axis in 3D
+    } rotate_handle;
+  };
+
+} brush_handle_t;
+
 
 typedef struct {
   brush_side_t sides[MAX_BRUSH_FACES]; // Local space to centre

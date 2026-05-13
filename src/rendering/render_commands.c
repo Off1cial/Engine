@@ -60,6 +60,17 @@ static void Renderer_BindMaterial(shader_t* shader, material_t* material){
       Shader_SetIntCached(shader->uTextureLoc, 0);
     }
   }
+  // Normal
+  if ((material->flags & MATERIAL_USE_NORMAL) != 0){
+    if (material->normal){
+      Shader_SetIntCached(shader->uUseNormalMapLoc, gRendererState->draw_normal_maps);
+      Texture_Bind(material->normal, 1);
+      Shader_SetIntCached(shader->uNormalMapLoc, 1);
+    }
+  }else{
+    Shader_SetIntCached(shader->uUseNormalMapLoc, 0);
+  }
+
   // Transparency
   if ((material->flags & MATERIAL_TRANSPARENT) != 0){
     glEnable(GL_BLEND);

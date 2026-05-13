@@ -94,6 +94,27 @@ material_t* Material_Load(const char* filepath){
       }
     }
 
+    // Normal
+    else if (strcmp(ident, "Normal") == 0){
+      char normalpath[256];
+      Parser_ReadString(&parser, normalpath);
+      if (normalpath[0] != '\0'){
+        // Load normal
+        texture_t* normal = Texture_Load(normalpath);
+        if (!normal){
+          fprintf(stderr,
+          "[MATERIAL]: Material normal map failed to load\nMaterial: %s\nTexture: %s\n",
+          filepath,
+          normalpath
+          );
+          m->normal = NULL;
+        }else{
+          m->normal = normal;
+          m->flags |= MATERIAL_USE_NORMAL;
+        }
+      }
+    }
+
     // Use vertex colour
     else if (strcmp(ident, "UseVertexColour") == 0)
     {
@@ -140,6 +161,9 @@ material_t* Material_Load(const char* filepath){
 
   printf("Use Texture: %d\n",
       (m->flags & MATERIAL_USE_TEXTURE) != 0);
+
+  printf("Use Normal: %d\n",
+    (m->flags & MATERIAL_USE_NORMAL) != 0);
 
   printf("Use Vertex Colour: %d\n",
       (m->flags & MATERIAL_USE_VERTEX_COLOUR) != 0);

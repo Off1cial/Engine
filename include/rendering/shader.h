@@ -35,8 +35,10 @@ typedef struct {
   GLint uViewPosLoc;
 
   GLint uUseTextureLoc;
+  GLint uUseNormalMapLoc;
   GLint uUseVertexColLoc;
   GLint uTextureLoc;
+  GLint uNormalMapLoc;
   GLint uColourLoc;
 
   GLint uSpecularLoc;
@@ -56,6 +58,7 @@ typedef struct {
   size_t count;
   size_t capacity;
 } shader_store_t;
+
 
 void ShaderStore_Init(shader_store_t* store, size_t capacity);
 long int ShaderStore_Add(shader_store_t* store, shader_t* shader);

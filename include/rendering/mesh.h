@@ -11,6 +11,7 @@ struct vertex_t{
   Vector pos;
   Vector colour;
   Vector normal;
+  Vector tangent;
   Vector2 uv;
 };
 

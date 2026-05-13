@@ -1,0 +1,11 @@
+Material "PavingStonesMaterial"
+{
+  Lit=true
+  Texture="../Assets/Textures/pavingstones.png"
+  Normal="../Assets/Textures/Normals/pavingstones_normal.png"
+  UseVertexColour=false
+  Colour=255 255 255 255
+  Specular=1
+  Shininess=1
+  Transparent=false
+}

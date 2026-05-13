@@ -1,0 +1,11 @@
+Material "GrassMaterial"
+{
+  Lit=true
+  Texture="../Assets/Textures/grass.png"
+  Normal="../Assets/Textures/Normals/grass_normal.png"
+  UseVertexColour=false
+  Colour=255 255 255 255
+  Specular=0
+  Shininess=0
+  Transparent=false
+}

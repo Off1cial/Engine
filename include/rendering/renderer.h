@@ -27,6 +27,7 @@ typedef struct {
   rdrawqueue_t* draw_q;
 
   
+  bool draw_normal_maps;
 
   bool fullbright;
   bool wireframe;
