@@ -1,6 +1,6 @@
 Material "SigmundMaterial"
 {
-  Lit=true
+  Lit=false
   Texture="../Assets/Textures/sigmund.jpg"
   UseVertexColour=false;
   Colour=255 255 255 255

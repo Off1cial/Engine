@@ -723,6 +723,7 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
   // Edge selection
   if (input->mbutton_left_toggle && edge_hovered)
   {
+    printf("Edge selected\n");
     edge_selected = edge_hovered;
 
     edge_selected_a = edge_hovered_a;
