@@ -136,10 +136,11 @@ void EditorLoop(SDL_Window* window, rdrawqueue_t* draw_q, camera_t* editor_camer
   for (size_t i = 0; i < gEditorBrushArray->count; i++){
     EditorBrush_Draw(&gEditorBrushArray->brushes[i], gRendererState->draw_q, gRendererState->active_cam);
   }
-  EditorBrush_DrawHoveredSide(&gEditorBrushArray->hovered_side);
+  EditorBrush_DrawHoveredSide(&gEditorBrushArray->hovered_side, 0);
 
   EditorGui_DrawAll(window, gInputState, editor_camera, gInputState->FLAG_WindowResized);
   EditorGui_HandleBrushInput(gInputState);
+  
   EditorGui_HandlePanelInput(window, gInputState);
   if (!relative_mouse) {find_hovered_brush(editor_camera, mx, my, &brush_hit, &brush_dist, &brush_hit_side); }
   EditorQueue_Execute(gEditorQueue, gEditorBrushArray);

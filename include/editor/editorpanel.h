@@ -2,6 +2,8 @@
 #define EDITOR_PANEL_H
 
 #include "imgui/imgui.h"
+#include "types/types_vector.h"
+
 
 typedef struct {
   ImVec2 pos, size;
@@ -9,6 +11,9 @@ typedef struct {
 
   ImVec2 cam_pos; // World coordinates
   float cam_zoom;
+
+  Vector world_right;
+  Vector world_up;
 
 } gui_panel_t;
 

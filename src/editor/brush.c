@@ -1,6 +1,58 @@
 #include "editor/brush.h"
 #include "mem.h"
 
+static bool edge_match(Vector a1, Vector b1, Vector a2, Vector b2)
+{
+  return (VectorEqual(a1, a2) && VectorEqual(b1, b2)) ||
+         (VectorEqual(a1, b2) && VectorEqual(b1, a2));
+}
+
+static void brush_compute_edges(brush_t *brush)
+{
+  for (size_t i = 0; i < brush->edge_count; i++)
+  {
+    brush_edge_t *e = &brush->edges[i];
+
+    e->side_b = -1;
+
+    for (size_t j = 0; j < brush->side_count; j++)
+    {
+      if (j == e->side_a)
+        continue;
+
+      // Build winding for THIS side
+      winding_t base =
+          base_winding(brush->sides[j].plane);
+
+      for (size_t k = 0; k < brush->side_count; k++)
+      {
+        if (k == j)
+          continue;
+
+        base =
+            clip_winding(
+                &base,
+                brush->sides[k].plane);
+      }
+
+      // Compare all edges of this winding
+      for (size_t k = 0; k < base.count; k++)
+      {
+        Vector a = base.v[k];
+        Vector b = base.v[(k + 1) % base.count];
+
+        if (edge_match(e->a, e->b, a, b))
+        {
+          e->side_b = j;
+          goto found_side;
+        }
+      }
+    }
+
+  found_side:;
+  }
+}
+
 void EditorBrushArray_Init(editor_brush_array *arr, size_t capacity)
 {
   arr->brushes = malloc(sizeof(brush_t) * capacity);
@@ -102,8 +154,6 @@ brush_t make_brush_cube(Vector mins, Vector maxs)
   return b;
 }
 
-
-
 void BrushHoveredSideComputeMesh(brush_side_hovered_t *hside)
 {
 
@@ -154,7 +204,7 @@ void BrushHoveredSideComputeMesh(brush_side_hovered_t *hside)
   }
 }
 
-void BrushToMesh(brush_t *b, mesh_t* mesh_out)
+void BrushToMesh(brush_t *b, mesh_t *mesh_out)
 {
   MeshReset(mesh_out);
   MeshInit(mesh_out, 24, 24);
@@ -178,20 +228,21 @@ void BrushToMesh(brush_t *b, mesh_t* mesh_out)
 
     for (int e = 0; e < base.count; e++)
     {
-        if (b->edge_count >= MAX_BRUSH_EDGES)
-            break;
+      if (b->edge_count >= MAX_BRUSH_EDGES)
+        break;
 
-        Vector a = base.v[e];
-        Vector bpos = base.v[(e + 1) % base.count];
+      Vector a = base.v[e];
+      Vector bpos = base.v[(e + 1) % base.count];
 
-        brush_edge_t* edge =
-            &b->edges[b->edge_count++];
+      brush_edge_t *edge =
+          &b->edges[b->edge_count++];
 
-        edge->a = a;
-        edge->b = bpos;
+      edge->a = a;
+      edge->b = bpos;
 
-        edge->side_a = &b->sides[i];
-        edge->side_b = NULL;
+      edge->brush = (int)(b - gEditorBrushArray->brushes);
+      edge->side_a = i;
+      edge->side_b = -1;
     }
 
     for (int v = 1; v < base.count - 1; v++)
@@ -205,54 +256,49 @@ void BrushToMesh(brush_t *b, mesh_t* mesh_out)
       Vector2 uv2 = Brush_ComputeUV(&b->sides[i], p2);
 
       struct vertex_t v0 = {
-        .pos = base.v[0],
-        .colour = VECTOR_ONE,
-        .uv = uv0,
-        .tangent = b->sides[i].uv_axis_u
-      };
+          .pos = base.v[0],
+          .colour = VECTOR_ONE,
+          .uv = uv0,
+          .tangent = b->sides[i].uv_axis_u};
 
       struct vertex_t v1 = {
-        .pos = base.v[v],
-        .colour = VECTOR_ONE,
-        .uv = uv1,
-        .tangent = b->sides[i].uv_axis_u
-      };
-
+          .pos = base.v[v],
+          .colour = VECTOR_ONE,
+          .uv = uv1,
+          .tangent = b->sides[i].uv_axis_u};
 
       struct vertex_t v2 = {
-        .pos = base.v[v+1],
-        .colour = VECTOR_ONE,
-        .uv = uv2,
-        .tangent = b->sides[i].uv_axis_u
-      };
+          .pos = base.v[v + 1],
+          .colour = VECTOR_ONE,
+          .uv = uv2,
+          .tangent = b->sides[i].uv_axis_u};
 
-      
       /*
       GLuint i0 = MeshPushVertex(mesh_out, MakeVertex(base.v[0], VectorScale(VECTOR_ONE, 0.8f), uv0));
       GLuint i1 = MeshPushVertex(mesh_out, MakeVertex(base.v[v], VectorScale(VECTOR_ONE, 0.8f), uv1));
       GLuint i2 = MeshPushVertex(mesh_out, MakeVertex(base.v[v + 1], VectorScale(VECTOR_ONE, 0.8f), uv2));
       */
-      
+
       GLuint i0 = MeshPushVertex(mesh_out, v0);
       GLuint i1 = MeshPushVertex(mesh_out, v1);
       GLuint i2 = MeshPushVertex(mesh_out, v2);
-      
 
       MeshPushTriangle(mesh_out, i0, i1, i2);
     }
   }
+  brush_compute_edges(b);
 }
 void EditorBrush_Draw(brush_t *brush, rdrawqueue_t *drawlist, camera_t *cam)
 {
-  if (brush->dirty){
+  if (brush->dirty)
+  {
+    printf("Recalculating brush\n");
     MeshReset(&brush->editor_mesh);
     BrushToMesh(brush, &brush->editor_mesh);
     MeshRecalculateNormals(&brush->editor_mesh);
     MeshUpload(&brush->editor_mesh, GL_STATIC_DRAW);
     brush->dirty = 0;
   }
-
-
 
   struct rcmd_t *cmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
   cmd->type = RCMD_DRAW_MESH;
@@ -264,19 +310,31 @@ void EditorBrush_Draw(brush_t *brush, rdrawqueue_t *drawlist, camera_t *cam)
   RDrawQueue_Push(drawlist, cmd);
 }
 
-void EditorBrush_DrawHoveredSide(brush_side_hovered_t *hside)
+void EditorBrush_DrawHoveredSide(brush_side_hovered_t *hside, bool print)
 {
 
   if (!hside)
   {
+    if (print)
+    {
+      printf("[BRUSH]: Hovered side = NULL\n");
+    }
     return;
   }
   if (!hside->side)
   {
+    if (print)
+    {
+      printf("[BRUSH]: Hovered side.side = NULL\n");
+    }
     return;
   }
   if (!hside->owner_brush)
   {
+    if (print)
+    {
+      printf("[BRUSH]: Hovered side.brush = NULL\n");
+    }
     return;
   }
 

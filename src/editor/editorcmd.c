@@ -41,12 +41,13 @@ void EditorCreate_Brush(editor_brush_array* b_arr, Vector start, Vector end, Vec
   };
 
   brush_t new_brush = make_brush_cube(mins,maxs);
-  BrushToMesh(&new_brush, &new_brush.editor_mesh);
-  MeshRecalculateNormals(&new_brush.editor_mesh);
-  MeshUpload(&new_brush.editor_mesh, GL_STATIC_DRAW);
-  new_brush.dirty = 0;
+  b_arr->brushes[b_arr->count] = new_brush;
+  BrushToMesh(&gEditorBrushArray->brushes[b_arr->count], &gEditorBrushArray->brushes[b_arr->count].editor_mesh);
+  MeshRecalculateNormals(&gEditorBrushArray->brushes[b_arr->count].editor_mesh);
+  MeshUpload(&gEditorBrushArray->brushes[b_arr->count].editor_mesh, GL_STATIC_DRAW);
+  gEditorBrushArray->brushes[b_arr->count].dirty = 0;
 
-  b_arr->brushes[b_arr->count++] = new_brush;
+  b_arr->count++;
 
   printf("[EDITOR]: Brush created, S{%0.3f, %0.3f, %0.3f}, E{%0.3f, %0.3f, %0.3f}\n", mins.x, mins.y, mins.z, maxs.x, maxs.y, maxs.z);
 }

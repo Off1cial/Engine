@@ -161,6 +161,7 @@ int main(){
     
     gRendererState->lights_forward[0]->position = gRendererState->active_cam->pos;
 
+
     struct rcmd_t* rcmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
     rcmd->type = RCMD_DRAW_MESH;
     rcmd->draw_mesh.mesh = tri_mesh;

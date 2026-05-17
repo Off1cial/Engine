@@ -38,14 +38,15 @@ typedef struct {
 typedef struct {
   Vector a, b;
 
-  brush_side_t* side_a;
-  brush_side_t* side_b;
+  int side_a;
+  int side_b; // optional -> -1
+  int brush; // Index to gEditorBrushArray->brushes
 } brush_edge_t;
 
 
 
 
-typedef struct {
+typedef struct brush_t {
   brush_side_t sides[MAX_BRUSH_FACES]; // Local space to centre
   brush_edge_t edges[MAX_BRUSH_EDGES];
   int edge_count;
@@ -141,7 +142,7 @@ void BrushToMesh(brush_t *b, mesh_t* mesh_out);
 brush_t make_brush_cube(Vector mins, Vector maxs);
 
 void EditorBrush_Draw(brush_t* brush, rdrawqueue_t* drawlist, camera_t* cam);
-void EditorBrush_DrawHoveredSide(brush_side_hovered_t* hside);
+void EditorBrush_DrawHoveredSide(brush_side_hovered_t* hside, bool print);
 bool Brush_Raycast(brush_t* brush, int* out_side, Vector* out_hit, float* out_dist, camera_t* camera, float cursorx, float cursory);
 
 static winding_t base_winding(plane_t p)

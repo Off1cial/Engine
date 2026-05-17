@@ -28,6 +28,8 @@ ImVec2 edge_hovered_a, edge_hovered_b;
 ImVec2 edge_selected_a, edge_selected_b;
 bool gEditorGui_ViewportCaptured = false;
 
+bool dragging_edge;
+
 ImVec2 imvec2_add(ImVec2 a, ImVec2 b)
 {
   return ImVec2(a.x + b.x, a.y + b.y);
@@ -44,9 +46,38 @@ ImGuiWindowFlags panel_flags =
     ImGuiWindowFlags_NoResize |
     ImGuiWindowFlags_NoMove |
     ImGuiWindowFlags_NoBringToFrontOnFocus |
-    ImGuiWindowFlags_NoCollapse |
-    ImGuiWindowFlags_NoTitleBar;
+    ImGuiWindowFlags_NoCollapse;
+  
 // Remove NoTitleBar
+
+static void GetPanelBasis(
+    int panel,
+    Vector *right,
+    Vector *up)
+{
+  switch (panel)
+  {
+  case 2: // TOP
+    *right = VECTOR_AXIS_X;
+    *up = VECTOR_AXIS_Z_NEG;
+    break;
+
+  case 3: // SIDE
+    *right = VECTOR_AXIS_Z;
+    *up = VECTOR_AXIS_Y;
+    break;
+
+  case 4: // FRONT
+    *right = VECTOR_AXIS_X;
+    *up = VECTOR_AXIS_Y;
+    break;
+
+  default:
+    *right = VECTOR_ZERO;
+    *up = VECTOR_ZERO;
+    break;
+  }
+}
 
 
 static ImVec2 ProjectToPanel(Vector v, Vector origin, Vector right, Vector up)
@@ -71,27 +102,42 @@ void RecalculatePanels(int winw, int winh, camera_t *editor_camera)
   panels[0] = {
       .pos = ImVec2(winw - p0_w, 0),
       .size = ImVec2(p0_w, winh),
-      .label = "Main panel"};
+      .label = "Main panel",
+      .world_right = VECTOR_NAN,
+      .world_up = VECTOR_NAN
+  };
   // Top left - 3D
   panels[1] = {
       .pos = ImVec2(0, 0),
       .size = rsize,
-      .label = "3D"};
+      .label = "3D",
+      .world_right = gRendererState->active_cam->right,
+      .world_up = gRendererState->active_cam->up
+    };
   // Top right  -TOP
   panels[2] = {
       .pos = ImVec2(rwidth, 0),
       .size = rsize,
-      .label = "TOP"};
+      .label = "TOP",
+      .world_right = VECTOR_AXIS_X,
+      .world_up = VECTOR_AXIS_Z_NEG
+    };
   // Bottom right - SIDE
   panels[3] = {
       .pos = ImVec2(rwidth, rheight),
       .size = rsize,
-      .label = "SIDE"};
+      .label = "SIDE",
+      .world_right = VECTOR_AXIS_Z,
+      .world_up = VECTOR_AXIS_Y
+    };
   // Bottom left - FRONT
   panels[4] = {
       .pos = ImVec2(0, rheight),
       .size = rsize,
-      .label = "FRONT"};
+      .label = "FRONT",
+      .world_right = VECTOR_AXIS_X,
+      .world_up = VECTOR_AXIS_Y
+    };
 
   for (int i = 0; i < 5; i++)
   {
@@ -627,7 +673,7 @@ void draw_panel(struct inputstate_t *input, size_t index)
   }
 
   draw_panel_grid(index);
-  edge_hovered = find_hovered_edge(index);
+  if (index == gEditorGui_HoveredPanel) edge_hovered = find_hovered_edge(index);
 
   for (size_t b = 0; b < gEditorBrushArray->count; b++)
   {
@@ -637,6 +683,7 @@ void draw_panel(struct inputstate_t *input, size_t index)
 
   if (edge_hovered)
   {
+
     ImGui::GetWindowDrawList()->AddLine(
         edge_hovered_a,
         edge_hovered_b,
@@ -678,16 +725,33 @@ void EditorGui_DrawAll(SDL_Window *window, struct inputstate_t *input, camera_t 
   ImGui_Render();
 }
 
+static Vector PanelMouseToWorldDelta(Vector right, Vector up, float mx, float my) // Useful for dragging brush posiitons
+{
+    return VectorAdd(
+        VectorScale(right, mx),
+        VectorScale(up, -my)
+    );
+}
+
+
+
 void EditorGui_HandleBrushInput(struct inputstate_t *input)
 {
   static bool drawing = false;
   static ImVec2 start;
+
+
+  Vector up, right;
+
+  GetPanelBasis(gEditorGui_HoveredPanel, &right, &up);
 
   if (gEditorGui_HoveredPanel < 2 || gEditorGui_HoveredPanel > 4)
     return;
 
   bool isTopPanel = (gEditorGui_HoveredPanel == 2);
 
+
+  // Begin drawing
   if (input->mbutton_left_toggle && !drawing && !edge_hovered && !edge_selected)
   {
     drawing = true;
@@ -699,7 +763,8 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
 
     start.y = (isTopPanel) ? panels[2].size.y - start.y : start.y - panels[gEditorGui_HoveredPanel].pos.y;
   }
-  else if (input->mbutton_left_toggle && drawing)
+  // End drawing
+  else if (input->mbutton_left_toggle && drawing && !edge_hovered)
   {
     drawing = false;
 
@@ -720,6 +785,7 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
         GRID_SPACING_WORLD);
   }
 
+
   // Edge selection
   if (input->mbutton_left_toggle && edge_hovered)
   {
@@ -732,6 +798,27 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
   else if (input->mbutton_left_toggle && !drawing && !edge_hovered)
   {
     edge_selected = NULL;
+  }
+  if (input->mCurrent[SDL_BUTTON_LEFT] && edge_selected){
+
+    brush_t* brush = &gEditorBrushArray->brushes[edge_selected->brush];
+
+    plane_t* plane = NULL;
+    brush_side_t* a = &brush->sides[edge_selected->side_a];
+    brush_side_t* b = &brush->sides[edge_selected->side_b];
+
+    plane = (gEditorGui_HoveredPanel != 2) ? &a->plane : &b->plane;
+
+    Vector world_delta = VectorAdd( VectorScale(right, input->mx_rel), VectorScale(up, -input->my_rel) );
+    Vector n = plane->normal;
+    
+    float delta = VectorDot(plane->normal, world_delta);
+    if (fabsf(delta) > 1e-6f){
+      plane->dist += delta;
+      brush->dirty = 1;
+      brush->dirty_ui_edges = 1;
+    }
+
   }
 }
 
