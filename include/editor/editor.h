@@ -16,6 +16,7 @@ typedef struct{
   camera_t* camera;
   struct editor_input_t* input;
   editor_brush_array* b_arr;
+  bool brush_resize; // Is currently resizing a brush?
 } editor_state_t;
 
 #ifdef __cplusplus

@@ -526,3 +526,36 @@ bool Brush_Raycast(
 
   return true;
 }
+
+void BrushDragPlane_3D(brush_t* brush, brush_side_t* side, float mousex, float mousey){
+  if (!brush || !side){
+    return;
+  }
+
+
+  camera_t* cam = gRendererState->active_cam;
+  Vector p0 = VectorScale(side->plane.normal, side->plane.dist);
+  
+  ray_t ray = Camera_ScreenPointToRay(cam, mousex, mousey);
+
+
+  float denom = VectorDot(ray.dir, side->plane.normal);
+
+  if (fabsf(denom) > 1e-6f){
+
+
+    float intersection_t = VectorDot( VectorSub(p0, ray.origin), side->plane.normal);
+
+    float t = intersection_t / denom;
+
+    Vector intersectionpoint = VectorAdd(ray.origin, VectorScale(ray.dir,t) );
+
+    float dist = VectorMag( VectorSub(intersectionpoint, p0) );
+    if (dist >= 5.0f){
+      dist = 5.0f;
+    }
+    side->plane.dist += dist;
+    brush->dirty = 1;
+    brush->dirty_ui_edges;
+  }
+}

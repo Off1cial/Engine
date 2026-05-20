@@ -48,7 +48,7 @@ static void Renderer_BindMaterial(shader_t* shader, material_t* material){
       (material->flags & MATERIAL_USE_TEXTURE) != 0
     );
   }
-
+  
   Shader_SetIntCached(
     shader->uUseVertexColLoc,
     (material->flags & MATERIAL_USE_VERTEX_COLOUR) != 0
@@ -120,7 +120,7 @@ void RCMD_DrawMesh(struct rcmd_t* cmd){
 
   if ((shader_active != gRendererState->shader_current) && (shader_active != NULL)){
     // swap shader or ordering failed
-    printf("Shader swapped\n");
+    //printf("Shader swapped\n");
     Shader_Use(shader_active);
     gRendererState->shader_current = shader_active;
   }

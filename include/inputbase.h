@@ -12,6 +12,14 @@ struct inputstate_t{
   bool mPrevious[5];
   bool mbutton_left, mbutton_middle, mbutton_right;
   bool mbutton_left_toggle, mbutton_right_toggle;
+  bool mbutton_left_released, mbutton_right_released;
+
+
+
+
+
+
+
   bool FLAG_WindowResized;
   bool FLAG_ToggleEditor;
 

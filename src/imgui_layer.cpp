@@ -13,7 +13,9 @@ void ImGui_Init(SDL_Window* window, SDL_GLContext glContext){
   ImGuiIO &io = ImGui::GetIO();
   io.FontGlobalScale = 1.0f;
   // Styling
-  ImGui::StyleColorsClassic();
+  //ImGui::StyleColorsClassic();
+
+  ImGui::StyleColorsDark();
   // Backend 
   ImGui_ImplSDL3_InitForOpenGL(window, glContext);
   ImGui_ImplOpenGL3_Init("#version 330 core");

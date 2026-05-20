@@ -57,6 +57,8 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
   state->mbutton_middle = (mbuttons & SDL_BUTTON_MMASK) != 0;
   state->mbutton_right = (mbuttons & SDL_BUTTON_RMASK) != 0;
 
+  state->mbutton_left_released = (!state->mbutton_left) && (mleft_last);
+  state->mbutton_right_released = (!state->mbutton_right) && (mright_last);
 
   if (state->mbutton_left  && !mleft_last){
     state->mbutton_left_toggle = true;

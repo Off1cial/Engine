@@ -18,35 +18,34 @@
 #define BRUSH_DEFUALT_SCALE 2
 #define MAX_BRUSH_EDGES 256
 
-typedef struct {
+typedef struct
+{
   Vector v[MAX_WINDING_POINTS];
   int count;
 } winding_t;
 
-
-typedef struct {
+typedef struct
+{
   plane_t plane;
 
-  int material_id;   // texture reference
+  int material_id; // texture reference
   Vector2 uv_origin;
   Vector uv_axis_u;
   Vector uv_axis_v;
 
 } brush_side_t;
 
-
-typedef struct {
+typedef struct
+{
   Vector a, b;
 
   int side_a;
   int side_b; // optional -> -1
-  int brush; // Index to gEditorBrushArray->brushes
+  int brush;  // Index to gEditorBrushArray->brushes
 } brush_edge_t;
 
-
-
-
-typedef struct brush_t {
+typedef struct brush_t
+{
   brush_side_t sides[MAX_BRUSH_FACES]; // Local space to centre
   brush_edge_t edges[MAX_BRUSH_EDGES];
   int edge_count;
@@ -60,90 +59,105 @@ typedef struct brush_t {
 
 } brush_t;
 
-typedef enum {
+typedef enum
+{
   BRUSH_HANDLE_SIDE,
   BRUSH_HANDLE_POSITION,
   BRUSH_HANDLE_ROTATE
 } brush_handle_type_t;
 
-typedef struct {
+typedef struct
+{
 
   brush_handle_type_t type;
 
-  union{
+  union
+  {
     // Used to drag brush edges
-    struct {
+    struct
+    {
       Vector2 positon; // GUI Position
-      brush_edge_t* edge;
+      brush_edge_t *edge;
       float delta; // Distance to move along normal
     } side_handle;
     // Used to drag brushes by their centre
-    struct {
+    struct
+    {
       Vector2 position; // GUI Position
-      brush_t* brush;
+      brush_t *brush;
       Vector2 delta;
     } pos_handle;
     // Used to rotate brushes around their centre
-    struct {
+    struct
+    {
       Vector2 position; // GUI Position
-      brush_t* brush;
-      float delta_2d; // Radians to rotate brush by in GUI
+      brush_t *brush;
+      float delta_2d;  // Radians to rotate brush by in GUI
       Vector delta_3d; // Radians to rotate by each axis in 3D
     } rotate_handle;
   };
 
 } brush_handle_t;
 
-
-
-
-
-
-
-typedef struct {
-  brush_side_t* side;
-  brush_t* owner_brush;
-  material_t* material;
+typedef struct
+{
+  brush_side_t *side;
+  brush_t *owner_brush;
+  material_t *material;
   mesh_t mesh;
 
   int dirty; // Does mesh need recomputing?
 
 } brush_side_hovered_t;
 
-
 // Editor UI
 
 #define EDITOR_UI_BRUSH_SIDE_WIDTH_PX 8
 
-
-
-
-typedef struct {
+typedef struct
+{
   brush_side_hovered_t hovered_side;
   brush_handle_t handles[128];
   /*
-  32 is more than enough - 
+  32 is more than enough -
   clicking on a plane in one panel will give one handle for each edge,
   one for position which can be interchanged for rotation depending on tool selected
   */
-  brush_t* brushes;
+  brush_t *brushes;
   size_t count, capacity;
   size_t handle_count;
 } editor_brush_array;
 
-extern editor_brush_array* gEditorBrushArray;
+typedef struct plane_drag_t
+{
+  bool active;
 
+  brush_t *brush;
+  brush_side_t *side;
 
-void EditorBrushArray_Init(editor_brush_array* arr, size_t capacity);
-void EditorBrushArray_Destroy(editor_brush_array* arr);
+  Vector normal;
+  float initial_dist;
 
-void BrushHoveredSideComputeMesh(brush_side_hovered_t* hside);
-void BrushToMesh(brush_t *b, mesh_t* mesh_out);
+  float start_mouse_x;
+  float start_mouse_y;
+
+} plane_drag_t;
+extern plane_drag_t *gEditorPlaneDrag;
+
+extern editor_brush_array *gEditorBrushArray;
+
+void EditorBrushArray_Init(editor_brush_array *arr, size_t capacity);
+void EditorBrushArray_Destroy(editor_brush_array *arr);
+
+void BrushHoveredSideComputeMesh(brush_side_hovered_t *hside);
+void BrushToMesh(brush_t *b, mesh_t *mesh_out);
 brush_t make_brush_cube(Vector mins, Vector maxs);
 
-void EditorBrush_Draw(brush_t* brush, rdrawqueue_t* drawlist, camera_t* cam);
-void EditorBrush_DrawHoveredSide(brush_side_hovered_t* hside, bool print);
-bool Brush_Raycast(brush_t* brush, int* out_side, Vector* out_hit, float* out_dist, camera_t* camera, float cursorx, float cursory);
+void EditorBrush_Draw(brush_t *brush, rdrawqueue_t *drawlist, camera_t *cam);
+void EditorBrush_DrawHoveredSide(brush_side_hovered_t *hside, bool print);
+bool Brush_Raycast(brush_t *brush, int *out_side, Vector *out_hit, float *out_dist, camera_t *camera, float cursorx, float cursory);
+
+void BrushDragPlane_3D(brush_t *brush, brush_side_t *side, float mousex, float mousey);
 
 static winding_t base_winding(plane_t p)
 {
@@ -198,6 +212,5 @@ static winding_t clip_winding(winding_t *in, plane_t p)
 
   return out;
 }
-
 
 #endif
