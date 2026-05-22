@@ -20,3 +20,9 @@ cvar_t cvar_mat_normals = {
   .i.vmin = 0,
   .i.vmax = 1
 };
+
+
+void CVAR_InitAll(){
+  Cvar_Register(&cvar_mat_fullbright);
+  Cvar_Register(&cvar_mat_normals);
+}
