@@ -2,9 +2,29 @@
 #define CVAR_H
 
 #include <stdint.h>
+#include <string.h>
 
 #define CVAR_HASH_SIZE 256
 #define CVAR_MAX_CVARS 256
+
+static inline uint32_t fnv32_hash(const char *str, size_t len)
+{
+  unsigned char *s = (unsigned char *)str; /* unsigned string */
+
+  /* See the FNV parameters at www.isthe.com/chongo/tech/comp/fnv/#FNV-param */
+  const uint32_t FNV_32_PRIME = 0x01000193; /* 16777619 */
+
+  uint32_t h = 0x811c9dc5; /* 2166136261 */
+  while (len--)
+  {
+    /* xor the bottom with the current octet */
+    h ^= *s++;
+    /* multiply by the 32 bit FNV magic prime mod 2^32 */
+    h *= FNV_32_PRIME;
+  }
+
+  return h;
+}
 
 typedef enum cvar_flags_t
 {
@@ -42,6 +62,8 @@ typedef struct cvar_def_t{
   const char* desc;
 } cvar_def_t;
 
+typedef struct cvar_t cvar_t;
+
 typedef struct cvar_t
 {
 
@@ -67,37 +89,9 @@ typedef struct cvar_reg_t{
 
 extern cvar_reg_t gCvarRegistry;
 
-void Cvar_Register(cvar_t* var)
-{
-  var->hash = fnv32_hash(var->name, strlen(var->name));
+void Cvar_Register(cvar_t* var);
 
-  uint32_t bucket = var->hash % CVAR_HASH_SIZE;
-
-  var->next = gCvarRegistry.reg[bucket];
-  gCvarRegistry.reg[bucket] = var;
-}
-
-cvar_t* Cvar_Find(const char* name)
-{
-  uint32_t hash = fnv32_hash(name, strlen(name));
-
-  uint32_t bucket = hash % CVAR_HASH_SIZE;
-
-  cvar_t* var = gCvarRegistry.reg[bucket];
-
-  while (var)
-  {
-    if (var->hash == hash &&
-        strcmp(var->name, name) == 0)
-    {
-      return var;
-    }
-
-    var = var->next;
-  }
-
-  return NULL;
-}
+cvar_t* Cvar_Find(const char* name);
 
 
 #endif

@@ -715,14 +715,14 @@ void EditorGui_DrawAll(SDL_Window *window, struct inputstate_t *input, camera_t 
     RecalculatePanels(winw, winh, editor_camera);
   }
 
-  ImGui_StartFrame();
+  //ImGui_StartFrame();
 
   for (int i = 0; i < 5; i++)
   {
     draw_panel(input, i);
   }
 
-  ImGui_Render();
+  //ImGui_Render();
 }
 
 static Vector PanelMouseToWorldDelta(Vector right, Vector up, float mx, float my) // Useful for dragging brush posiitons

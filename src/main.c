@@ -14,6 +14,8 @@
 #include "rendering/render_commands.h"
 #include "rendering/draw_list.h"
 #include "rendering/renderer.h"
+#include "console/console.h"
+#include "console/consolegui.h"
 #include "state.h"
 
 // TOOD
@@ -63,6 +65,10 @@ int main(){
  
   Shader_Load(shader_unlit, PATH_Assets, "Shaders/vert_unlit.vs", "Shaders/frag_unlit.fs");
   Shader_Load(shader_lit, PATH_Assets, "Shaders/vert_lit.vs", "Shaders/frag_lit.fs");
+
+  Console_Init();
+
+
 
   MeshPrimitives_Init();
 
@@ -149,13 +155,13 @@ int main(){
   Camera_Switch(0, game_container.win_h);
 
   MeshDebug_WriteToFile(tri_mesh, "../meshtest.mesh");
-
-
+  
+  Console_WriteLine("Console is working?", CONSOLE_LINE_WARNING);
 
   while(app_running){
     MEM_ARENA_RESET(gMemArena);
     RDrawQueue_Reset(&gDrawQ);
-    poll_input(&input_state, &app_running, &game_container.win_w, &game_container.win_h); 
+    poll_input(&input_state, &app_running, &game_container.win_w, &game_container.win_h, game_container.window); 
     // Toggle Editor
     if (input_state.FLAG_ToggleEditor){ EditorToggle(game_container.window); }
     
@@ -174,11 +180,14 @@ int main(){
     // Rendering
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    ImGui_StartFrame();
     // Test render command
     
     if (*gEditorActive){
       EditorLoop(game_container.window, &gDrawQ, &editor_cam, input_state.mx, input_state.my); 
     }
+    
     
     /*
     for(size_t i = 0; i < brush_array.count; i++){
@@ -190,8 +199,12 @@ int main(){
    
   
      
-
+    ConsoleGUI_Draw();
     RDrawQueue_Execute(&gDrawQ);
+    ImGui_Render();
+    
+
+    
     SDL_GL_SwapWindow(game_container.window);
   }
   RigidbodyArray_Destroy(&rb_arr);

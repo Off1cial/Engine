@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include <SDL3/SDL.h>
 
 #define MAX_KEYS 512
 
@@ -45,4 +46,4 @@ extern struct inputstate_t* gInputState;
 
 
 
-void poll_input(struct inputstate_t* state, int* running_condition, int* winw, int* winh);
+void poll_input(struct inputstate_t* state, int* running_condition, int* winw, int* winh, SDL_Window* window);

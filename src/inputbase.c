@@ -1,6 +1,7 @@
 #include "inputbase.h"
 #include "imgui_layer.h"
 #include "rendering/renderer.h"
+#include "console/console.h"
 #include <stdio.h>
 #include <SDL3/SDL.h>
 
@@ -10,7 +11,7 @@
 bool mleft_last = false;
 bool mright_last = false;
 
-void poll_input(struct inputstate_t* state, int* running_condition, int* winw, int* winh){
+void poll_input(struct inputstate_t* state, int* running_condition, int* winw, int* winh, SDL_Window* window){
   
   // Copy keyboard state
   memcpy(state->kPrevious, state->kCurrent, sizeof(state->kPrevious));
@@ -31,6 +32,7 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
   SDL_Event event;
   while (SDL_PollEvent(&event)){
     ImGui_PassEvent(&event);
+    //Console_ProcessSDLevent(&event, window); OLD - CONSOLE INPUT NOW HANDLED IMGUI
     if (event.type == SDL_EVENT_QUIT){
       *running_condition = 0;
     }
@@ -79,4 +81,12 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
     gRendererState->draw_normal_maps = !gRendererState->draw_normal_maps;
   }
 
+  if (state->kCurrent[SDL_SCANCODE_GRAVE] && !state->kPrevious[SDL_SCANCODE_GRAVE]){
+    gConsole->visible = !gConsole->visible;
+    if (gConsole->visible){
+      SDL_StartTextInput(window);
+    }else{
+      SDL_StopTextInput(window);
+    }
+  }
 }
