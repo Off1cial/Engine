@@ -72,7 +72,7 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
   }
 
   // Toggle editor
-  state->FLAG_ToggleEditor = state->kCurrent[SDL_SCANCODE_RCTRL] && !state->kPrevious[SDL_SCANCODE_RCTRL];
+  state->FLAG_ToggleEditor = state->kCurrent[SDL_SCANCODE_SEMICOLON] && !state->kPrevious[SDL_SCANCODE_SEMICOLON];
 
   /*
   if (state->kCurrent[SDL_SCANCODE_8] && !state->kPrevious[SDL_SCANCODE_8]){

@@ -111,7 +111,13 @@ void Cvar_Update(cvar_t* cvar){
       break;
 
     // mat_normals
-
+    case CVAR_NAME_MAT_NORMALS:
+      if (cvar->i.value == 0){
+        SET_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_FLATTEXTURE);
+      }else{
+        CLR_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_FLATTEXTURE);
+      }
+      break;
 
     // r_wireframe
     case CVAR_NAME_R_WIREFRAME:
@@ -147,9 +153,13 @@ int Console_ParseInput(){
     switch(cvar->vtype){
       case CVAR_TYPE_INT:
         int new_val;
+        char msg[256];
         if (!Parser_ReadInt(&gConsole->parser, &new_val)){
           // Failed to find value
           Console_WriteLine(cvar->desc, CONSOLE_LINE_DEFAULT);
+          // Print current value
+          snprintf(msg, sizeof(msg), "Current value: %d", cvar->i.value);
+          Console_WriteLine(msg, CONSOLE_LINE_DEFAULT);
           break;
         }
         else{

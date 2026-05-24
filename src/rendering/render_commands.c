@@ -55,6 +55,11 @@ static void Renderer_BindMaterial(shader_t* shader, material_t* material){
     Material_HasFlag(material, MATERIAL_USE_VERTEX_COLOUR) && 
     !RENDERER_HASFLAG(gRendererState, RENDERER_FLAG_WIREFRAME);
 
+  bool use_normals = 
+    Material_HasFlag(material, MATERIAL_USE_NORMAL) && 
+    !RENDERER_HASFLAG(gRendererState, RENDERER_FLAG_FLATTEXTURE) &&
+    material->normal;
+
   //  TEXTURE
   Shader_SetIntCached(
     shader->uUseTextureLoc,
@@ -73,12 +78,10 @@ static void Renderer_BindMaterial(shader_t* shader, material_t* material){
 
 
   // Normal
-  if (((material->flags & MATERIAL_USE_NORMAL) != 0)){
-    if (material->normal){
-      Shader_SetIntCached(shader->uUseNormalMapLoc, gRendererState->draw_normal_maps);
-      Texture_Bind(material->normal, 1);
-      Shader_SetIntCached(shader->uNormalMapLoc, 1);
-    }
+  if (use_normals){
+    Shader_SetIntCached(shader->uUseNormalMapLoc, gRendererState->draw_normal_maps);
+    Texture_Bind(material->normal, 1);
+    Shader_SetIntCached(shader->uNormalMapLoc, 1);
   }else{
     Shader_SetIntCached(shader->uUseNormalMapLoc, 0);
   }
