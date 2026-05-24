@@ -3,8 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
-char* Parser_ReadFileText(const char *filepath)
+char *Parser_ReadFileText(const char *filepath)
 {
   FILE *f = fopen(filepath, "rb");
   if (!f)
@@ -80,54 +81,46 @@ int Parser_ReadBool(parser_t *p)
   return 0;
 }
 
-
 float Parser_ReadFloat(parser_t *p)
 {
   Parser_SkipWhitespace(p);
 
-  char buffer[64];
-  char *out = buffer;
+  char *end;
+  float result = strtof(p->at, &end);
 
-  // optional sign
-  if (*p->at == '-' || *p->at == '+')
-  {
-    *out++ = *p->at++;
-  }
+  p->at = end;
 
-  // integer part
-  while (isdigit(*p->at))
-  {
-    *out++ = *p->at++;
-  }
+  return result;
+}
 
-  // decimal part
-  if (*p->at == '.')
-  {
-    *out++ = *p->at++;
+bool Parser_ReadInt(parser_t* p, int* out_value)
+{
+    Parser_SkipWhitespace(p);
 
-    while (isdigit(*p->at))
+    char* end;
+    long result = strtol(p->at, &end, 10);
+
+    if (end == p->at)
     {
-      *out++ = *p->at++;
-    }
-  }
-
-  // exponent part
-  if (*p->at == 'e' || *p->at == 'E')
-  {
-    *out++ = *p->at++;
-
-    if (*p->at == '-' || *p->at == '+')
-    {
-      *out++ = *p->at++;
+        return false;
     }
 
-    while (isdigit(*p->at))
+    p->at = end;
+    *out_value = (int)result;
+
+    return true;
+}
+
+
+void Parser_ReadToken(parser_t* p, char* out)
+{
+    Parser_SkipWhitespace(p);
+
+    while (*p->at &&
+           !isspace(*p->at))
     {
-      *out++ = *p->at++;
+        *out++ = *p->at++;
     }
-  }
 
-  *out = 0;
-
-  return strtof(buffer, NULL);
+    *out = 0;
 }

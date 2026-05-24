@@ -115,7 +115,7 @@ int main(){
   renderer_state.light_forward_count++;
 
 
-  material_t* mat_marble = Material_Load("../Assets/Materials/brickmaterial.mat");
+  material_t* mat_marble = Material_Load("../Assets/Materials/pavingstonesmaterial.mat");
   if (!mat_marble){
     printf("mat_marble = NULL\n");
     exit(1);
@@ -197,7 +197,7 @@ int main(){
 
     RDrawQueue_Push(&gDrawQ, rcmd);
    
-  
+
      
     ConsoleGUI_Draw();
     RDrawQueue_Execute(&gDrawQ);

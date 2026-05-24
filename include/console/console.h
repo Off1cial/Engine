@@ -3,6 +3,7 @@
 
 #include "console/cvar.h"
 #include "console/concmd.h"
+#include "tools/parser.h"
 #include <SDL3/SDL.h>
 
 #ifdef __cplusplus
@@ -44,12 +45,31 @@ typedef struct console_t
   int line_head;
   int line_tail;
 
+  parser_t parser;
+
 } console_t;
+
+typedef enum console_input_type_t{
+  CONSOLE_INPUT_CVAR,
+  CONSOLE_INPUT_CMD
+} console_input_type_t;
+
+typedef struct console_input_t{
+  console_input_type_t type;
+
+  union{
+    cvar_t* cvar;
+    concmd_t* cmd;
+  };
+} console_input_t;
 
 extern console_t *gConsole;
 
 void Console_Init();
-void Console_ProcessSDLevent(SDL_Event *event, SDL_Window *window);
+//void Console_ProcessSDLevent(SDL_Event *event, SDL_Window *window);
+
+int Console_ParseInput();
+
 
 void Console_WriteLine(const char *text, console_line_type_t type);
 

@@ -41,6 +41,12 @@ typedef enum cvar_valuetype_t
   CVAR_TYPE_STRING
 } cvar_valuetype_t;
 
+typedef enum cvar_name_t{
+  CVAR_NAME_MAT_FULLBRIGHT,
+  CVAR_NAME_MAT_NORMALS,
+  CVAR_NAME_R_WIREFRAME,
+} cvar_name_t;
+
 typedef struct
 {
   float value;
@@ -70,6 +76,7 @@ typedef struct cvar_t
   uint32_t hash;
   cvar_t* next;
   cvar_valuetype_t vtype;
+  cvar_name_t ename;
 
   const char* name;
   const char* desc;
@@ -89,9 +96,16 @@ typedef struct cvar_reg_t{
 
 extern cvar_reg_t gCvarRegistry;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void Cvar_Register(cvar_t* var);
 
 cvar_t* Cvar_Find(const char* name);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

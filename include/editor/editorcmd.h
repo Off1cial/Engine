@@ -25,6 +25,8 @@ struct editor_cmd_t
     // Potential contents
     struct
     {
+      int is_entity;
+
       vec_t startx;
       vec_t starty;
       vec_t startz;

@@ -14,10 +14,10 @@
 // -------------------------
 #define BIT64(n) ((size_t)1ULL << (n))
 
-#define SET_FLAG(mask, n)   ((mask) |= BIT64(n))
-#define CLR_FLAG(mask, n)   ((mask) &= ~BIT64(n))
-#define HAS_FLAG(mask, n)   ((mask) & BIT64(n))
-#define TOG_FLAG(mask, n)   ((mask) ^= BIT64(n))
+#define SET_FLAG_BIT(mask, n)   ((mask) |= BIT64(n)) // bit index
+#define CLR_FLAG_BIT(mask, n)   ((mask) &= ~BIT64(n)) // bit index
+#define HAS_FLAG_BIT(mask, n)   ((mask) & BIT64(n)) // bit index
+#define TOG_FLAG_BIT(mask, n)   ((mask) ^= BIT64(n)) // bit index
 
 // -------------------------
 // Aligned allocation (cross-platform unified API)

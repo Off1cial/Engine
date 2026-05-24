@@ -103,6 +103,25 @@ static Vector2 Brush_ComputeUV(brush_side_t *s, Vector p)
       v + s->uv_origin.y};
 }
 
+
+static void BrushEntitySide_DefaultUVs(brush_side_t *s)
+{
+  Vector n = s->plane.normal;
+
+  if (fabsf(n.y) > 0.9f)
+  {
+    s->uv_axis_u = VECTOR_AXIS_X;
+    s->uv_axis_v = VECTOR_AXIS_Z;
+  }
+  else
+  {
+    s->uv_axis_u = VECTOR_AXIS_X;
+    s->uv_axis_v = VECTOR_AXIS_Y;
+  }
+
+  return;
+}
+
 static void BrushSide_DefaultUVs(brush_side_t *s)
 {
   Vector n = s->plane.normal;
@@ -126,7 +145,7 @@ static void BrushSide_DefaultUVs(brush_side_t *s)
   }
 }
 
-brush_t make_brush_cube(Vector mins, Vector maxs)
+brush_t make_brush_cube(Vector mins, Vector maxs, int is_entity)
 {
   brush_t b = {0};
 
@@ -141,12 +160,22 @@ brush_t make_brush_cube(Vector mins, Vector maxs)
   b.sides[4].plane = (plane_t){{0, 0, 1}, maxs.z};
   b.sides[5].plane = (plane_t){{0, 0, -1}, -mins.z};
 
-  BrushSide_DefaultUVs(&b.sides[0]);
-  BrushSide_DefaultUVs(&b.sides[1]);
-  BrushSide_DefaultUVs(&b.sides[2]);
-  BrushSide_DefaultUVs(&b.sides[3]);
-  BrushSide_DefaultUVs(&b.sides[4]);
-  BrushSide_DefaultUVs(&b.sides[5]);
+  if (!is_entity){
+    BrushSide_DefaultUVs(&b.sides[0]);
+    BrushSide_DefaultUVs(&b.sides[1]);
+    BrushSide_DefaultUVs(&b.sides[2]);
+    BrushSide_DefaultUVs(&b.sides[3]);
+    BrushSide_DefaultUVs(&b.sides[4]);
+    BrushSide_DefaultUVs(&b.sides[5]);
+  }else{
+    BrushEntitySide_DefaultUVs(&b.sides[0]);
+    BrushEntitySide_DefaultUVs(&b.sides[1]);
+    BrushEntitySide_DefaultUVs(&b.sides[2]);
+    BrushEntitySide_DefaultUVs(&b.sides[3]);
+    BrushEntitySide_DefaultUVs(&b.sides[4]);
+    BrushEntitySide_DefaultUVs(&b.sides[5]);
+  }
+
 
   b.pos = VectorScale(VectorAdd(mins, maxs), 0.5f);
   b.scale = VectorSub(maxs, mins);
@@ -303,7 +332,7 @@ void EditorBrush_Draw(brush_t *brush, rdrawqueue_t *drawlist, camera_t *cam)
   struct rcmd_t *cmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
   cmd->type = RCMD_DRAW_MESH;
   cmd->draw_mesh.mesh = &brush->editor_mesh;
-  cmd->draw_mesh.mode = (!gRendererState->wireframe) ? GL_TRIANGLES : GL_LINES;
+  cmd->draw_mesh.mode = (!RENDERER_HASFLAG(gRendererState, RENDERER_FLAG_WIREFRAME)) ? GL_TRIANGLES : GL_LINES;
   cmd->draw_mesh.model = Mat4Identity();
   cmd->draw_mesh.material = gRendererState->materials[0];
 
@@ -527,31 +556,32 @@ bool Brush_Raycast(
   return true;
 }
 
-void BrushDragPlane_3D(brush_t* brush, brush_side_t* side, float mousex, float mousey){
-  if (!brush || !side){
+void BrushDragPlane_3D(brush_t *brush, brush_side_t *side, float mousex, float mousey)
+{
+  if (!brush || !side)
+  {
     return;
   }
 
-
-  camera_t* cam = gRendererState->active_cam;
+  camera_t *cam = gRendererState->active_cam;
   Vector p0 = VectorScale(side->plane.normal, side->plane.dist);
-  
-  ray_t ray = Camera_ScreenPointToRay(cam, mousex, mousey);
 
+  ray_t ray = Camera_ScreenPointToRay(cam, mousex, mousey);
 
   float denom = VectorDot(ray.dir, side->plane.normal);
 
-  if (fabsf(denom) > 1e-6f){
+  if (fabsf(denom) > 1e-6f)
+  {
 
-
-    float intersection_t = VectorDot( VectorSub(p0, ray.origin), side->plane.normal);
+    float intersection_t = VectorDot(VectorSub(p0, ray.origin), side->plane.normal);
 
     float t = intersection_t / denom;
 
-    Vector intersectionpoint = VectorAdd(ray.origin, VectorScale(ray.dir,t) );
+    Vector intersectionpoint = VectorAdd(ray.origin, VectorScale(ray.dir, t));
 
-    float dist = VectorMag( VectorSub(intersectionpoint, p0) );
-    if (dist >= 5.0f){
+    float dist = VectorMag(VectorSub(intersectionpoint, p0));
+    if (dist >= 5.0f)
+    {
       dist = 5.0f;
     }
     side->plane.dist += dist;

@@ -57,6 +57,11 @@ typedef struct brush_t
 
   Vector pos, rot, scale;
 
+
+  bool is_entity; // Ignore in the final BSP/clipping
+  // Allows all the brush hovering and rendering 
+  // to be used for the light entity bounding box
+
 } brush_t;
 
 typedef enum
@@ -151,7 +156,7 @@ void EditorBrushArray_Destroy(editor_brush_array *arr);
 
 void BrushHoveredSideComputeMesh(brush_side_hovered_t *hside);
 void BrushToMesh(brush_t *b, mesh_t *mesh_out);
-brush_t make_brush_cube(Vector mins, Vector maxs);
+brush_t make_brush_cube(Vector mins, Vector maxs, int is_entity);
 
 void EditorBrush_Draw(brush_t *brush, rdrawqueue_t *drawlist, camera_t *cam);
 void EditorBrush_DrawHoveredSide(brush_side_hovered_t *hside, bool print);

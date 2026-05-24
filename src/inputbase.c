@@ -1,6 +1,7 @@
 #include "inputbase.h"
 #include "imgui_layer.h"
 #include "rendering/renderer.h"
+#include "tools/flagtool.h"
 #include "console/console.h"
 #include <stdio.h>
 #include <SDL3/SDL.h>
@@ -71,11 +72,15 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
   }
 
   // Toggle editor
-  state->FLAG_ToggleEditor = state->kCurrent[SDL_SCANCODE_0] && !state->kPrevious[SDL_SCANCODE_0];
+  state->FLAG_ToggleEditor = state->kCurrent[SDL_SCANCODE_RCTRL] && !state->kPrevious[SDL_SCANCODE_RCTRL];
 
+  /*
   if (state->kCurrent[SDL_SCANCODE_8] && !state->kPrevious[SDL_SCANCODE_8]){
     gRendererState->wireframe = !gRendererState->wireframe;
+    if (gRendererState->wireframe){ SET_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_WIREFRAME); }
+    else if (!gRendererState->wireframe){ CLR_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_WIREFRAME); }
   }
+  */
 
   if (state->kCurrent[SDL_SCANCODE_7] && !state->kPrevious[SDL_SCANCODE_7]){
     gRendererState->draw_normal_maps = !gRendererState->draw_normal_maps;

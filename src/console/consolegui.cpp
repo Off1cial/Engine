@@ -1,5 +1,8 @@
 #include "console/consolegui.h"
+#include "console/console.h"
+#include "console/cvar.h"
 #include "imgui/imgui.h"
+#include <stdio.h>
 #define CONSOLE_TEXT_DEFAULT_COL_IM (ImVec4(0.8, 0.8, 0.8, 1.0))
 #define CONSOLE_TEXT_WARNING_COL_IM (ImVec4(0.8, 0.3, 0.3, 1.0))
 #define CONSOLE_TEXT_INPUT_COL_IM (ImVec4(0.3, 0.3, 0.9, 1.0))
@@ -134,12 +137,26 @@ static int Console_TextEditCallback(ImGuiInputTextCallbackData *data)
 
 void ConsoleGUI_Draw()
 {
+
+
   if (!gConsole->visible)
     return;
 
+  // --- BEGIN CONSOLE STYLE SCOPE ---
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+  ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(6, 6));
+  ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.05f, 0.05f, 0.05f, 0.95f));
+
+
+  ImGui::SetNextWindowPos(
+    ImVec2(0,0),
+    ImGuiCond_FirstUseEver
+  );
   ImGui::SetNextWindowSize(
       ImVec2(800, 400),
-      ImGuiCond_FirstUseEver);
+      ImGuiCond_FirstUseEver
+  );
 
   ImGui::Begin(
       "Console",
@@ -209,6 +226,7 @@ void ConsoleGUI_Draw()
       ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackHistory | ImGuiInputTextFlags_CallbackCompletion;
 
   ImGui::SetNextItemWidth(-1);
+  
 
   if (
       ImGui::InputText(
@@ -229,6 +247,33 @@ void ConsoleGUI_Draw()
           gConsole->input,
           CONSOLE_LINE_INPUT);
 
+
+      /*
+      cvar_t* cvar = Cvar_Find(gConsole->input);
+      if (cvar){
+        Console_WriteLine(cvar->desc, CONSOLE_LINE_DEFAULT);
+
+        char msg[256];
+
+        switch(cvar->vtype){
+          case CVAR_TYPE_INT:
+            snprintf(
+            msg,
+            sizeof(msg), 
+            "Current value: %d\nMin value: %d\nMax value: %d\nDefault value: %d\n", 
+            cvar->i.value, cvar->i.vmin, cvar->i.vmax, cvar->i.vdefault
+          );
+          break;
+        }
+        Console_WriteLine(msg, CONSOLE_LINE_DEFAULT);
+      }else{
+        
+        char msg[256];
+        snprintf(msg, sizeof(msg), "Unknown command: '%s'\n", gConsole->input);
+        Console_WriteLine(msg, CONSOLE_LINE_WARNING);
+      }
+      */
+
       //
       // Store history
       //
@@ -248,6 +293,7 @@ void ConsoleGUI_Draw()
       // TODO:
       // Console_Execute(gConsole->input);
       //
+      Console_ParseInput();
 
       gConsole->input[0] = '\0';
     }
@@ -257,7 +303,11 @@ void ConsoleGUI_Draw()
   // Keep keyboard focus on input
   //
 
-  ImGui::SetItemDefaultFocus();
-
+  //ImGui::SetItemDefaultFocus();
+  ImGui::PopStyleColor();
+  ImGui::PopStyleVar();
+  ImGui::PopStyleVar();
+  ImGui::PopStyleVar();
+  
   ImGui::End();
 }

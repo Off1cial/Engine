@@ -6,6 +6,14 @@
 #include "rendering/camera.h"
 #include "rendering/light.h"
 
+typedef enum renderer_flags_t{
+  RENDERER_FLAG_NONE  = 0,
+  RENDERER_FLAG_FULLBRIGHT     = 1 << 0,
+  RENDERER_FLAG_FLATNORMALS    = 1 << 1,
+  RENDERER_FLAG_WIREFRAME      = 1 << 2,
+} renderer_flags_t;
+
+#define RENDERER_HASFLAG(r, f) ( ((r)->flags & f) != 0)
 
 typedef struct {
   camera_t* active_cam;
@@ -28,6 +36,8 @@ typedef struct {
 
   
   bool draw_normal_maps;
+
+  uint32_t flags;
 
   bool fullbright;
   bool wireframe;

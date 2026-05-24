@@ -6,17 +6,25 @@
 static void Renderer_BindMaterial(shader_t* shader, material_t* material){
   if (!material){ return; }
 
-
+  Vector4 colour;
+  if (RENDERER_HASFLAG(gRendererState, RENDERER_FLAG_WIREFRAME)){
+    colour.x = 0.0f;
+    colour.y = 1.0f;
+    colour.z = 1.0f;
+    colour.w = 1.0f;
+  }else{
+    colour = material->colour;
+  }
 
   // Base colour
   Shader_SetVec4(
     shader,
     "uColour",
-    material->colour
+    colour
   );
 
   // Handle lights
-  if (!Material_HasFlag(material, MATERIAL_UNLIT)){
+  if (!Material_HasFlag(material, MATERIAL_UNLIT) && !RENDERER_HASFLAG(gRendererState, RENDERER_FLAG_FULLBRIGHT)){
     Shader_SetIntCached(shader->uLightCountLoc, gRendererState->light_forward_count);
 
 
@@ -38,30 +46,34 @@ static void Renderer_BindMaterial(shader_t* shader, material_t* material){
     }
   }
 
+  bool use_texture = 
+    Material_HasFlag(material, MATERIAL_USE_TEXTURE)           && 
+    !RENDERER_HASFLAG(gRendererState, RENDERER_FLAG_WIREFRAME) && 
+    material->base;
 
-  // Handle Flags
-  if (!(material->flags & MATERIAL_USE_TEXTURE) || !material->base){
-    Shader_SetIntCached(shader->uUseTextureLoc, 0);
-  }else{
-    Shader_SetIntCached(
-      shader->uUseTextureLoc,
-      (material->flags & MATERIAL_USE_TEXTURE) != 0
-    );
-  }
-  
+  bool use_vertex_col = 
+    Material_HasFlag(material, MATERIAL_USE_VERTEX_COLOUR) && 
+    !RENDERER_HASFLAG(gRendererState, RENDERER_FLAG_WIREFRAME);
+
+  //  TEXTURE
+  Shader_SetIntCached(
+    shader->uUseTextureLoc,
+    use_texture
+  );
   Shader_SetIntCached(
     shader->uUseVertexColLoc,
-    (material->flags & MATERIAL_USE_VERTEX_COLOUR) != 0
+    use_vertex_col
   );
-  // Set texture
-  if ((material->flags & MATERIAL_USE_TEXTURE) != 0){
-    if (material->base){
-      Texture_Bind(material->base, 0);
-      Shader_SetIntCached(shader->uTextureLoc, 0);
-    }
+  if (use_texture){
+    Texture_Bind(material->base, 0);
+    Shader_SetIntCached(shader->uTextureLoc, 0);
   }
+
+
+
+
   // Normal
-  if ((material->flags & MATERIAL_USE_NORMAL) != 0){
+  if (((material->flags & MATERIAL_USE_NORMAL) != 0)){
     if (material->normal){
       Shader_SetIntCached(shader->uUseNormalMapLoc, gRendererState->draw_normal_maps);
       Texture_Bind(material->normal, 1);
@@ -84,7 +96,7 @@ static void Renderer_BindMaterial(shader_t* shader, material_t* material){
 
   // Specular/Shininess
 
-  if ((material->flags & MATERIAL_SPECULAR) != 0){
+  if (((material->flags & MATERIAL_SPECULAR) != 0)){
     Shader_SetFloatCached(shader->uSpecularLoc, material->specular);
     Shader_SetFloatCached(shader->uShininessLoc, material->shininess);
   }else{
@@ -98,7 +110,6 @@ static void Renderer_BindMaterial(shader_t* shader, material_t* material){
   }else {
     glEnable(GL_CULL_FACE);
   }
-
 }
 
 void RCMD_DrawMesh(struct rcmd_t* cmd){
@@ -111,8 +122,18 @@ void RCMD_DrawMesh(struct rcmd_t* cmd){
     return;
   }
 
+  bool fullbright = 
+    RENDERER_HASFLAG(gRendererState, RENDERER_FLAG_FULLBRIGHT) || 
+    RENDERER_HASFLAG(gRendererState, RENDERER_FLAG_WIREFRAME);
 
-  shader_t* shader_active = Renderer_ResolveShaderFromMaterial(cmd->draw_mesh.material);
+  shader_t* shader_active = NULL;
+  if (fullbright){
+    shader_active = gRendererState->shader_unlit;
+  }else{
+    shader_active = Renderer_ResolveShaderFromMaterial(cmd->draw_mesh.material);
+  }
+
+
   
 
   

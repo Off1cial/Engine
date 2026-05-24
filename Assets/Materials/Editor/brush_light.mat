@@ -1,0 +1,9 @@
+Material "BrushLight"
+{
+  Lit=false
+  Texture="../Assets/Textures/Editor/brush_light.png"
+  Colour=255 160 40 255
+  Specular=0
+  Shininess=0
+  Transparent=true
+}

@@ -38,3 +38,4 @@ void ImGui_Shutdown()
   ImGui_ImplSDL3_Shutdown();
   ImGui::DestroyContext();
 }
+

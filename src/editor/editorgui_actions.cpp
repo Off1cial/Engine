@@ -109,5 +109,7 @@ void panel_finalise_brush(
   cmd->brush_create.ry = 0;
   cmd->brush_create.rz = 0;
 
+  cmd->brush_create.is_entity = 0;
+
   EditorQueue_Push(gEditorQueue, cmd);
 }
