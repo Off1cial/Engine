@@ -36,7 +36,8 @@ void EditorLoop(
   SDL_Window* window,
   rdrawqueue_t* draw_q,
   camera_t* editor_camera,
-  float mx, float my
+  float mx, float my,
+  int console_open
 );
 
 void EditorToggle(SDL_Window* window);

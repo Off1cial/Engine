@@ -332,7 +332,7 @@ void EditorBrush_Draw(brush_t *brush, rdrawqueue_t *drawlist, camera_t *cam)
   struct rcmd_t *cmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
   cmd->type = RCMD_DRAW_MESH;
   cmd->draw_mesh.mesh = &brush->editor_mesh;
-  cmd->draw_mesh.mode = (!RENDERER_HASFLAG(gRendererState, RENDERER_FLAG_WIREFRAME)) ? GL_TRIANGLES : GL_LINES;
+  cmd->draw_mesh.mode = GL_TRIANGLES;
   cmd->draw_mesh.model = Mat4Identity();
   cmd->draw_mesh.material = gRendererState->materials[0];
 

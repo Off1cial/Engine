@@ -18,7 +18,7 @@ typedef enum console_line_type_t
   CONSOLE_LINE_INPUT
 } console_line_type_t;
 
-#define CONSOLE_MAX_LINES 32
+#define CONSOLE_MAX_LINES 64
 #define CONSOLE_LINE_LENGTH 256
 
 typedef struct console_line_t

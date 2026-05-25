@@ -40,14 +40,14 @@ static ImVec2 Vector2_ImVec2(Vector2 v)
   return ImVec2(v.x, v.y);
 }
 
-gui_panel_t panels[5];
+gui_panel_t panels[6];
 
 ImGuiWindowFlags panel_flags =
     ImGuiWindowFlags_NoResize |
     ImGuiWindowFlags_NoMove |
     ImGuiWindowFlags_NoBringToFrontOnFocus |
     ImGuiWindowFlags_NoCollapse;
-  
+
 // Remove NoTitleBar
 
 static void GetPanelBasis(
@@ -57,17 +57,17 @@ static void GetPanelBasis(
 {
   switch (panel)
   {
-  case 2: // TOP
+  case PANEL_ORTHO_TOP: // TOP
     *right = VECTOR_AXIS_X;
     *up = VECTOR_AXIS_Z_NEG;
     break;
 
-  case 3: // SIDE
+  case PANEL_ORTHO_SIDE: // SIDE
     *right = VECTOR_AXIS_Z;
     *up = VECTOR_AXIS_Y;
     break;
 
-  case 4: // FRONT
+  case PANEL_ORTHO_FRONT: // FRONT
     *right = VECTOR_AXIS_X;
     *up = VECTOR_AXIS_Y;
     break;
@@ -78,7 +78,6 @@ static void GetPanelBasis(
     break;
   }
 }
-
 
 static ImVec2 ProjectToPanel(Vector v, Vector origin, Vector right, Vector up)
 {
@@ -91,64 +90,85 @@ void RecalculatePanels(int winw, int winh, camera_t *editor_camera)
 {
 
   const int p0_w = (int)(winw / 3);
+  const int top_bar_height = 60;
 
   // Width of the 4 render panels:
   int rwidth = (winw - p0_w) / 2;
-  int rheight = (winh / 2);
+  int rheight = (winh - top_bar_height) / 2;
 
   ImVec2 rsize = ImVec2(rwidth, rheight);
 
   // Main editor panel
-  panels[0] = {
+  panels[PANEL_UI_MAIN] = {
       .pos = ImVec2(winw - p0_w, 0),
       .size = ImVec2(p0_w, winh),
       .label = "Main panel",
+      .type = PANEL_TYPE_UI,
       .world_right = VECTOR_NAN,
-      .world_up = VECTOR_NAN
-  };
+      .world_up = VECTOR_NAN};
   // Top left - 3D
-  panels[1] = {
-      .pos = ImVec2(0, 0),
+  panels[PANEL_VIEW_3D] = {
+      .pos = ImVec2(0, top_bar_height),
       .size = rsize,
       .label = "3D",
+      .type = PANEL_TYPE_VIEW,
       .world_right = gRendererState->active_cam->right,
-      .world_up = gRendererState->active_cam->up
-    };
+      .world_up = gRendererState->active_cam->up,
+  };
   // Top right  -TOP
-  panels[2] = {
-      .pos = ImVec2(rwidth, 0),
+  panels[PANEL_ORTHO_TOP] = {
+      .pos = ImVec2(rwidth, top_bar_height),
       .size = rsize,
       .label = "TOP",
+      .type = PANEL_TYPE_ORTHO,
       .world_right = VECTOR_AXIS_X,
-      .world_up = VECTOR_AXIS_Z_NEG
-    };
+      .world_up = VECTOR_AXIS_Z_NEG,
+
+  };
   // Bottom right - SIDE
-  panels[3] = {
-      .pos = ImVec2(rwidth, rheight),
+  panels[PANEL_ORTHO_SIDE] = {
+      .pos = ImVec2(rwidth, rheight + top_bar_height),
       .size = rsize,
       .label = "SIDE",
+      .type = PANEL_TYPE_ORTHO,
       .world_right = VECTOR_AXIS_Z,
-      .world_up = VECTOR_AXIS_Y
-    };
+      .world_up = VECTOR_AXIS_Y};
   // Bottom left - FRONT
-  panels[4] = {
-      .pos = ImVec2(0, rheight),
+  panels[PANEL_ORTHO_FRONT] = {
+      .pos = ImVec2(0, rheight + top_bar_height),
       .size = rsize,
       .label = "FRONT",
+      .type = PANEL_TYPE_ORTHO,
       .world_right = VECTOR_AXIS_X,
-      .world_up = VECTOR_AXIS_Y
-    };
+      .world_up = VECTOR_AXIS_Y};
+  panels[PANEL_UI_TOOLS] = {
+      .pos = ImVec2(0, 0),
+      .size = ImVec2(winw - p0_w, top_bar_height),
+      .label = "TOOLS",
+      .type = PANEL_TYPE_UI,
+      .world_right = VECTOR_NAN,
+      .world_up = VECTOR_NAN};
 
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < PANEL_COUNT - 1; i++)
   {
     panels[i].cam_pos = ImVec2(0, 0);
     panels[i].cam_zoom = 1.0f;
   }
 
-  editor_camera->viewport = (struct Viewport){0, 0, rsize.x, rsize.y};
+  editor_camera->viewport = (struct Viewport){
+      panels[PANEL_VIEW_3D].pos.x,
+      panels[PANEL_VIEW_3D].pos.y,
+      panels[PANEL_VIEW_3D].size.x,
+      panels[PANEL_VIEW_3D].size.y};
+
   editor_camera->aspect = rsize.x / rsize.y;
   if (!start_up)
-    glViewport(0, winh - rsize.y, rsize.x, rsize.y);
+
+    glViewport(
+        panels[PANEL_VIEW_3D].pos.x,
+        winh - (panels[PANEL_VIEW_3D].pos.y + panels[PANEL_VIEW_3D].size.y),
+        panels[PANEL_VIEW_3D].size.x,
+        panels[PANEL_VIEW_3D].size.y);
 }
 
 void EditorGui_Init(SDL_Window *window, SDL_GLContext glContext, camera_t *editor_camera)
@@ -164,7 +184,7 @@ void EditorGui_Init(SDL_Window *window, SDL_GLContext glContext, camera_t *edito
 void draw_panel_grid(size_t index)
 {
 
-  if (index <= 1)
+  if (panels[index].type != PANEL_TYPE_ORTHO)
   {
     return;
   }
@@ -212,62 +232,65 @@ void draw_panel_grid(size_t index)
   }
 }
 
-static void draw_handle(brush_handle_t* handle, int panel){
+static void draw_handle(brush_handle_t *handle, int panel)
+{
   if (!handle)
     return;
 
-  if (panel < 2 || panel > 4)
+  if (panels[panel].type != PANEL_TYPE_ORTHO)
     return;
 
-
-  ImDrawList* dl = ImGui::GetWindowDrawList();
+  ImDrawList *dl = ImGui::GetWindowDrawList();
   ImVec2 win_pos = ImGui::GetWindowPos();
 
-  switch(handle->type){
-    case BRUSH_HANDLE_SIDE:
-      // Draw a selectable square on the line centre
-      Vector right, up;
-      // TOP VIEW
-      if (panel == 2){
-        right = VECTOR_AXIS_X;
-        up = VECTOR_AXIS_Z_NEG;
-      }else if (panel == 3){
-        // SIDE
-        right = VECTOR_AXIS_Z;
-        up = VECTOR_AXIS_Y;
-      }else if (panel == 4){
-        right = VECTOR_AXIS_X;
-        up = VECTOR_AXIS_Y;
-      }
-      
-      ImVec2 line_a = ProjectToPanel(
-          handle->side_handle.edge->a,
-          VECTOR_ZERO,
-          right,
-          up);
+  switch (handle->type)
+  {
+  case BRUSH_HANDLE_SIDE:
+    // Draw a selectable square on the line centre
+    Vector right, up;
+    // TOP VIEW
+    if (panel == 2)
+    {
+      right = VECTOR_AXIS_X;
+      up = VECTOR_AXIS_Z_NEG;
+    }
+    else if (panel == 3)
+    {
+      // SIDE
+      right = VECTOR_AXIS_Z;
+      up = VECTOR_AXIS_Y;
+    }
+    else if (panel == 4)
+    {
+      right = VECTOR_AXIS_X;
+      up = VECTOR_AXIS_Y;
+    }
 
-      ImVec2 line_b = ProjectToPanel(
-          handle->side_handle.edge->b,
-          VECTOR_ZERO,
-          right,
-          up
-          );
+    ImVec2 line_a = ProjectToPanel(
+        handle->side_handle.edge->a,
+        VECTOR_ZERO,
+        right,
+        up);
 
-      ImVec2 centre = ImVec2(line_a.x + line_b.x, line_a.y + line_b.y);
-      centre.x *= 0.5f;
-      centre.y *= 0.5f;
-      
-      centre.x += win_pos.x;
-      centre.y += win_pos.y;
+    ImVec2 line_b = ProjectToPanel(
+        handle->side_handle.edge->b,
+        VECTOR_ZERO,
+        right,
+        up);
 
-      const float rectsize_half = 4.0f;
+    ImVec2 centre = ImVec2(line_a.x + line_b.x, line_a.y + line_b.y);
+    centre.x *= 0.5f;
+    centre.y *= 0.5f;
 
-      ImVec2 minp = ImVec2(centre.x - rectsize_half, centre.y + rectsize_half);
-      ImVec2 maxp = ImVec2(centre.x + rectsize_half, centre.y + rectsize_half);
+    centre.x += win_pos.x;
+    centre.y += win_pos.y;
 
-      dl->AddRectFilled(minp, maxp, IM_COL32(0, 255, 0, 255));
+    const float rectsize_half = 4.0f;
 
+    ImVec2 minp = ImVec2(centre.x - rectsize_half, centre.y + rectsize_half);
+    ImVec2 maxp = ImVec2(centre.x + rectsize_half, centre.y + rectsize_half);
 
+    dl->AddRectFilled(minp, maxp, IM_COL32(0, 255, 0, 255));
   }
 }
 
@@ -314,27 +337,26 @@ static float point_segment_distance_sq(ImVec2 p, ImVec2 a, ImVec2 b)
   return dx * dx + dy * dy;
 }
 
-
 static brush_edge_t *find_hovered_edge(int panel)
 {
-  if (panel < 2 || panel > 4)
+  if (panels[panel].type != PANEL_TYPE_ORTHO)
     return NULL;
 
   Vector right, up;
 
   switch (panel)
   {
-  case 2:
+  case PANEL_ORTHO_TOP:
     right = VECTOR_AXIS_X;
     up = VECTOR_AXIS_Z_NEG;
     break;
 
-  case 3:
+  case PANEL_ORTHO_SIDE:
     right = VECTOR_AXIS_Z;
     up = VECTOR_AXIS_Y;
     break;
 
-  case 4:
+  case PANEL_ORTHO_FRONT:
     right = VECTOR_AXIS_X;
     up = VECTOR_AXIS_Y;
     break;
@@ -414,24 +436,24 @@ static brush_edge_t *find_hovered_edge(int panel)
 
 static void draw_brush_edges(brush_t *brush, int panel)
 {
-  if (panel < 2 || panel > 4)
+  if (panels[panel].type != PANEL_TYPE_ORTHO)
     return;
 
   Vector right, up;
 
   switch (panel)
   {
-  case 2: // TOP (X/Z)
+  case PANEL_ORTHO_TOP: // TOP (X/Z)
     right = VECTOR_AXIS_X;
     up = VECTOR_AXIS_Z_NEG;
     break;
 
-  case 3: // SIDE (Z/Y)
+  case PANEL_ORTHO_SIDE: // SIDE (Z/Y)
     right = VECTOR_AXIS_Z;
     up = VECTOR_AXIS_Y;
     break;
 
-  case 4: // FRONT (X/Y)
+  case PANEL_ORTHO_FRONT: // FRONT (X/Y)
     right = VECTOR_AXIS_X;
     up = VECTOR_AXIS_Y;
     break;
@@ -490,7 +512,7 @@ static void draw_brush_edges(brush_t *brush, int panel)
 
 void draw_brush_planes(brush_t *brush, int panel)
 {
-  if (panel <= 1 || !brush)
+  if ((panels[panel].type != PANEL_TYPE_ORTHO) || !brush)
     return;
 
   mesh_t *mesh = &brush->editor_mesh;
@@ -504,17 +526,17 @@ void draw_brush_planes(brush_t *brush, int panel)
 
   switch (panel)
   {
-  case 2: // TOP (X/Z)
+  case PANEL_ORTHO_TOP: // TOP (X/Z)
     right = (Vector){1, 0, 0};
     up = (Vector){0, 0, -1};
     break;
 
-  case 3: // SIDE (Z/Y)
+  case PANEL_ORTHO_SIDE: // SIDE (Z/Y)
     right = (Vector){0, 0, 1};
     up = (Vector){0, 1, 0};
     break;
 
-  case 4: // FRONT (X/Y)
+  case PANEL_ORTHO_FRONT: // FRONT (X/Y)
     right = (Vector){1, 0, 0};
     up = (Vector){0, 1, 0};
     break;
@@ -578,72 +600,6 @@ void draw_brush_planes(brush_t *brush, int panel)
   }
 }
 
-/*
-void draw_brush_2d(int panel, size_t brush)
-{
-  if (panel <= 1)
-    return;
-
-  Vector bpos = gEditorBrushArray->brushes[brush].pos;
-
-  Vector scale_half = VectorInit(
-      gEditorBrushArray->brushes[brush].scale.x * 0.5f,
-      gEditorBrushArray->brushes[brush].scale.y * 0.5f,
-      gEditorBrushArray->brushes[brush].scale.z * 0.5f);
-
-  Vector min = VectorSub(bpos, scale_half);
-  Vector max = VectorAdd(bpos, scale_half);
-
-  ImVec2 wrld_a, wrld_b;
-
-  switch (panel)
-  {
-  case 2:
-    wrld_a = ImVec2(min.x, min.z);
-    wrld_b = ImVec2(max.x, max.z);
-    break;
-
-  case 3:
-    wrld_a = ImVec2(min.z, min.y);
-    wrld_b = ImVec2(max.z, max.y);
-    break;
-
-  case 4:
-    wrld_a = ImVec2(min.x, min.y);
-    wrld_b = ImVec2(max.x, max.y);
-    break;
-
-  default:
-    return;
-  }
-
-  ImVec2 scr_a = EditorCamera_WorldToScreen(
-      panels[panel].size,
-      panels[panel].cam_pos,
-      panels[panel].cam_zoom,
-      wrld_a);
-
-  ImVec2 scr_b = EditorCamera_WorldToScreen(
-      panels[panel].size,
-      panels[panel].cam_pos,
-      panels[panel].cam_zoom,
-      wrld_b);
-
-  ImVec2 win_pos = ImGui::GetWindowPos();
-
-  scr_a = imvec2_add(scr_a, win_pos);
-  scr_b = imvec2_add(scr_b, win_pos);
-
-  ImVec2 tl(fmin(scr_a.x, scr_b.x), fmin(scr_a.y, scr_b.y));
-  ImVec2 br(fmax(scr_a.x, scr_b.x), fmax(scr_a.y, scr_b.y));
-
-  ImGui::GetWindowDrawList()->AddRect(
-      tl,
-      br,
-      IM_COL32(200, 100, 0, 255));
-}
-*/
-
 void draw_main_panel_contents()
 {
 }
@@ -656,7 +612,7 @@ void draw_panel(struct inputstate_t *input, size_t index)
 
   ImGuiWindowFlags flags;
 
-  if (index == 1)
+  if (panels[index].type == PANEL_TYPE_VIEW)
   {
     flags = panel_flags | ImGuiWindowFlags_NoBackground;
   }
@@ -673,7 +629,8 @@ void draw_panel(struct inputstate_t *input, size_t index)
   }
 
   draw_panel_grid(index);
-  if (index == gEditorGui_HoveredPanel) edge_hovered = find_hovered_edge(index);
+  if (index == gEditorGui_HoveredPanel)
+    edge_hovered = find_hovered_edge(index);
 
   for (size_t b = 0; b < gEditorBrushArray->count; b++)
   {
@@ -689,10 +646,6 @@ void draw_panel(struct inputstate_t *input, size_t index)
         edge_hovered_b,
         IM_COL32(0, 200, 30, 255));
   }
-
-
-
-  
 
   if (edge_selected)
   {
@@ -715,53 +668,50 @@ void EditorGui_DrawAll(SDL_Window *window, struct inputstate_t *input, camera_t 
     RecalculatePanels(winw, winh, editor_camera);
   }
 
-  //ImGui_StartFrame();
+  // ImGui_StartFrame();
 
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < 6; i++)
   {
     draw_panel(input, i);
   }
 
-  //ImGui_Render();
+  // ImGui_Render();
 }
 
 static Vector PanelMouseToWorldDelta(Vector right, Vector up, float mx, float my) // Useful for dragging brush posiitons
 {
-    return VectorAdd(
-        VectorScale(right, mx),
-        VectorScale(up, -my)
-    );
+  return VectorAdd(
+      VectorScale(right, mx),
+      VectorScale(up, -my));
 }
-
-
 
 void EditorGui_HandleBrushInput(struct inputstate_t *input)
 {
   static bool drawing = false;
   static ImVec2 start;
 
-
   Vector up, right;
 
   GetPanelBasis(gEditorGui_HoveredPanel, &right, &up);
 
-  if (gEditorGui_HoveredPanel < 2 || gEditorGui_HoveredPanel > 4)
+  if (panels[gEditorGui_HoveredPanel].type != PANEL_TYPE_ORTHO)
     return;
 
-  bool isTopPanel = (gEditorGui_HoveredPanel == 2);
-
+  // bool isTopPanel = (gEditorGui_HoveredPanel == PANEL_ORTHO_TOP);
+  // bool isTopPanel = true;
 
   // Begin drawing
   if (input->mbutton_left_toggle && !drawing && !edge_hovered && !edge_selected)
   {
+    printf("Began drawing\n");
     drawing = true;
 
     start = ImGui::GetMousePos();
 
     start.x -= panels[gEditorGui_HoveredPanel].pos.x;
-    // start.y -= panels[gEditorGui_HoveredPanel].pos.y;
+    start.y -= panels[gEditorGui_HoveredPanel].pos.y;
 
-    start.y = (isTopPanel) ? panels[2].size.y - start.y : start.y - panels[gEditorGui_HoveredPanel].pos.y;
+    // start.y = (isTopPanel) ? panels[PANEL_ORTHO_TOP].size.y - start.y : start.y - panels[gEditorGui_HoveredPanel].pos.y;
   }
   // End drawing
   else if (input->mbutton_left_toggle && drawing && !edge_hovered)
@@ -771,9 +721,16 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
     ImVec2 end = ImGui::GetMousePos();
 
     end.x -= panels[gEditorGui_HoveredPanel].pos.x;
-    // end.y -= panels[gEditorGui_HoveredPanel].pos.y;
+    end.y -= panels[gEditorGui_HoveredPanel].pos.y;
 
-    end.y = (isTopPanel) ? panels[2].size.y - end.y : end.y - panels[gEditorGui_HoveredPanel].pos.y;
+    // end.y = (isTopPanel) ? panels[PANEL_ORTHO_TOP].size.y - end.y : end.y - panels[gEditorGui_HoveredPanel].pos.y;
+
+    if (gEditorGui_HoveredPanel == PANEL_ORTHO_TOP)
+    {
+      // Flip Y for top panel: screen down -> world -Z
+      start.y = panels[PANEL_ORTHO_TOP].size.y - start.y;
+      end.y = panels[PANEL_ORTHO_TOP].size.y - end.y;
+    }
 
     panel_finalise_brush(
         gEditorGui_HoveredPanel,
@@ -784,7 +741,6 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
         panels[gEditorGui_HoveredPanel].cam_zoom,
         GRID_SPACING_WORLD);
   }
-
 
   // Edge selection
   if (input->mbutton_left_toggle && edge_hovered)
@@ -799,26 +755,38 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
   {
     edge_selected = NULL;
   }
-  if (input->mCurrent[SDL_BUTTON_LEFT] && edge_selected){
+  if (input->mCurrent[SDL_BUTTON_LEFT] && edge_selected)
+  {
+    brush_t *brush = &gEditorBrushArray->brushes[edge_selected->brush];
+    brush_side_t *a = &brush->sides[edge_selected->side_a];
+    brush_side_t *b = &brush->sides[edge_selected->side_b];
 
-    brush_t* brush = &gEditorBrushArray->brushes[edge_selected->brush];
+    // 1. Convert screen pixel delta to panel-space (world) delta
+    float inv_zoom = 1.0f / panels[gEditorGui_HoveredPanel].cam_zoom;
+    float panel_mx = input->mx_rel * inv_zoom;
+    float panel_my = input->my_rel * inv_zoom;
 
-    plane_t* plane = NULL;
-    brush_side_t* a = &brush->sides[edge_selected->side_a];
-    brush_side_t* b = &brush->sides[edge_selected->side_b];
+    Vector world_delta = VectorAdd(
+        VectorScale(right, panel_mx),
+        VectorScale(up, -panel_my));
 
-    plane = (gEditorGui_HoveredPanel != 2) ? &a->plane : &b->plane;
+    // 2. Modify the plane whose normal is most aligned with the drag
+    float dot_a = VectorDot(a->plane.normal, world_delta);
+    float dot_b = VectorDot(b->plane.normal, world_delta);
 
-    Vector world_delta = VectorAdd( VectorScale(right, input->mx_rel), VectorScale(up, -input->my_rel) );
-    Vector n = plane->normal;
-    
-    float delta = VectorDot(plane->normal, world_delta);
-    if (fabsf(delta) > 1e-6f){
-      plane->dist += delta;
+    const float eps = 1e-5f;
+    if (fabsf(dot_a) > fabsf(dot_b) && fabsf(dot_a) > eps)
+    {
+      a->plane.dist += dot_a;
       brush->dirty = 1;
       brush->dirty_ui_edges = 1;
     }
-
+    else if (fabsf(dot_b) > eps)
+    {
+      b->plane.dist += dot_b;
+      brush->dirty = 1;
+      brush->dirty_ui_edges = 1;
+    }
   }
 }
 
@@ -836,14 +804,14 @@ void EditorGui_HandlePanelInput(SDL_Window *window, struct inputstate_t *input)
     *cam_zoom = 5.0f;
 
   // Handle panning
-  if (gEditorGui_HoveredPanel > 1 && input->mbutton_right)
+  if ((panels[gEditorGui_HoveredPanel].type == PANEL_TYPE_ORTHO) && input->mbutton_right)
   {
     panels[gEditorGui_HoveredPanel].cam_pos.x -= input->mx_rel / (*cam_zoom);
     panels[gEditorGui_HoveredPanel].cam_pos.y += input->my_rel / (*cam_zoom);
   }
 
   // Handle 3D panel relativity
-  if (gEditorGui_HoveredPanel == 1 && input->mbutton_left_toggle)
+  if ((panels[gEditorGui_HoveredPanel].type == PANEL_TYPE_VIEW) && input->mbutton_left_toggle)
   {
     gEditorGui_ViewportCaptured = true;
     SDL_SetWindowRelativeMouseMode(window, true);

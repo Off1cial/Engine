@@ -157,6 +157,11 @@ void RCMD_DrawMesh(struct rcmd_t* cmd){
   Shader_SetMat4Cached(shader_active->uProjLoc, gRendererState->active_cam->projection);
   Shader_SetMat4Cached(shader_active->uModelLoc, cmd->draw_mesh.model);
 
+  if (RENDERER_HASFLAG(gRendererState, RENDERER_FLAG_WIREFRAME)) {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  } else {
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
 
-  MeshDraw(cmd->draw_mesh.mesh, cmd->draw_mesh.mode);
+  MeshDraw(cmd->draw_mesh.mesh, GL_TRIANGLES);
 }

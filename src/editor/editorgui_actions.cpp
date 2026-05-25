@@ -2,7 +2,7 @@
 #include "editor/editorcmd.h"
 #include "editor/editorcamera.h"
 #include "mem.h"
-
+#include "editor/editorpanel.h"
 
 
 
@@ -54,7 +54,7 @@ void panel_finalise_brush(
 
   switch(panel)
   {
-    case 2: // TOP
+    case  PANEL_ORTHO_TOP: // TOP
       sx = maxx - minx;
       sy = BRUSH_DEFUALT_SCALE;
       sz = maxy - miny;
@@ -63,7 +63,7 @@ void panel_finalise_brush(
       world_end   = VectorInit(maxx, BRUSH_DEFUALT_SCALE, maxy);
       break;
 
-    case 3: // SIDE
+    case PANEL_ORTHO_SIDE: // SIDE
       sx = BRUSH_DEFUALT_SCALE;
       sy = maxy - miny;
       sz = maxx - minx;
@@ -72,7 +72,7 @@ void panel_finalise_brush(
       world_end   = VectorInit(BRUSH_DEFUALT_SCALE, maxy, maxx);
       break;
 
-    case 4: // FRONT
+    case PANEL_ORTHO_FRONT: // FRONT
       sx = maxx - minx;
       sy = maxy - miny;
       sz = BRUSH_DEFUALT_SCALE;

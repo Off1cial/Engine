@@ -146,7 +146,7 @@ void find_hovered_brush(
   }
 }
 
-void EditorLoop(SDL_Window *window, rdrawqueue_t *draw_q, camera_t *editor_camera, float mx, float my)
+void EditorLoop(SDL_Window *window, rdrawqueue_t *draw_q, camera_t *editor_camera, float mx, float my, int console_open)
 {
 
   bool relative_mouse = SDL_GetWindowRelativeMouseMode(window);
@@ -205,31 +205,37 @@ void EditorLoop(SDL_Window *window, rdrawqueue_t *draw_q, camera_t *editor_camer
   EditorBrush_DrawHoveredSide(&gEditorBrushArray->hovered_side, 0);
 
   EditorGui_DrawAll(window, gInputState, editor_camera, gInputState->FLAG_WindowResized);
-  EditorGui_HandleBrushInput(gInputState);
+  
+  if (!console_open){
+    EditorGui_HandleBrushInput(gInputState);
+    EditorGui_HandlePanelInput(window, gInputState);
+    if (!relative_mouse)
+    {
+      find_hovered_brush(editor_camera, mx, my, &brush_hit, &brush_dist, &brush_hit_side);
+    }
 
-  EditorGui_HandlePanelInput(window, gInputState);
-  if (!relative_mouse)
-  {
-    find_hovered_brush(editor_camera, mx, my, &brush_hit, &brush_dist, &brush_hit_side);
+    // ---------------------------------------------------------------
+    // Testing 3d brush dragging
+    if (gInputState->mbutton_right_toggle && gEditorBrushArray->hovered_side.side)
+    {
+      // relative_mouse = false;
+      BeginPlaneDrag(gInputState->mx, gInputState->my);
+    }
+
+    if (gInputState->mbutton_right && gEditorPlaneDrag->active)
+    {
+      // relative_mouse = false;
+      UpdatePlaneDrag(gInputState->mx, gInputState->my);
+    }
+
+    if (gInputState->mbutton_right_released)
+    {
+      gEditorPlaneDrag->active = false;
+    }
+    // ----------------------------------------------------------------
   }
 
-  // Testing 3d brush dragging
-  if (gInputState->mbutton_right_toggle && gEditorBrushArray->hovered_side.side)
-  {
-    // relative_mouse = false;
-    BeginPlaneDrag(gInputState->mx, gInputState->my);
-  }
 
-  if (gInputState->mbutton_right && gEditorPlaneDrag->active)
-  {
-    // relative_mouse = false;
-    UpdatePlaneDrag(gInputState->mx, gInputState->my);
-  }
-
-  if (gInputState->mbutton_right_released)
-  {
-    gEditorPlaneDrag->active = false;
-  }
 
   EditorQueue_Execute(gEditorQueue, gEditorBrushArray);
 }

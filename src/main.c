@@ -115,7 +115,7 @@ int main(){
   renderer_state.light_forward_count++;
 
 
-  material_t* mat_marble = Material_Load("../Assets/Materials/pavingstonesmaterial.mat");
+  material_t* mat_marble = Material_Load("../Assets/Materials/brickmaterial.mat");
   if (!mat_marble){
     printf("mat_marble = NULL\n");
     exit(1);
@@ -185,7 +185,7 @@ int main(){
     // Test render command
     
     if (*gEditorActive){
-      EditorLoop(game_container.window, &gDrawQ, &editor_cam, input_state.mx, input_state.my); 
+      EditorLoop(game_container.window, &gDrawQ, &editor_cam, input_state.mx, input_state.my, gConsole->visible); 
     }
     
     

@@ -51,21 +51,6 @@ void CVAR_InitAll()
   Cvar_Register(&cvar_r_wireframe);
 }
 
-void Console_Init()
-{
-  gConsole = malloc(sizeof(console_t));
-  CVAR_InitAll();
-
-  gConsole->line_head = 0;
-  gConsole->line_tail = 0;
-  gConsole->visible = 0;
-
-  gConsole->input[0] = '\0';
-
-
-  gConsole->parser.at = NULL;
-}
-
 static int console_push_line(console_line_t line)
 {
   gConsole->lines[gConsole->line_tail] = line;
@@ -93,6 +78,46 @@ void Console_WriteLine(const char *text, console_line_type_t type)
 
   console_push_line(new_line);
 }
+
+
+static void console_output_file(const char* filepath){
+  FILE* file = fopen(filepath, "r");
+  if (!file){
+    char msg[256];
+    snprintf(msg, sizeof(msg), "Failed to open file: '%s'", filepath);
+    Console_WriteLine(msg, CONSOLE_LINE_WARNING);
+    return;
+  }
+
+  char line[256];
+  while (fgets(line, sizeof(line), file)){
+    line[strcspn(line, "\n")] = '\0';
+    Console_WriteLine(line, CONSOLE_LINE_DEFAULT);
+  }
+  fclose(file);
+}
+
+
+void Console_Init()
+{
+  gConsole = malloc(sizeof(console_t));
+  CVAR_InitAll();
+
+  gConsole->line_head = 0;
+  gConsole->line_tail = 0;
+  gConsole->visible = 0;
+
+  gConsole->input[0] = '\0';
+
+
+  gConsole->parser.at = NULL;
+
+  console_output_file("../Assets/chud.ascii");
+}
+
+
+
+
 
 void Cvar_Update(cvar_t* cvar){
   // Handle each cvar
