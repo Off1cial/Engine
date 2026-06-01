@@ -93,34 +93,32 @@ float Parser_ReadFloat(parser_t *p)
   return result;
 }
 
-bool Parser_ReadInt(parser_t* p, int* out_value)
+bool Parser_ReadInt(parser_t *p, int *out_value)
 {
-    Parser_SkipWhitespace(p);
+  Parser_SkipWhitespace(p);
 
-    char* end;
-    long result = strtol(p->at, &end, 10);
+  char *end;
+  long result = strtol(p->at, &end, 10);
 
-    if (end == p->at)
-    {
-        return false;
-    }
+  if (end == p->at)
+  {
+    return false;
+  }
 
-    p->at = end;
-    *out_value = (int)result;
+  p->at = end;
+  *out_value = (int)result;
 
-    return true;
+  return true;
 }
 
-
-void Parser_ReadToken(parser_t* p, char* out)
+void Parser_ReadToken(parser_t *p, char *out)
 {
-    Parser_SkipWhitespace(p);
+  Parser_SkipWhitespace(p);
 
-    while (*p->at &&
-           !isspace(*p->at))
-    {
-        *out++ = *p->at++;
-    }
+  while (*p->at && !isspace(*p->at))
+  {
+    *out++ = *p->at++;
+  }
 
-    *out = 0;
+  *out = 0;
 }

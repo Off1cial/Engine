@@ -5,6 +5,10 @@
 #include "rendering/shader.h"
 #include "types/types_vector.h"
 
+#ifndef MAT_NODRAW
+#define MAT_NODRAW -1
+#endif
+
 #define MAX_MATERIALS 128
 
 typedef enum material_flags_t{

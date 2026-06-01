@@ -495,6 +495,13 @@ Vector4 QuaternionMultQuaternion(Vector4 a, Vector4 b)
     };
 }
 
+plane_t PlaneReverse(plane_t plane){
+    plane_t p;
+    p.dist = -plane.dist;
+    p.normal = VectorNegate(plane.normal);
+    return p;
+}
+
 
 bool RayPlaneIntersection(ray_t* ray, plane_t* plane, vec_t* t_out){
   // Find t where ray origin + (ray dir * t) dot with normal = d

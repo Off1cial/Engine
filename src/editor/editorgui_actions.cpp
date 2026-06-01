@@ -4,6 +4,9 @@
 #include "mem.h"
 #include "editor/editorpanel.h"
 
+#include "types/types_vector.h"
+
+
 
 
 void panel_finalise_brush(
@@ -113,3 +116,5 @@ void panel_finalise_brush(
 
   EditorQueue_Push(gEditorQueue, cmd);
 }
+
+

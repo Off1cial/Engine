@@ -12,7 +12,6 @@ void panel_finalise_brush(int panel, ImVec2 panel_size, ImVec2 start, ImVec2 end
 
 
 
-
 typedef struct editor_action_history_t{
   
   editor_cmd_t cmds[EDITOR_HISTORY_SIZE];

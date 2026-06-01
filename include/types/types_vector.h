@@ -109,7 +109,9 @@ typedef struct {
   Vector normal;
   vec_t dist;
 } plane_t;
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void Mat4Copy(const mat4 src, mat4* dest);
 mat4 Mat4Mul(mat4* a, mat4* b);
@@ -132,9 +134,7 @@ inline bool IsValid(Vector* v)
 }
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+
 
 Vector VectorInit(float x, float y, float z);
 
@@ -170,6 +170,9 @@ Vector VectorZero();
 float Vector2Cross(Vector2 o, Vector2 a, Vector2 b);
 Vector2 Vector2Add(Vector2 a, Vector2 b);
 Vector2 Vector2Scale(Vector2 v, float scale);
+
+
+plane_t PlaneReverse(plane_t plane);
 
 
 // Extras

@@ -197,12 +197,8 @@ int Console_ParseInput(){
           cvar->i.value = new_val;
           Cvar_Update(cvar);
         }
-
-
         break;
-
     }
-
   }
   return 1;
 }

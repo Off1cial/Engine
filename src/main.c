@@ -104,7 +104,7 @@ int main(){
   // Default sun light - testing
   light_t sunLight = {
     .type = LIGHT_POINT,
-    .colour = VectorInit(0.9, 0.9, 0.9),
+    .colour = VectorInit(0.55, 0.55, 0.5),
     .direction = VectorInit(3, -1, 0),
     .intensity = 0.8f,
     .position = VectorInit(0, -8, 0),

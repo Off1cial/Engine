@@ -11,6 +11,8 @@ editor_cmd_queue_t *gEditorQueue = NULL;
 
 plane_drag_t *gEditorPlaneDrag = NULL;
 
+
+
 void BeginPlaneDrag(float mx, float my)
 {
   gEditorPlaneDrag->active = true;
@@ -58,6 +60,7 @@ void UpdatePlaneDrag(float mx, float my)
 
 void EditorInit(editor_state_t *eState, SDL_Window *window, SDL_GLContext glContext)
 {
+
   gEditorPlaneDrag = malloc(sizeof(plane_drag_t));
   memset(gEditorPlaneDrag, 0, sizeof(plane_drag_t));
 
@@ -146,6 +149,7 @@ void find_hovered_brush(
   }
 }
 
+
 void EditorLoop(SDL_Window *window, rdrawqueue_t *draw_q, camera_t *editor_camera, float mx, float my, int console_open)
 {
 
@@ -202,6 +206,8 @@ void EditorLoop(SDL_Window *window, rdrawqueue_t *draw_q, camera_t *editor_camer
   {
     EditorBrush_Draw(&gEditorBrushArray->brushes[i], gRendererState->draw_q, gRendererState->active_cam);
   }
+
+
   EditorBrush_DrawHoveredSide(&gEditorBrushArray->hovered_side, 0);
 
   EditorGui_DrawAll(window, gInputState, editor_camera, gInputState->FLAG_WindowResized);

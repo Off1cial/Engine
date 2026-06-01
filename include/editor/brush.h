@@ -18,6 +18,14 @@
 #define BRUSH_DEFUALT_SCALE 2
 #define MAX_BRUSH_EDGES 256
 
+typedef enum
+{
+  CONTENTS_EMPTY = 0,
+  CONTENTS_SOLID = 1,
+  CONTENTS_WATER = 2,
+  CONTENTS_LAVA = 4
+} contents_t;
+
 typedef struct
 {
   Vector v[MAX_WINDING_POINTS];
@@ -53,6 +61,7 @@ typedef struct brush_t
   int side_count;
   int dirty;
   int dirty_ui_edges;
+  int contents; // flag
   mesh_t editor_mesh;
 
   Vector pos, rot, scale;

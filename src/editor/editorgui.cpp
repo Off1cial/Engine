@@ -15,6 +15,8 @@
 #define GRID_SPACING_WORLD 10
 #define PANEL_SPACING_PX (int)2
 
+#define GRID_LINE_COL IM_COL32(200, 200, 200, 120)
+
 bool start_up = true;
 // Drawing brushes
 ImVec2 brush_start;
@@ -89,7 +91,8 @@ static ImVec2 ProjectToPanel(Vector v, Vector origin, Vector right, Vector up)
 void RecalculatePanels(int winw, int winh, camera_t *editor_camera)
 {
 
-  const int p0_w = (int)(winw / 3);
+  const int p0_w = (int)(winw / 4);
+
   const int top_bar_height = 60;
 
   // Width of the 4 render panels:
@@ -215,7 +218,8 @@ void draw_panel_grid(size_t index)
     scr_a = imvec2_add(scr_a, win_pos);
     scr_b = imvec2_add(scr_b, win_pos);
     // Draw lines
-    draw_list->AddLine(scr_a, scr_b, IM_COL32(255, 255, 255, 150), 0.8f);
+    //draw_list->AddLine(scr_a, scr_b, IM_COL32(255, 255, 255, 150), 0.8f);
+    draw_list->AddLine(scr_a, scr_b, GRID_LINE_COL, 0.8f);
   }
 
   for (float y = start_y; y <= top; y += GRID_SPACING_WORLD)
@@ -228,7 +232,8 @@ void draw_panel_grid(size_t index)
 
     scr_a = imvec2_add(scr_a, win_pos);
     scr_b = imvec2_add(scr_b, win_pos);
-    draw_list->AddLine(scr_a, scr_b, IM_COL32(255, 255, 255, 150), 0.8f);
+    //draw_list->AddLine(scr_a, scr_b, IM_COL32(255, 255, 255, 150), 0.8f);
+    draw_list->AddLine(scr_a, scr_b, GRID_LINE_COL, 0.8f);
   }
 }
 
@@ -600,11 +605,15 @@ void draw_brush_planes(brush_t *brush, int panel)
   }
 }
 
+void draw_tool_panel_contents(){
+  // Sprites for each tool, selectable buttons that change tool
+}
+
 void draw_main_panel_contents()
 {
 }
 
-void draw_panel(struct inputstate_t *input, size_t index)
+void draw_panel(struct inputstate_t *input, size_t index, int winw, int winh, camera_t* editor_camera)
 {
 
   ImGui::SetNextWindowPos(panels[index].pos);
@@ -640,7 +649,6 @@ void draw_panel(struct inputstate_t *input, size_t index)
 
   if (edge_hovered)
   {
-
     ImGui::GetWindowDrawList()->AddLine(
         edge_hovered_a,
         edge_hovered_b,
@@ -660,10 +668,10 @@ void draw_panel(struct inputstate_t *input, size_t index)
 
 void EditorGui_DrawAll(SDL_Window *window, struct inputstate_t *input, camera_t *editor_camera, bool resize_flag)
 {
-
+  int winw, winh;
   if (resize_flag)
   {
-    int winw, winh;
+    
     SDL_GetWindowSize(window, &winw, &winh);
     RecalculatePanels(winw, winh, editor_camera);
   }
@@ -672,7 +680,8 @@ void EditorGui_DrawAll(SDL_Window *window, struct inputstate_t *input, camera_t 
 
   for (int i = 0; i < 6; i++)
   {
-    draw_panel(input, i);
+    
+    draw_panel(input, i, winw, winh, editor_camera);
   }
 
   // ImGui_Render();
@@ -685,6 +694,35 @@ static Vector PanelMouseToWorldDelta(Vector right, Vector up, float mx, float my
       VectorScale(up, -my));
 }
 
+
+static Vector ImVec2ToWorld(int panel, ImVec2 vec){
+  ImVec2 wvec2 = EditorCamera_ScreenToWorld(
+    panels[panel].size,
+    panels[panel].cam_pos,
+    panels[panel].cam_zoom,
+    vec
+  );
+
+  Vector world = {0, 0, 0};
+
+  switch(panel){
+    case PANEL_ORTHO_TOP:
+      world = (Vector){wvec2.x, 0, wvec2.y};
+      break;
+    case PANEL_ORTHO_SIDE:
+      world = (Vector){0, wvec2.y, wvec2.x};
+      break;
+    case PANEL_ORTHO_FRONT:
+      world = (Vector){wvec2.x, wvec2.y, 0};
+      break;
+    default:
+      break;
+  }
+  return world;
+}
+
+
+static Vector draw_start_world;
 void EditorGui_HandleBrushInput(struct inputstate_t *input)
 {
   static bool drawing = false;
@@ -712,6 +750,8 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
     start.y -= panels[gEditorGui_HoveredPanel].pos.y;
 
     // start.y = (isTopPanel) ? panels[PANEL_ORTHO_TOP].size.y - start.y : start.y - panels[gEditorGui_HoveredPanel].pos.y;
+    draw_start_world = ImVec2ToWorld(gEditorGui_HoveredPanel, start);
+    
   }
   // End drawing
   else if (input->mbutton_left_toggle && drawing && !edge_hovered)
@@ -731,7 +771,6 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
       start.y = panels[PANEL_ORTHO_TOP].size.y - start.y;
       end.y = panels[PANEL_ORTHO_TOP].size.y - end.y;
     }
-
     panel_finalise_brush(
         gEditorGui_HoveredPanel,
         panels[gEditorGui_HoveredPanel].size,

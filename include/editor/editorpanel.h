@@ -10,7 +10,7 @@ typedef enum panel_id_t {
   PANEL_ORTHO_SIDE = 2,
   PANEL_ORTHO_FRONT = 3,
   PANEL_UI_MAIN = 4,
-  PANEL_UI_TOOLS = 5, 
+  PANEL_UI_TOOLS = 5,
   PANEL_COUNT
 } panel_id_t;
 
