@@ -184,6 +184,32 @@ void EditorGui_Init(SDL_Window *window, SDL_GLContext glContext, camera_t *edito
   start_up = false;
 }
 
+
+static void draw_brushprogress_panellocal(ImVec2 a, ImVec2 b, int panel)
+{
+    ImDrawList* dl = ImGui::GetWindowDrawList();
+    ImVec2 win_pos = ImGui::GetWindowPos();
+    
+    ImVec2 panel_a = a;
+    ImVec2 panel_b = b;
+    if (panel == PANEL_ORTHO_TOP){
+      a.y = panels[panel].size.y - a.y;
+      b.y = panels[panel].size.y - b.y;
+    }
+    // a and b are in panel-local coordinates (0,0 at top-left of panel)
+    // Just add window position and draw
+    ImVec2 min = ImVec2(
+        win_pos.x + fmin(a.x, b.x),
+        win_pos.y + fmin(a.y, b.y)
+    );
+    ImVec2 max = ImVec2(
+        win_pos.x + fmax(a.x, b.x),
+        win_pos.y + fmax(a.y, b.y)
+    );
+
+    dl->AddRect(min, max, IM_COL32(50, 180, 200, 200));
+}
+
 void draw_panel_grid(size_t index)
 {
 
@@ -647,6 +673,11 @@ void draw_panel(struct inputstate_t *input, size_t index, int winw, int winh, ca
     draw_brush_edges(brush, index);
   }
 
+  if (drawing_brush && (index == gEditorGui_HoveredPanel)){
+    draw_brushprogress_panellocal(brush_start, brush_end, index);
+  }
+
+
   if (edge_hovered)
   {
     ImGui::GetWindowDrawList()->AddLine(
@@ -722,6 +753,7 @@ static Vector ImVec2ToWorld(int panel, ImVec2 vec){
 }
 
 
+
 static Vector draw_start_world;
 void EditorGui_HandleBrushInput(struct inputstate_t *input)
 {
@@ -743,42 +775,53 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
   {
     printf("Began drawing\n");
     drawing = true;
+    drawing_brush = drawing;
 
     start = ImGui::GetMousePos();
 
     start.x -= panels[gEditorGui_HoveredPanel].pos.x;
     start.y -= panels[gEditorGui_HoveredPanel].pos.y;
 
-    // start.y = (isTopPanel) ? panels[PANEL_ORTHO_TOP].size.y - start.y : start.y - panels[gEditorGui_HoveredPanel].pos.y;
-    draw_start_world = ImVec2ToWorld(gEditorGui_HoveredPanel, start);
-    
-  }
-  // End drawing
-  else if (input->mbutton_left_toggle && drawing && !edge_hovered)
-  {
-    drawing = false;
-
-    ImVec2 end = ImGui::GetMousePos();
-
-    end.x -= panels[gEditorGui_HoveredPanel].pos.x;
-    end.y -= panels[gEditorGui_HoveredPanel].pos.y;
-
-    // end.y = (isTopPanel) ? panels[PANEL_ORTHO_TOP].size.y - end.y : end.y - panels[gEditorGui_HoveredPanel].pos.y;
-
     if (gEditorGui_HoveredPanel == PANEL_ORTHO_TOP)
     {
       // Flip Y for top panel: screen down -> world -Z
       start.y = panels[PANEL_ORTHO_TOP].size.y - start.y;
+    }
+
+    // start.y = (isTopPanel) ? panels[PANEL_ORTHO_TOP].size.y - start.y : start.y - panels[gEditorGui_HoveredPanel].pos.y;
+
+    
+  }
+  // End drawing
+  else if (drawing && !edge_hovered)
+  {
+    ImVec2 end = ImGui::GetMousePos();
+    end.x -= panels[gEditorGui_HoveredPanel].pos.x;
+    end.y -= panels[gEditorGui_HoveredPanel].pos.y;
+
+    // end.y = (isTopPanel) ? panels[PANEL_ORTHO_TOP].size.y - end.y : end.y - panels[gEditorGui_HoveredPanel].pos.y;
+    if (gEditorGui_HoveredPanel == PANEL_ORTHO_TOP)
+    {
+      // Flip Y for top panel: screen down -> world -Z
+      //start.y = panels[PANEL_ORTHO_TOP].size.y - start.y;
       end.y = panels[PANEL_ORTHO_TOP].size.y - end.y;
     }
-    panel_finalise_brush(
-        gEditorGui_HoveredPanel,
-        panels[gEditorGui_HoveredPanel].size,
-        start,
-        end,
-        panels[gEditorGui_HoveredPanel].cam_pos,
-        panels[gEditorGui_HoveredPanel].cam_zoom,
-        GRID_SPACING_WORLD);
+    brush_start = start;
+    brush_end = end;
+    if (input->mbutton_left_toggle)
+    // Finish drawing
+    {
+      drawing = false;
+      drawing_brush = drawing;
+      panel_finalise_brush(
+          gEditorGui_HoveredPanel,
+          panels[gEditorGui_HoveredPanel].size,
+          start,
+          end,
+          panels[gEditorGui_HoveredPanel].cam_pos,
+          panels[gEditorGui_HoveredPanel].cam_zoom,
+          GRID_SPACING_WORLD);
+    }
   }
 
   // Edge selection
