@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdalign.h>
+#include <assert.h>
 
 #define SIMD_ALIGNMENT_BYTES 32
 

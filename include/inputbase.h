@@ -15,12 +15,6 @@ struct inputstate_t{
   bool mbutton_left_toggle, mbutton_right_toggle;
   bool mbutton_left_released, mbutton_right_released;
 
-
-
-
-
-
-
   bool FLAG_WindowResized;
   bool FLAG_ToggleEditor;
 
@@ -32,6 +26,7 @@ struct inputstate_t{
   float scrl_y;
 };
 
+extern bool gCursorLocked;
 
 #ifdef __cplusplus
 extern "C" {

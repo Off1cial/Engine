@@ -2,6 +2,7 @@
 #define APPLICATION_H
 
 #include <SDL3/SDL.h>
+#include <assert.h>
 
 struct container_t{
   SDL_Window* window;
@@ -10,6 +11,8 @@ struct container_t{
   char* title;
   SDL_GLContext glContext;
 };
+
+
 
 void ApplicationDestroy(struct container_t* container);
 

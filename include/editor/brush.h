@@ -22,8 +22,7 @@ typedef enum
 {
   CONTENTS_EMPTY = 0,
   CONTENTS_SOLID = 1,
-  CONTENTS_WATER = 2,
-  CONTENTS_LAVA = 4
+  CONTENTS_FLUID = 2,
 } contents_t;
 
 typedef struct

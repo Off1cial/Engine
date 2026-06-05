@@ -1,42 +1,46 @@
 #ifndef BSP_H
 #define BSP_H
 
-#include "types/types_vector.h"
 #include "editor/brush.h"
+#include "types/types_vector.h"
 
-typedef struct
-{
-  plane_t plane;
+// BSP Elements
 
-  int front;
+typedef struct {
+  plane_t plane; // split plane
+  int front; // index of child nodes, -1 if it has none (node is a leaf)
   int back;
-
 } bsp_node_t;
 
-typedef struct
-{
-  Vector verts[MAX_WINDING_POINTS];
-  Vector2 uvs[MAX_WINDING_POINTS];
+typedef struct {
+  contents_t contents;
+  int face_start; // Index of first face
+  int face_count;
+} bsp_leaf_t;
 
-  int material_id;
+typedef struct {
+  winding_t winding;
+  int material;
+  Vector2 uv_origin;
+  Vector uv_axis_u;
+  Vector uv_axis_v;
 } bsp_face_t;
 
 
-typedef struct
-{
-  int contents; // flag
-} bsp_leaf_t;
 
-typedef struct
+// Contained within
+typedef struct 
 {
-  bsp_node_t *nodes;
+  bsp_node_t* nodes;
+  size_t node_count, node_capacity;
+
   bsp_leaf_t* leaves;
-  bsp_face_t *faces;
+  size_t leaf_count, leaf_capacity;
 
-  int leaf_count;
-  int leaf_capacity;
-  int node_count;
-  int node_capacity;
-  int face_count;
-} bsp_container_t;
+  bsp_face_t* faces;
+  size_t face_count, face_capacity;
+} bsp_tree_t;
+
+
+
 #endif

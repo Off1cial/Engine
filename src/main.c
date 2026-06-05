@@ -18,6 +18,7 @@
 #include "console/consolegui.h"
 #include "state.h"
 
+
 // TOOD
 //
 //  REDUCE STACK USAGE
@@ -36,6 +37,8 @@ bool* gEditorActive = NULL;
 editor_brush_array* gEditorBrushArray = NULL;
 rigidbody_array_t* gRigidbodyArray = NULL;
 collider_array_dynamic_t* gColliderArray = NULL;
+
+bool gCursorLocked = true;
 
 int main(){
   

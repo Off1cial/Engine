@@ -896,14 +896,16 @@ void EditorGui_HandlePanelInput(SDL_Window *window, struct inputstate_t *input)
   if ((panels[gEditorGui_HoveredPanel].type == PANEL_TYPE_VIEW) && input->mbutton_left_toggle)
   {
     gEditorGui_ViewportCaptured = true;
-    SDL_SetWindowRelativeMouseMode(window, true);
+    gCursorLocked = true;
+    //SDL_SetWindowRelativeMouseMode(window, true);
   }
   if (gEditorGui_ViewportCaptured &&
       input->kCurrent[SDL_SCANCODE_ESCAPE] &&
       !input->kPrevious[SDL_SCANCODE_ESCAPE])
   {
     gEditorGui_ViewportCaptured = false;
-    SDL_SetWindowRelativeMouseMode(window, false);
+    gCursorLocked = false;
+    //SDL_SetWindowRelativeMouseMode(window, false);
   }
   if (gEditorGui_ViewportCaptured)
   {

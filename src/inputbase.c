@@ -12,12 +12,25 @@
 bool mleft_last = false;
 bool mright_last = false;
 
+bool cursorlocked_prev;
+
 void poll_input(struct inputstate_t* state, int* running_condition, int* winw, int* winh, SDL_Window* window){
   
   // Copy keyboard state
   memcpy(state->kPrevious, state->kCurrent, sizeof(state->kPrevious));
   // Copy mouse state
   memcpy(state->mPrevious, state->mCurrent, sizeof(state->mPrevious));
+
+  if (cursorlocked_prev != gCursorLocked){
+    // Cursor state has changed
+    if (!gCursorLocked){
+      // Cursor was unlocked
+      SDL_WarpMouseInWindow(window, *winw/2, *winh/2);
+    }
+  }
+
+  cursorlocked_prev = gCursorLocked;
+  SDL_SetWindowRelativeMouseMode(window, gCursorLocked);
 
   mleft_last = state->mbutton_left;
   mright_last = state->mbutton_right;
@@ -88,10 +101,6 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
 
   if (state->kCurrent[SDL_SCANCODE_GRAVE] && !state->kPrevious[SDL_SCANCODE_GRAVE]){
     gConsole->visible = !gConsole->visible;
-    if (gConsole->visible){
-      SDL_StartTextInput(window);
-    }else{
-      SDL_StopTextInput(window);
-    }
+    gCursorLocked = !(gConsole->visible);
   }
 }
