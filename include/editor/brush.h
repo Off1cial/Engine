@@ -31,6 +31,9 @@ typedef struct
   int count;
 } winding_t;
 
+#define WINDING_DEGEN(w) ((w.count < 3))
+#define WINDING_VALID(w) ((w.count >= 3))
+
 typedef struct
 {
   plane_t plane;
@@ -209,8 +212,13 @@ static winding_t clip_winding(winding_t *in, plane_t p)
     float da = VectorDot(p.normal, a) - p.dist;
     float db = VectorDot(p.normal, b) - p.dist;
 
+    /*
     int ina = (da <= 0);
     int inb = (db <= 0);
+    */
+    // Updated to remove = 
+    int ina = (da < 0);
+    int inb = (db < 0);
 
     if (ina)
       out.v[out.count++] = a;

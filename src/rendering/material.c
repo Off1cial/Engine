@@ -122,6 +122,12 @@ material_t* Material_Load(const char* filepath){
         m->flags |= MATERIAL_USE_VERTEX_COLOUR;
       }
     }
+    // Double sided
+    else if (strcmp(ident, "DoubleSided") == 0){
+      if (Parser_ReadBool(&parser)){
+        m->flags |= MATERIAL_DOUBLE_SIDED;
+      }
+    }
     // Colour
     else if (strcmp(ident, "Colour") == 0)
     {
@@ -167,6 +173,9 @@ material_t* Material_Load(const char* filepath){
 
   printf("Use Vertex Colour: %d\n",
       (m->flags & MATERIAL_USE_VERTEX_COLOUR) != 0);
+
+  printf("Double sided: %d\n",
+      (m->flags & MATERIAL_DOUBLE_SIDED) != 0);
 
   printf("Colour: %d %d %d %d\n",
          r, g, b, a

@@ -189,22 +189,36 @@ static void draw_brushprogress_panellocal(ImVec2 a, ImVec2 b, int panel)
 {
     ImDrawList* dl = ImGui::GetWindowDrawList();
     ImVec2 win_pos = ImGui::GetWindowPos();
+    ImVec2 panel_a;
+    ImVec2 panel_b;
+    panel_a = EditorCamera_WorldToScreen(
+      panels[panel].size,
+      panels[panel].cam_pos,
+      panels[panel].cam_zoom,
+      a
+    );
+
+    panel_b = EditorCamera_WorldToScreen(
+      panels[panel].size,
+      panels[panel].cam_pos,
+      panels[panel].cam_zoom,
+      b
+    );
     
-    ImVec2 panel_a = a;
-    ImVec2 panel_b = b;
+
     if (panel == PANEL_ORTHO_TOP){
-      a.y = panels[panel].size.y - a.y;
-      b.y = panels[panel].size.y - b.y;
+      panel_a.y = panels[panel].size.y - panel_a.y;
+      panel_b.y = panels[panel].size.y - panel_b.y;
     }
     // a and b are in panel-local coordinates (0,0 at top-left of panel)
     // Just add window position and draw
     ImVec2 min = ImVec2(
-        win_pos.x + fmin(a.x, b.x),
-        win_pos.y + fmin(a.y, b.y)
+        win_pos.x + fmin(panel_a.x, panel_b.x),
+        win_pos.y + fmin(panel_a.y, panel_b.y)
     );
     ImVec2 max = ImVec2(
-        win_pos.x + fmax(a.x, b.x),
-        win_pos.y + fmax(a.y, b.y)
+        win_pos.x + fmax(panel_a.x, panel_b.x),
+        win_pos.y + fmax(panel_a.y, panel_b.y)
     );
 
     dl->AddRect(min, max, IM_COL32(50, 180, 200, 200));
@@ -808,6 +822,20 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
     }
     brush_start = start;
     brush_end = end;
+
+    brush_start = EditorCamera_ScreenToWorld(
+      panels[gEditorGui_HoveredPanel].size,
+      panels[gEditorGui_HoveredPanel].cam_pos,
+      panels[gEditorGui_HoveredPanel].cam_zoom,
+      start
+    );
+
+    brush_end = EditorCamera_ScreenToWorld(
+      panels[gEditorGui_HoveredPanel].size,
+      panels[gEditorGui_HoveredPanel].cam_pos,
+      panels[gEditorGui_HoveredPanel].cam_zoom,
+      end
+    );
     if (input->mbutton_left_toggle)
     // Finish drawing
     {
@@ -874,7 +902,7 @@ void EditorGui_HandleBrushInput(struct inputstate_t *input)
 
 void EditorGui_HandlePanelInput(SDL_Window *window, struct inputstate_t *input)
 {
-
+  
   // Handle zoom
   panels[gEditorGui_HoveredPanel].cam_zoom += input->scrl_y * 0.1f;
 
@@ -891,7 +919,7 @@ void EditorGui_HandlePanelInput(SDL_Window *window, struct inputstate_t *input)
     panels[gEditorGui_HoveredPanel].cam_pos.x -= input->mx_rel / (*cam_zoom);
     panels[gEditorGui_HoveredPanel].cam_pos.y += input->my_rel / (*cam_zoom);
   }
-
+  if (!gCursorLocked) gEditorGui_ViewportCaptured = false;
   // Handle 3D panel relativity
   if ((panels[gEditorGui_HoveredPanel].type == PANEL_TYPE_VIEW) && input->mbutton_left_toggle)
   {

@@ -95,7 +95,7 @@ bool Shader_Load(shader_t* shader, const char* assetPath, const char* vertPath, 
   shader->uNormalMapLoc = glGetUniformLocation(shader->program, "uNormalMap");
   shader->uUseTextureLoc = glGetUniformLocation(shader->program, "uUseTexture");
   shader->uUseNormalMapLoc = glGetUniformLocation(shader->program, "uUseNormalMap");
-  shader->uUseVertexColLoc = glGetUniformLocation(shader->program, "uUseVertexCol");
+  shader->uUseVertexColLoc = glGetUniformLocation(shader->program, "uUseVertexColour");
   shader->uLightCountLoc = glGetUniformLocation(shader->program, "uLightCount");
 
   shader->uSpecularLoc = glGetUniformLocation(shader->program, "uSpecular");

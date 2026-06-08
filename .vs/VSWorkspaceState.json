@@ -1,0 +1,18 @@
+{
+  "OutputFoldersPerTargetSystem": {
+    "Local Machine": [
+      "build"
+    ]
+  },
+  "ExpandedNodes": [
+    "",
+    "\\include",
+    "\\include\\editor",
+    "\\include\\glad",
+    "\\src",
+    "\\src\\editor",
+    "\\src\\rendering"
+  ],
+  "SelectedNode": "\\include\\editor\\bsp.h",
+  "PreviewInSolutionExplorer": false
+}

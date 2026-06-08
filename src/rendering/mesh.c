@@ -336,6 +336,55 @@ void MeshPrimitives_Init()
   // Store globally so brushes can reference it
 }
 
+
+mesh_t* MeshFromPlane(plane_t plane) {
+  const float size = 200.0f;
+
+  // Pick two direction vectors perpendicular to the normal
+  Vector u, v;
+
+  // Use Y-up unless normal is parallel to Y
+  Vector up = { 0, 1, 0 };
+  if (fabsf(VectorDot(plane.normal, up)) > 0.99f) {
+    up = (Vector){ 1, 0, 0 };  // Use X instead
+  }
+
+  // Build basis vectors on the plane
+  u = VectorCrossNormalise(up, plane.normal);
+  v = VectorCrossNormalise(plane.normal, u);
+  // Center point on the plane
+  Vector center = VectorScale(plane.normal, plane.dist);
+
+  // Four corners
+  Vector corners[4];
+  corners[0] = VectorAdd(VectorAdd(center, VectorScale(u, size)), VectorScale(v, size));
+  corners[1] = VectorAdd(VectorSub(center, VectorScale(u, size)), VectorScale(v, size));
+  corners[2] = VectorSub(VectorSub(center, VectorScale(u, size)), VectorScale(v, size));
+  corners[3] = VectorSub(VectorAdd(center, VectorScale(u, size)), VectorScale(v, size));
+
+  // Build mesh with two triangles
+  mesh_t* mesh = malloc(sizeof(mesh_t));
+  MeshInit(mesh, 4, 2);
+
+  Vector colour = VectorInit(
+    fabsf(plane.normal.x),
+    fabsf(plane.normal.y), 
+    fabsf(plane.normal.z)
+  );
+
+
+  // Just push vertices and let the caller set UVs/colors
+  GLuint i0 = MeshPushVertex(mesh, (struct vertex_t) { .pos = corners[0], .colour = colour, .uv = { 0,0 } });
+  GLuint i1 = MeshPushVertex(mesh, (struct vertex_t) { .pos = corners[1], .colour = colour, .uv = { 0,0 } });
+  GLuint i2 = MeshPushVertex(mesh, (struct vertex_t) { .pos = corners[2], .colour = colour, .uv = { 0,0 } });
+  GLuint i3 = MeshPushVertex(mesh, (struct vertex_t) { .pos = corners[3], .colour = colour, .uv = { 0,0 } });
+
+  MeshPushTriangle(mesh, i0, i1, i2);
+  MeshPushTriangle(mesh, i0, i2, i3);
+
+  return mesh;
+}
+
 void MeshPrimitives_Destroy()
 {
   for (int i = 0; i < MESH_PRIMITIVES_COUNT; i++)

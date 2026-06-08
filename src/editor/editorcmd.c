@@ -42,6 +42,7 @@ void EditorCreate_Brush(editor_brush_array *b_arr, Vector start, Vector end, Vec
 
   brush_t new_brush = make_brush_cube(mins, maxs, 0);
   new_brush.is_entity = is_entity;
+  new_brush.contents = CONTENTS_SOLID;
   b_arr->brushes[b_arr->count] = new_brush;
   BrushToMesh(&gEditorBrushArray->brushes[b_arr->count], &gEditorBrushArray->brushes[b_arr->count].editor_mesh);
   MeshRecalculateNormals(&gEditorBrushArray->brushes[b_arr->count].editor_mesh);
@@ -51,6 +52,57 @@ void EditorCreate_Brush(editor_brush_array *b_arr, Vector start, Vector end, Vec
   b_arr->count++;
 
   printf("[EDITOR]: Brush created, S{%0.3f, %0.3f, %0.3f}, E{%0.3f, %0.3f, %0.3f}\n", mins.x, mins.y, mins.z, maxs.x, maxs.y, maxs.z);
+}
+
+// Essentially an empty cube of brushes
+void EditorCreate_BrushRoom(editor_brush_array *arr, Vector mins, Vector maxs)
+{
+  // A room is 6 brushes: floor, ceiling, north, south, east, west
+
+  // Floor
+  {
+    Vector floor_mins = {mins.x, mins.y, mins.z};
+    Vector floor_maxs = {maxs.x, maxs.y, mins.z + 16.0f}; // 16 units thick
+    EditorCreate_Brush(arr, floor_mins, floor_maxs, VECTOR_ONE, 0);
+  }
+
+  // Ceiling
+  {
+    Vector ceil_mins = {mins.x, mins.y, maxs.z - 16.0f};
+    Vector ceil_maxs = {maxs.x, maxs.y, maxs.z};
+    EditorCreate_Brush(arr, ceil_mins, ceil_maxs, VECTOR_ONE, 0);
+  }
+
+  // North wall (+Y)
+  {
+    Vector n_mins = {mins.x, maxs.y - 16.0f, mins.z};
+    Vector n_maxs = {maxs.x, maxs.y, maxs.z};
+    EditorCreate_Brush(arr, n_mins, n_maxs, VECTOR_ONE, 0);
+  }
+
+  // South wall (-Y)
+  {
+    Vector s_mins = {mins.x, mins.y, mins.z};
+    Vector s_maxs = {maxs.x, mins.y + 16.0f, maxs.z};
+    EditorCreate_Brush(arr, s_mins, s_maxs, VECTOR_ONE, 0);
+  }
+
+  // East wall (+X)
+  {
+    Vector e_mins = {maxs.x - 16.0f, mins.y, mins.z};
+    Vector e_maxs = {maxs.x, maxs.y, maxs.z};
+    EditorCreate_Brush(arr, e_mins, e_maxs, VECTOR_ONE, 0);
+  }
+
+  // West wall (-X)
+  {
+    Vector w_mins = {mins.x, mins.y, mins.z};
+    Vector w_maxs = {mins.x + 16.0f, maxs.y, maxs.z};
+    EditorCreate_Brush(arr, w_mins, w_maxs, VECTOR_ONE, 0);
+  }
+
+  printf("[EDITOR]: Room created from (%.0f, %.0f, %.0f) to (%.0f, %.0f, %.0f)\n",
+         mins.x, mins.y, mins.z, maxs.x, maxs.y, maxs.z);
 }
 
 void EditorQueue_Init(editor_cmd_queue_t *q, size_t capacity)

@@ -13,6 +13,7 @@ uniform sampler2D uTexture;
 
 void main()
 {
+  
     vec4 finalColour = uColour;
 
     if (uUseVertexColour){
@@ -26,7 +27,10 @@ void main()
         texColour = texture(uTexture, vUV);
     }
 
-    //FragColour = finalColour * texColour;
-    FragColour = uColour * texColour;
+    FragColour = finalColour * texColour;
+    
+
+
+    //FragColour = uColour * texColour;
     //FragColour = texture(uTexture, vUV);
 }

@@ -64,13 +64,16 @@ void MeshDebug_WriteToFile(mesh_t* mesh, const char* filepath);
 
 #define MESH_PRIMITIVES_COUNT 1
 #define MESH_PRIMITIVE_CUBE 0
-
+// Turn the above into an enum?
 
 extern mesh_t* MESH_PRIMITIVES[MESH_PRIMITIVES_COUNT];
 
 
 void MeshPrimitives_Init();
 void MeshPrimitives_Destroy();
+
+
+mesh_t* MeshFromPlane(plane_t plane);
 
 
 

@@ -4,6 +4,8 @@
 #include "application.h"
 #include "mem.h"
 #include "editor/editor.h"
+#include "editor/editorcmd.h"
+#include "editor/bsp.h"
 #include "inputbase.h"
 #include "types/types_vector.h"
 #include "rendering/camera.h"
@@ -38,7 +40,7 @@ editor_brush_array* gEditorBrushArray = NULL;
 rigidbody_array_t* gRigidbodyArray = NULL;
 collider_array_dynamic_t* gColliderArray = NULL;
 
-bool gCursorLocked = true;
+bool gCursorLocked = false;
 
 int main(){
   
@@ -73,11 +75,11 @@ int main(){
 
 
 
-  MeshPrimitives_Init();
+  //MeshPrimitives_Init();
 
-  mesh_t* tri_mesh = MeshInit_FromFile("../trimesh.mesh");
-  MeshRecalculateNormals(tri_mesh);
-  MeshUpload(tri_mesh, GL_STATIC_DRAW);
+  //mesh_t* tri_mesh = MeshInit_FromFile("../trimesh.mesh");
+  //MeshRecalculateNormals(tri_mesh);
+  //MeshUpload(tri_mesh, GL_STATIC_DRAW);
 
 
   camera_t main_cam;
@@ -127,14 +129,17 @@ int main(){
 
   material_t* mat_brushhover = Material_Load("../Assets/Materials/brushhover.mat");
   Renderer_AddMaterial(&renderer_state, mat_brushhover);
+  material_t* mat_debugplane = Material_Load("../Assets/Materials/debugplane.mat");
+  Renderer_AddMaterial(&renderer_state, mat_debugplane);
 
-
+  /*
   rigidbody_array_t rb_arr;
   RigidbodyArray_Init(&rb_arr, 128);
   gRigidbodyArray = &rb_arr;
   collider_array_dynamic_t collider_arr;
   ColliderArray_Init(&collider_arr, 128);
   gColliderArray = &collider_arr;
+  */
   
   editor_brush_array brush_array = {0};
   gEditorBrushArray = &brush_array;
@@ -157,29 +162,24 @@ int main(){
   
   Camera_Switch(0, game_container.win_h);
 
-  MeshDebug_WriteToFile(tri_mesh, "../meshtest.mesh");
+  //MeshDebug_WriteToFile(tri_mesh, "../meshtest.mesh");
   
+  EditorCreate_BrushRoom(gEditorBrushArray, VectorInit(-100, 0, -100), VectorInit(100, 100, 100));
   Console_WriteLine("Console is working?", CONSOLE_LINE_WARNING);
-
+  bsp_tree_t* tree = NULL;
   while(app_running){
+    
     MEM_ARENA_RESET(gMemArena);
     RDrawQueue_Reset(&gDrawQ);
     poll_input(&input_state, &app_running, &game_container.win_w, &game_container.win_h, game_container.window); 
+    if (input_state.kCurrent[SDL_SCANCODE_K] && !input_state.kPrevious[SDL_SCANCODE_K]) {
+      tree = BSP_Compile();
+    }
     // Toggle Editor
     if (input_state.FLAG_ToggleEditor){ EditorToggle(game_container.window); }
     
     gRendererState->lights_forward[0]->position = gRendererState->active_cam->pos;
-
-
-    struct rcmd_t* rcmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
-    rcmd->type = RCMD_DRAW_MESH;
-    rcmd->draw_mesh.mesh = tri_mesh;
-    rcmd->draw_mesh.model = Mat4Identity();
-    //rcmd->draw_mesh.view = gCameras[gCameraIndex]->view;
-    //rcmd->draw_mesh.projection = gCameras[gCameraIndex]->projection;
-    rcmd->draw_mesh.mode = GL_TRIANGLES;
-    rcmd->draw_mesh.material = gRendererState->materials[0];
-    
+   
     // Rendering
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -191,16 +191,30 @@ int main(){
       EditorLoop(game_container.window, &gDrawQ, &editor_cam, input_state.mx, input_state.my, gConsole->visible); 
     }
     
+    // Draw split planes
+    
+    for (int i = 0; i < split_plane_count; i++) {
+      struct rcmd_t* rcmd = MEM_ARENA_ALLOC(gMemArena, sizeof(struct rcmd_t), alignof(struct rcmd_t));
+      rcmd->type = RCMD_DRAW_MESH;
+      rcmd->draw_mesh.mesh = BSP_DEBUG_SPLITPLANES_MESHES[i];
+      rcmd->draw_mesh.material = gRendererState->materials[2];
+      rcmd->draw_mesh.mode = GL_TRIANGLES;
+      rcmd->draw_mesh.model = Mat4Identity();
+      RDrawQueue_Push(gRendererState->draw_q, rcmd);
+    }
+    
+    if (!BSP_IsSolid(tree, gRendererState->active_cam->pos)) {
+      printf("EMPTY SPACE\n");
+    }
+    else {
+      printf("SOLID SPACE\n");
+    }
     
     /*
     for(size_t i = 0; i < brush_array.count; i++){
       EditorBrush_Draw(&brush_array.brushes[i], &gDrawQ, &editor_cam);
     }
     */
-
-    RDrawQueue_Push(&gDrawQ, rcmd);
-   
-
      
     ConsoleGUI_Draw();
     RDrawQueue_Execute(&gDrawQ);
@@ -210,10 +224,10 @@ int main(){
     
     SDL_GL_SwapWindow(game_container.window);
   }
-  RigidbodyArray_Destroy(&rb_arr);
-  ColliderArray_Destroy(&collider_arr);
-  MeshPrimitives_Destroy();
-  MeshDestroy(tri_mesh);
+  //RigidbodyArray_Destroy(&rb_arr);
+  //ColliderArray_Destroy(&collider_arr);
+  //MeshPrimitives_Destroy();
+  //MeshDestroy(tri_mesh);
   //free(tri_mesh);
   //EditorDestroy(editor_state);
   Renderer_Destroy(gRendererState);

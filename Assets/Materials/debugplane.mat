@@ -1,0 +1,11 @@
+Material "DebugPlane"
+{
+  Lit=false
+  Texture=""
+  UseVertexColour=true
+  DoubleSided=true
+  Colour=255 255 255 90
+  Specular=0
+  Shininess=0
+  Transparent=true
+}

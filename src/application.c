@@ -2,6 +2,7 @@
 #include "headers.h"
 #include <glad/glad.h>
 
+
 void ApplicationDestroy(struct container_t* container){
   SDL_GL_DestroyContext(container->glContext);
   SDL_DestroyWindow(container->window);

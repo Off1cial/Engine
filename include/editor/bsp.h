@@ -32,15 +32,23 @@ typedef struct {
 typedef struct 
 {
   bsp_node_t* nodes;
-  size_t node_count, node_capacity;
-
   bsp_leaf_t* leaves;
-  size_t leaf_count, leaf_capacity;
-
   bsp_face_t* faces;
+
+  size_t leaf_count, leaf_capacity;
+  size_t node_count, node_capacity;
   size_t face_count, face_capacity;
+  
 } bsp_tree_t;
 
+bsp_tree_t* BSP_Compile(void);
+bool BSP_IsSolid(bsp_tree_t* tree, Vector point);
+
+
+// Temporary debug
+extern plane_t BSP_DEBUG_SPLITPLANES[4096];
+extern mesh_t* BSP_DEBUG_SPLITPLANES_MESHES[4096];
+extern int split_plane_count;
 
 
 #endif

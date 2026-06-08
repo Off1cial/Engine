@@ -3,6 +3,7 @@ Material "BrushHover"
   Lit=false
   Texture=""
   UseVertexColour=false
+  DoubleSided=true
   Colour=0 200 30 70
   Specular=0
   Shininess=0

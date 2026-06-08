@@ -12,7 +12,7 @@
 bool mleft_last = false;
 bool mright_last = false;
 
-bool cursorlocked_prev;
+bool cursorlocked_prev = false;
 
 void poll_input(struct inputstate_t* state, int* running_condition, int* winw, int* winh, SDL_Window* window){
   
@@ -101,6 +101,12 @@ void poll_input(struct inputstate_t* state, int* running_condition, int* winw, i
 
   if (state->kCurrent[SDL_SCANCODE_GRAVE] && !state->kPrevious[SDL_SCANCODE_GRAVE]){
     gConsole->visible = !gConsole->visible;
-    gCursorLocked = !(gConsole->visible);
+    // This would unlock the cursor in first person.
+    // This solution only works for the editor
+    if (gConsole->visible){
+      // Was console just opened
+      if (gCursorLocked) gCursorLocked = false;
+    }
+    
   }
 }

@@ -1,0 +1,17 @@
+{
+	"version": 3,
+	"configurePresets": [
+		{
+			"name": "gcc-debug",
+			"generator": "Ninja",
+			"binaryDir": "${sourceDir}/build",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug",
+				"CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/gcc.exe",
+				"CMAKE_CXX_COMPILER": "C:/msys64/ucrt64/bin/g++.exe",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+				"CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES": "C:/msys64/ucrt64/include/SDL3"
+			}
+		}
+	]
+}
