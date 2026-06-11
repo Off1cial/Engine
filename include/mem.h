@@ -88,7 +88,7 @@ int mem_validity(void* mem);
 // -------------------------
 typedef void* MEM_BLOCK;
 
-#define MEM_ARENA_SIZE_BYTES ((size_t)8192)
+#define MEM_ARENA_SIZE_BYTES ((size_t)32768)
 
 typedef struct mem_arena_t {
     uint8_t* base;

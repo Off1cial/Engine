@@ -7,8 +7,9 @@
 
 
 typedef enum light_type_t{
-    LIGHT_DIRECTIONAL,
-    LIGHT_POINT,
+    LIGHT_DIRECTIONAL = 0,
+    LIGHT_POINT = 1,
+    LIGHT_SPOT = 2
 } light_type_t;
 
 
@@ -22,6 +23,7 @@ typedef struct light_t{
 
   float intensity;
   float radius;
+  float cutoff;
 } light_t;
 
 #endif

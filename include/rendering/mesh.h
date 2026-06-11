@@ -6,7 +6,7 @@
 
 #define MESH_PUSH_VERTEX_FAIL ((size_t)-1)
 #define OFFSETOF(TYPE, ELEMENT) ((size_t)&(((TYPE *)0)->ELEMENT))
-
+#pragma pack(push, 1)
 struct vertex_t{
   Vector pos;
   Vector colour;
@@ -14,6 +14,7 @@ struct vertex_t{
   Vector tangent;
   Vector2 uv;
 };
+#pragma pack(pop)
 
 // Exclusively for deubg lines
 struct vertex_debug_t{ 
@@ -62,9 +63,13 @@ void MeshDebug_PrintVertex(struct vertex_t* v);
 void MeshDebug_PrintVertices(mesh_t* mesh);
 void MeshDebug_WriteToFile(mesh_t* mesh, const char* filepath);
 
-#define MESH_PRIMITIVES_COUNT 1
-#define MESH_PRIMITIVE_CUBE 0
+
 // Turn the above into an enum?
+
+typedef enum meshprimitive_t{
+  MESH_PRIMITIVE_CUBE = 0,
+  MESH_PRIMITIVES_COUNT
+} meshprimitive_t;
 
 extern mesh_t* MESH_PRIMITIVES[MESH_PRIMITIVES_COUNT];
 

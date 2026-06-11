@@ -84,7 +84,7 @@ void RDrawQueue_Execute(rdrawqueue_t* q){
     switch(cmd->type){
       case RCMD_DRAW_MESH:{
         count++;
-        RCMD_DrawMesh(cmd);
+        R_DrawMesh(cmd);
         break;
       }
     }

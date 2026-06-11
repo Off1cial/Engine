@@ -39,3 +39,7 @@ void ImGui_Shutdown()
   ImGui::DestroyContext();
 }
 
+extern "C" bool ImGui_WantCaptureMouse(void)
+{
+    return ImGui::GetIO().WantCaptureMouse;
+}

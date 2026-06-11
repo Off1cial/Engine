@@ -123,6 +123,10 @@ bool Shader_Load(shader_t* shader, const char* assetPath, const char* vertPath, 
     // Radius
     snprintf(uniform, sizeof(uniform), "uLights[%d].radius", i);
     shader->uLights[i].radius = glGetUniformLocation(shader->program, uniform);
+    
+    // Cutoff
+    snprintf(uniform, sizeof(uniform), "uLights[%d].cutoff", i);
+    shader->uLights[i].cutoff = glGetUniformLocation(shader->program, uniform);
 
     // Type
     snprintf(uniform, sizeof(uniform), "uLights[%d].type", i);

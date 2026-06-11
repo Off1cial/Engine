@@ -145,7 +145,7 @@ static void BrushSide_DefaultUVs(brush_side_t *s)
   }
 }
 
-brush_t make_brush_cube(Vector mins, Vector maxs, int is_entity)
+brush_t make_brush_cube(Vector mins, Vector maxs)
 {
   brush_t b = {0};
 
@@ -160,21 +160,14 @@ brush_t make_brush_cube(Vector mins, Vector maxs, int is_entity)
   b.sides[4].plane = (plane_t){{0, 0, 1}, maxs.z};
   b.sides[5].plane = (plane_t){{0, 0, -1}, -mins.z};
 
-  if (!is_entity){
-    BrushSide_DefaultUVs(&b.sides[0]);
-    BrushSide_DefaultUVs(&b.sides[1]);
-    BrushSide_DefaultUVs(&b.sides[2]);
-    BrushSide_DefaultUVs(&b.sides[3]);
-    BrushSide_DefaultUVs(&b.sides[4]);
-    BrushSide_DefaultUVs(&b.sides[5]);
-  }else{
-    BrushEntitySide_DefaultUVs(&b.sides[0]);
-    BrushEntitySide_DefaultUVs(&b.sides[1]);
-    BrushEntitySide_DefaultUVs(&b.sides[2]);
-    BrushEntitySide_DefaultUVs(&b.sides[3]);
-    BrushEntitySide_DefaultUVs(&b.sides[4]);
-    BrushEntitySide_DefaultUVs(&b.sides[5]);
-  }
+
+  BrushSide_DefaultUVs(&b.sides[0]);
+  BrushSide_DefaultUVs(&b.sides[1]);
+  BrushSide_DefaultUVs(&b.sides[2]);
+  BrushSide_DefaultUVs(&b.sides[3]);
+  BrushSide_DefaultUVs(&b.sides[4]);
+  BrushSide_DefaultUVs(&b.sides[5]);
+
 
 
   b.pos = VectorScale(VectorAdd(mins, maxs), 0.5f);
@@ -208,10 +201,10 @@ void BrushHoveredSideComputeMesh(brush_side_hovered_t *hside)
     base = clip_winding(&base, brush->sides[i].plane);
   }
 
-  printf("hovered winding of %d points\n", base.count);
+  //printf("hovered winding of %d points\n", base.count);
 
   const float vertex_offset = 0.08f;
-  VectorNormalise(&plane->normal);
+  plane->normal = VectorNormalise(plane->normal);
   Vector vector_offset = VectorScale(plane->normal, vertex_offset);
 
   // Vertex creation
@@ -321,7 +314,7 @@ void EditorBrush_Draw(brush_t *brush, rdrawqueue_t *drawlist, camera_t *cam)
 {
   if (brush->dirty)
   {
-    printf("Recalculating brush\n");
+    //printf("Recalculating brush\n");
     MeshReset(&brush->editor_mesh);
     BrushToMesh(brush, &brush->editor_mesh);
     MeshRecalculateNormals(&brush->editor_mesh);
@@ -334,7 +327,10 @@ void EditorBrush_Draw(brush_t *brush, rdrawqueue_t *drawlist, camera_t *cam)
   cmd->draw_mesh.mesh = &brush->editor_mesh;
   cmd->draw_mesh.mode = GL_TRIANGLES;
   cmd->draw_mesh.model = Mat4Identity();
-  cmd->draw_mesh.material = gRendererState->materials[0];
+  cmd->draw_mesh.wireframe = false;
+  cmd->draw_mesh.use_colour_override = false;
+  // Currently use the material of the first face
+  cmd->draw_mesh.material = gRendererState->materials[ brush->sides[0].material_id ];
 
   RDrawQueue_Push(drawlist, cmd);
 }
@@ -372,8 +368,8 @@ void EditorBrush_DrawHoveredSide(brush_side_hovered_t *hside, bool print)
     BrushHoveredSideComputeMesh(hside);
     MeshRecalculateNormals(&hside->mesh);
     MeshUpload(&hside->mesh, GL_STATIC_DRAW);
-    MeshDebug_PrintVertices(&hside->mesh);
-    printf("Hovered mesh created\n");
+    //MeshDebug_PrintVertices(&hside->mesh);
+    //printf("Hovered mesh created\n");
     hside->dirty = 0;
   }
 
@@ -384,6 +380,8 @@ void EditorBrush_DrawHoveredSide(brush_side_hovered_t *hside, bool print)
   cmd->draw_mesh.mode = GL_TRIANGLES;
   cmd->draw_mesh.model = Mat4Identity();
   cmd->draw_mesh.material = gRendererState->materials[1];
+  cmd->draw_mesh.wireframe = false;
+  cmd->draw_mesh.use_colour_override = false;
 
   RDrawQueue_Push(gRendererState->draw_q, cmd);
 }

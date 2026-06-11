@@ -89,12 +89,15 @@ void EditorToggle(SDL_Window *window)
   SDL_GetWindowSizeInPixels(window, &winw, &winh);
   if (*gEditorActive)
   {
-    Camera_Switch(1, winh);
+    Camera_Switch(1, winw, winh);
     RecalculatePanels(winw, winh, gCameras[1]);
   }
   else
   {
-    Camera_Switch(0, winh);
+    Camera_Switch(0, winw, winh);
+    Camera_UpdateViewport(gRendererState->active_cam, 0, 0, winw, winh, winh, 1);
+    //glViewport(0, 0, winw, winh);
+    
   }
 }
 
@@ -198,13 +201,13 @@ void EditorLoop(SDL_Window *window, rdrawqueue_t *draw_q, camera_t *editor_camer
   mov_dir = VectorAdd(mov_dir, VectorAdd(front, right));
   mov_dir = VectorAdd(mov_dir, worldup);
   if (!VECTOR_IS_ZERO(mov_dir))
-    VectorNormalise(&mov_dir);
+    mov_dir = VectorNormalise(mov_dir);
 
   Camera_Move(mov_dir, 0.5f, editor_camera);
 
   for (size_t i = 0; i < gEditorBrushArray->count; i++)
   {
-    EditorBrush_Draw(&gEditorBrushArray->brushes[i], gRendererState->draw_q, gRendererState->active_cam);
+    EditorBrush_Draw(&gEditorBrushArray->brushes[i], gRendererState->draw_q, editor_camera);
   }
 
 

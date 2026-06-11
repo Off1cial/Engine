@@ -4,6 +4,7 @@ Material "BrickMaterial"
   Texture="../Assets/Textures/brick1.png"
   Normal="../Assets/Textures/Normals/brick1_normal.png"
   UseVertexColour=false
+  DoubleSided=false
   Colour=255 255 255 255
   Specular=1
   Shininess=50

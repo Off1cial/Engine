@@ -82,7 +82,7 @@ void EditorQueue_Push(editor_cmd_queue_t* q, struct editor_cmd_t* cmd);
 void EditorQueue_Execute(editor_cmd_queue_t* q, editor_brush_array* arr);
 void EditorQueue_Destroy(editor_cmd_queue_t* q);
 
-void EditorCreate_BrushRoom(editor_brush_array *arr, Vector mins, Vector maxs);
+void EditorCreate_BrushRoom(editor_brush_array *arr, Vector mins, Vector maxs, int material, int is_entity);
 
 #ifdef __cplusplus
 }

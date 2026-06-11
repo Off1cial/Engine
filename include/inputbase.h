@@ -1,7 +1,12 @@
-#pragma once
+#ifndef INPUTBASE_H
+#define INPUTBASE_H
 
 #include <stdbool.h>
 #include <SDL3/SDL.h>
+
+
+
+
 
 #define MAX_KEYS 512
 
@@ -33,6 +38,7 @@ extern "C" {
 #endif
 
 extern struct inputstate_t* gInputState;
+extern bool gEditorGui_ViewportCaptured;
 
 #ifdef __cplusplus
 }
@@ -42,3 +48,5 @@ extern struct inputstate_t* gInputState;
 
 
 void poll_input(struct inputstate_t* state, int* running_condition, int* winw, int* winh, SDL_Window* window);
+
+#endif

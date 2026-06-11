@@ -2,7 +2,7 @@ Material "TestMaterial"
 {
   Lit=true
   Texture="../Assets/Textures/marble.png"
-  UseVertexColour=true
+  UseVertexColour=false
   Colour=255 255 255 255
   Specular=8
   Shininess=16

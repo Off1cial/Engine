@@ -39,6 +39,17 @@ cvar_t cvar_r_wireframe = {
   .i.vmax = 1
 };
 
+cvar_t cvar_bsp_drawdebugplanes = {
+  .desc = "Int 0/1: Toggles the drawing of unique planes used in the latest BSP",
+  .ename = CVAR_NAME_BSP_DRAWDEBUGPLANES,
+  .name = "bsp_drawdebugplanes",
+  .vtype = CVAR_TYPE_INT,
+  .i.value = 0,
+  .i.vdefault = 0,
+  .i.vmin = 0,
+  .i.vmax = 1
+};
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -48,7 +59,59 @@ void CVAR_InitAll()
 {
   Cvar_Register(&cvar_mat_fullbright);
   Cvar_Register(&cvar_mat_normals);
+
   Cvar_Register(&cvar_r_wireframe);
+
+  Cvar_Register(&cvar_bsp_drawdebugplanes);
+}
+
+void Cvar_Update(cvar_t* cvar) {
+  // Handle each cvar
+  switch (cvar->ename) {
+    // mat_fullbright
+  case CVAR_NAME_MAT_FULLBRIGHT:
+    if (cvar->i.value == 1) {
+      //gRendererState->flags |= RENDERER_FLAG_FULLBRIGHT;
+      SET_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_FULLBRIGHT);
+      //printf("Renderer flag set\n");
+    }
+    else {
+      //gRendererState->flags &= ~RENDERER_FLAG_FULLBRIGHT;
+      CLR_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_FULLBRIGHT);
+    }
+    //Console_WriteLine("Updated mat_fullbright", CONSOLE_LINE_INPUT);
+    break;
+
+    // mat_normals
+  case CVAR_NAME_MAT_NORMALS:
+    if (cvar->i.value == 0) {
+      SET_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_FLATTEXTURE);
+    }
+    else {
+      CLR_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_FLATTEXTURE);
+    }
+    break;
+
+    // r_wireframe
+  case CVAR_NAME_R_WIREFRAME:
+    if (cvar->i.value == 1) {
+      SET_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_WIREFRAME);
+    }
+    else {
+      CLR_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_WIREFRAME);
+    }
+    break;
+
+    // bsp_drawdebugplanes
+  case CVAR_NAME_BSP_DRAWDEBUGPLANES:
+    if (cvar->i.value == 1) {
+      SET_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_BSP_DRAWDEBUGPLANES);
+    }
+    else {
+      CLR_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_BSP_DRAWDEBUGPLANES);
+    }
+    break;
+  }
 }
 
 static int console_push_line(console_line_t line)
@@ -102,11 +165,17 @@ void Console_Init()
 {
   gConsole = malloc(sizeof(console_t));
   CVAR_InitAll();
+  // Ensure default values are set
+  for (int c = 0; c < CVAR_MAX_CVARS; c++) {
+    if (gCvarRegistry.reg[c]) {
+      Cvar_Update(gCvarRegistry.reg[c]);
+    }
+  }
 
   gConsole->line_head = 0;
   gConsole->line_tail = 0;
   gConsole->visible = 0;
-
+  gConsole->history_count = 0;
   gConsole->input[0] = '\0';
 
 
@@ -119,41 +188,7 @@ void Console_Init()
 
 
 
-void Cvar_Update(cvar_t* cvar){
-  // Handle each cvar
-  switch(cvar->ename){
-    // mat_fullbright
-    case CVAR_NAME_MAT_FULLBRIGHT:
-      if (cvar->i.value == 1){
-        //gRendererState->flags |= RENDERER_FLAG_FULLBRIGHT;
-        SET_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_FULLBRIGHT);
-        //printf("Renderer flag set\n");
-      }else{
-        //gRendererState->flags &= ~RENDERER_FLAG_FULLBRIGHT;
-        CLR_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_FULLBRIGHT);
-      }
-      //Console_WriteLine("Updated mat_fullbright", CONSOLE_LINE_INPUT);
-      break;
 
-    // mat_normals
-    case CVAR_NAME_MAT_NORMALS:
-      if (cvar->i.value == 0){
-        SET_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_FLATTEXTURE);
-      }else{
-        CLR_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_FLATTEXTURE);
-      }
-      break;
-
-    // r_wireframe
-    case CVAR_NAME_R_WIREFRAME:
-      if (cvar->i.value == 1){
-        SET_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_WIREFRAME);
-      }else{
-        CLR_FLAG_MASK(gRendererState->flags, RENDERER_FLAG_WIREFRAME);
-      }
-      break;
-  }
-}
 
 
 

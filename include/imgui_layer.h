@@ -13,7 +13,7 @@ void ImGui_Init(SDL_Window* window, SDL_GLContext glContext);
 void ImGui_StartFrame();
 void ImGui_Render();
 void ImGui_Shutdown();
-
+bool ImGui_WantCaptureMouse(void);
 
 
 #ifdef __cplusplus

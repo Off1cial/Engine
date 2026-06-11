@@ -3,6 +3,7 @@
 
 #include "types_base.h"
 #include <math.h>
+#include "math/mathlib.h"
 
 #define FLOAT32_NAN_BITS     (unsigned long)0x7FC00000	// not a number!
 #define FLOAT32_NAN          BitsToFloat( FLOAT32_NAN_BITS )
@@ -121,6 +122,7 @@ mat4 Mat4Translate(Vector* t);
 mat4 Mat4Scale(Vector* s);
 mat4 Mat4Rotate(float angle, Vector axis);
 mat4 Mat4LookAt(Vector eye, Vector center, Vector up);
+mat4 Mat4Ortho(float left, float right, float bottom, float top, float near, float far);
 mat4 Mat4Perspective(float fovY, float aspect, float znear, float zfar);
 bool Mat4Inverse(mat4* m, mat4* out);
 mat4 QuaternionToMat4(float qx, float qy, float qz, float qw);
@@ -157,8 +159,7 @@ Vector VectorNegate(Vector a);
 void VectorNegateInPlace(Vector* a);
 void VectorNegateTo(Vector a, Vector* dest);
 
-void VectorNormalise(Vector* a);
-void VectorNormaliseTo(Vector a, Vector* dest);
+Vector VectorNormalise(Vector a);
 
 int VectorCompare_Imprecise(Vector a, Vector b, float min, float max);
 int VectorEqual(Vector a, Vector b);

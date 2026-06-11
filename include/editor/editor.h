@@ -24,7 +24,7 @@ typedef struct{
 extern "C" {
 #endif
 
-extern bool* gEditorActive;
+
 
 void EditorInit(editor_state_t* eState, SDL_Window* window, SDL_GLContext glContext);
 

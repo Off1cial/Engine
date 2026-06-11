@@ -18,6 +18,7 @@ typedef struct {
   int face_count;
 } bsp_leaf_t;
 
+/*
 typedef struct {
   winding_t winding;
   int material;
@@ -25,7 +26,19 @@ typedef struct {
   Vector uv_axis_u;
   Vector uv_axis_v;
 } bsp_face_t;
+*/
 
+typedef struct face_t {
+  winding_t win;
+  Vector2 uvs[MAX_WINDING_POINTS];
+  int material_id;
+  int contents_front;
+  int contents_back;
+  Vector debug_colour;
+  Vector tangent; // For UV/Normals
+  Vector bit_tangent; // For UV/Normals
+  plane_t plane;
+} face_t;
 
 
 // Contained within
@@ -33,7 +46,7 @@ typedef struct
 {
   bsp_node_t* nodes;
   bsp_leaf_t* leaves;
-  bsp_face_t* faces;
+  face_t* faces;
 
   size_t leaf_count, leaf_capacity;
   size_t node_count, node_capacity;
@@ -44,11 +57,16 @@ typedef struct
 bsp_tree_t* BSP_Compile(void);
 bool BSP_IsSolid(bsp_tree_t* tree, Vector point);
 
+void R_DrawBSPFaces(camera_t* camera, face_t* faces, int face_count);
+void R_DrawBSPPlanes();
+
+extern bsp_tree_t* BSP_ACTIVE_TREE;
 
 // Temporary debug
 extern plane_t BSP_DEBUG_SPLITPLANES[4096];
-extern mesh_t* BSP_DEBUG_SPLITPLANES_MESHES[4096];
+
 extern int split_plane_count;
+
 
 
 #endif

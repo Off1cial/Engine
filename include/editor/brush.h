@@ -13,7 +13,7 @@
 #include "mem.h"
 
 #define MAX_BRUSH_FACES 64
-#define MAX_BRUSHES 2048
+#define MAX_BRUSHES 256
 #define MAX_WINDING_POINTS 64
 #define BRUSH_DEFUALT_SCALE 2
 #define MAX_BRUSH_EDGES 256
@@ -75,6 +75,8 @@ typedef struct brush_t
 
 } brush_t;
 
+
+
 typedef enum
 {
   BRUSH_HANDLE_SIDE,
@@ -126,6 +128,20 @@ typedef struct
 
 } brush_side_hovered_t;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Editor UI
 
 #define EDITOR_UI_BRUSH_SIDE_WIDTH_PX 8
@@ -167,7 +183,7 @@ void EditorBrushArray_Destroy(editor_brush_array *arr);
 
 void BrushHoveredSideComputeMesh(brush_side_hovered_t *hside);
 void BrushToMesh(brush_t *b, mesh_t *mesh_out);
-brush_t make_brush_cube(Vector mins, Vector maxs, int is_entity);
+brush_t make_brush_cube(Vector mins, Vector maxs);
 
 void EditorBrush_Draw(brush_t *brush, rdrawqueue_t *drawlist, camera_t *cam);
 void EditorBrush_DrawHoveredSide(brush_side_hovered_t *hside, bool print);

@@ -1,4 +1,4 @@
-#include "types/types_vector.h"
+ #include "types/types_vector.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -124,23 +124,19 @@ void VectorNegateTo(Vector a, Vector* dest)
     dest->z = -a.z;
 }
 
-void VectorNormalise(Vector* a)
+Vector VectorNormalise(Vector a)
 {
-    double mag = VectorMag(*a);
+    double mag = VectorMag(a);
     if (mag < EPSILON)
     {
         fprintf(stderr, "Warning: normalising zero vector\n");
-        return;
+        return VECTOR_NAN;
     }
 
-    VectorScaleInPlace(a, 1.0f / (float)mag);
+    return VectorScale(a, 1.0f / (float)mag);
 }
 
-void VectorNormaliseTo(Vector a, Vector* dest)
-{
-    *dest = a;
-    VectorNormalise(dest);
-}
+
 
 Vector VectorCross(Vector a, Vector b)
 {
@@ -154,8 +150,7 @@ Vector VectorCross(Vector a, Vector b)
 Vector VectorCrossNormalise(Vector a, Vector b)
 {
     Vector r = VectorCross(a, b);
-    VectorNormalise(&r);
-    return r;
+    return VectorNormalise(r);
 }
 
 void VectorCopy(Vector a, Vector* dest)
@@ -200,6 +195,7 @@ Vector2 Vector2Scale(Vector2 v, float scale){
 /* ============================================================
    MATRIX HELPERS (COLUMN MAJOR)
    ============================================================ */
+
 
 
 void Mat4Copy(const mat4 src, mat4* dest)
@@ -267,7 +263,7 @@ mat4 Mat4Scale(Vector* s)
 
 mat4 Mat4Rotate(float angle, Vector axis)
 {
-    VectorNormalise(&axis);
+    axis = VectorNormalise(axis);
 
     float c = cosf(angle);
     float s = sinf(angle);
@@ -309,10 +305,26 @@ Vector Mat4Transform(mat4* m, Vector* v)
    CAMERA MATRICES
    ============================================================ */
 
+mat4 Mat4Ortho(float left, float right, float bottom, float top, float near, float far)
+{
+  mat4 m = { 0 };
+
+  m.m[0][0] = 2.0f / (right - left);
+  m.m[1][1] = 2.0f / (top - bottom);
+  m.m[2][2] = -2.0f / (far - near);
+
+  m.m[3][0] = -(right + left) / (right - left);
+  m.m[3][1] = -(top + bottom) / (top - bottom);
+  m.m[3][2] = -(far + near) / (far - near);
+  m.m[3][3] = 1.0f;
+
+  return m;
+}
+
 mat4 Mat4LookAt(Vector eye, Vector center, Vector up)
 {
     Vector back = VectorSub(eye, center);
-    VectorNormalise(&back);
+    back = VectorNormalise(back);
 
     Vector r = VectorCrossNormalise(up, back);
 

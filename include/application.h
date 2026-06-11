@@ -12,6 +12,7 @@ struct container_t{
   SDL_GLContext glContext;
 };
 
+extern struct container_t* APPLIACTION_CONTAINER;
 
 
 void ApplicationDestroy(struct container_t* container);

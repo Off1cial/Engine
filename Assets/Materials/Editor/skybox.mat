@@ -1,0 +1,10 @@
+Material "SkyboxPlaceHolder"
+{
+  Lit=false
+  Texture="../Assets/Textures/Editor/skybox.png"
+  Colour=255 255 255 255
+  DoubleSided=false
+  Specular=0
+  Shininess=0
+  Transparent=false
+}

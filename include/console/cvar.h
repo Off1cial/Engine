@@ -45,6 +45,7 @@ typedef enum cvar_name_t{
   CVAR_NAME_MAT_FULLBRIGHT,
   CVAR_NAME_MAT_NORMALS,
   CVAR_NAME_R_WIREFRAME,
+  CVAR_NAME_BSP_DRAWDEBUGPLANES,
 } cvar_name_t;
 
 typedef struct

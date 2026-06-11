@@ -164,16 +164,16 @@ void MeshRecalculateNormals(mesh_t *mesh)
 
   // normalize
   for (size_t i = 0; i < mesh->vertex_count; i++)
-    VectorNormalise(&mesh->vertices[i].normal);
+    mesh->vertices[i].normal = VectorNormalise(mesh->vertices[i].normal);
 }
 
 void MeshUpload(mesh_t *mesh, GLenum usage)
 {
-
+  MeshRecalculateNormals(mesh);
   // Ensure normals are normalised
   for (int i = 0; i < mesh->vertex_count; i++)
   {
-    VectorNormalise(&mesh->vertices[i].normal);
+    mesh->vertices[i].normal = VectorNormalise(mesh->vertices[i].normal);
   }
 
   glBindVertexArray(mesh->vao);
@@ -280,7 +280,7 @@ void MeshPrimitives_Init()
   {
     struct vertex_t v = {
         .pos = cube_vertices[i],
-        .colour = VectorInit(1.0f, 0.4f, 0.0f)};
+        .colour = VECTOR_ONE};
     inds[i] = MeshPushVertex(mCube, v);
   }
   // Back face (Z-)
@@ -338,7 +338,7 @@ void MeshPrimitives_Init()
 
 
 mesh_t* MeshFromPlane(plane_t plane) {
-  const float size = 200.0f;
+  const float size = 400.0f;
 
   // Pick two direction vectors perpendicular to the normal
   Vector u, v;
@@ -353,7 +353,7 @@ mesh_t* MeshFromPlane(plane_t plane) {
   u = VectorCrossNormalise(up, plane.normal);
   v = VectorCrossNormalise(plane.normal, u);
   // Center point on the plane
-  Vector center = VectorScale(plane.normal, plane.dist);
+  Vector center = VectorScale(plane.normal, plane.dist + 0.02);
 
   // Four corners
   Vector corners[4];

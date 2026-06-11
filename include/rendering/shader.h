@@ -15,6 +15,7 @@ typedef struct{
 
     GLint intensity;
     GLint radius;
+    GLint cutoff;
 
     GLint type;
 } shader_light_uniform_t;
