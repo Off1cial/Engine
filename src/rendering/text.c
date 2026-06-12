@@ -40,6 +40,13 @@ font_t *Font_Load(const char *path, int fontSize)
     return NULL;
   }
 
+  printf(
+      "font ascent=%d descent=%d line=%d\n",
+      TTF_GetFontAscent(ttf),
+      TTF_GetFontDescent(ttf),
+      TTF_GetFontHeight(ttf)
+  );
+
   int penX = 0, penY = 0;
   int maxRowHeight = 0;
 
@@ -78,6 +85,8 @@ font_t *Font_Load(const char *path, int fontSize)
     int advance = 0;
     int bearingX = 0, bearingY = 0;
     TTF_GetGlyphMetrics(ttf, (Uint32)c, NULL, NULL, &bearingX, &bearingY, &advance);
+    font->ascent = TTF_GetFontAscent(ttf);
+
 
     // Store glyph info
 
@@ -93,6 +102,8 @@ font_t *Font_Load(const char *path, int fontSize)
     glyph->bearingX = bearingX;
     glyph->bearingY = bearingY;
     glyph->advance = advance;
+
+    
 
     penX += gw + 1;
     if (gh > maxRowHeight)
@@ -129,4 +140,11 @@ void Font_Destroy(font_t *font)
     glDeleteTextures(1, &font->texture);
   }
   free(font);
+}
+
+const char *TextVector(Vector v)
+{
+  char *buf = MEM_ARENA_ALLOC(gMemArena, 64, 1);
+  snprintf(buf, 64, "(%.1f, %.1f, %.1f)", v.x, v.y, v.z);
+  return buf;
 }

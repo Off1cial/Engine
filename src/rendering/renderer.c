@@ -63,7 +63,8 @@ void R_DrawTextBatches(int winw, int winh)
     text_batch_t* batch = &gRendererState->textbatches2d[i];
     if (batch->mesh.vertex_count == 0) continue;
 
-    //MeshUpload(&batch->mesh, GL_DYNAMIC_DRAW);
+    MeshUpload(&batch->mesh, GL_DYNAMIC_DRAW);
+    glActiveTexture(GL_TEXTURE0);
     // Set orthographic projection (top-left origin, pixel coordinates)
     mat4 proj = Mat4Ortho(0.0f, (float)winW, (float)winH, 0.0f, -1.0f, 1.0f);
     mat4 view = Mat4Identity();
@@ -74,7 +75,7 @@ void R_DrawTextBatches(int winw, int winh)
     Shader_SetMat4Cached(shader->uModelLoc, model);
     Shader_SetIntCached(shader->uUseTextureLoc, 1);
     Shader_SetIntCached(shader->uUseVertexColLoc, 1);
-    Shader_SetIntCached(shader->uTextureLoc, 1);
+    Shader_SetIntCached(shader->uTextureLoc, 0);
     glBindTexture(GL_TEXTURE_2D, batch->font->texture);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

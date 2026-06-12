@@ -48,6 +48,11 @@ Vector VectorInit(float x, float y, float z)
    VECTOR MATH
    ============================================================ */
 
+
+Vector VectorLerp(Vector a, Vector b, float t) {
+  return VectorAdd(a, VectorScale(VectorSub(b, a), t));
+}
+
 double VectorDot(Vector a, Vector b)
 {
     return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);

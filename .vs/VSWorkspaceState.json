@@ -7,15 +7,15 @@
   "ExpandedNodes": [
     "",
     "\\include",
-    "\\include\\player",
-    "\\include\\rendering",
-    "\\include\\types",
+    "\\include\\editor",
+    "\\include\\physics",
     "\\src",
+    "\\src\\editor",
     "\\src\\physics",
     "\\src\\player",
     "\\src\\rendering",
     "\\src\\types"
   ],
-  "SelectedNode": "\\src\\types\\types_vector.c",
+  "SelectedNode": "\\src\\editor\\bsp.c",
   "PreviewInSolutionExplorer": false
 }

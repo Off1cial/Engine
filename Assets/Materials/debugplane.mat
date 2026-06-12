@@ -4,7 +4,7 @@ Material "DebugPlane"
   Texture=""
   UseVertexColour=true
   DoubleSided=true
-  Colour=255 255 255 120
+  Colour=255 255 255 20
   Specular=0
   Shininess=0
   Transparent=true

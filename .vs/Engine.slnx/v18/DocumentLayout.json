@@ -3,16 +3,36 @@
   "WorkspaceRootPath": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\editor\\bsp.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\editor\\bsp.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\mem.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:include\\mem.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\editor\\bsp.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:include\\editor\\bsp.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\rendering\\renderer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:include\\rendering\\renderer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\player\\player.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\player\\player.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\rendering\\renderer.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\rendering\\renderer.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\player\\pmove.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:include\\player\\pmove.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\player\\pmove.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\player\\pmove.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\rendering\\text.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\rendering\\text.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\types\\types_vector.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -23,12 +43,28 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\types\\types_vector.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\rendering\\render_commands.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\rendering\\render_commands.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\physics\\physbody.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\physics\\physbody.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\rendering\\text.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\rendering\\text.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\physics\\physbody.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:include\\physics\\physbody.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\player\\player.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:include\\player\\player.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\rendering\\renderer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:include\\rendering\\renderer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\rendering\\renderer.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\rendering\\renderer.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\rendering\\render_commands.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\rendering\\render_commands.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,37 +74,133 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "mem.h",
+              "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\mem.h",
+              "RelativeDocumentMoniker": "include\\mem.h",
+              "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\mem.h",
+              "RelativeToolTip": "include\\mem.h",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAAFsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-06-11T23:52:31.45Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "bsp.c",
+              "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\editor\\bsp.c",
+              "RelativeDocumentMoniker": "src\\editor\\bsp.c",
+              "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\editor\\bsp.c",
+              "RelativeToolTip": "src\\editor\\bsp.c",
+              "ViewState": "AgIAALMAAAAAAAAAAAAAABwAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2026-06-11T22:14:28.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "bsp.h",
+              "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\editor\\bsp.h",
+              "RelativeDocumentMoniker": "include\\editor\\bsp.h",
+              "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\editor\\bsp.h",
+              "RelativeToolTip": "include\\editor\\bsp.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-06-11T22:14:24.308Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "physbody.c",
+              "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\physics\\physbody.c",
+              "RelativeDocumentMoniker": "src\\physics\\physbody.c",
+              "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\physics\\physbody.c",
+              "RelativeToolTip": "src\\physics\\physbody.c",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAowHoAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2026-06-11T21:34:28.468Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "pmove.h",
+              "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\player\\pmove.h",
+              "RelativeDocumentMoniker": "include\\player\\pmove.h",
+              "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\player\\pmove.h",
+              "RelativeToolTip": "include\\player\\pmove.h",
+              "ViewState": "AgIAACUAAAAAAAAAAAAowHQAAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-06-11T21:31:03.927Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "pmove.c",
+              "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\player\\pmove.c",
+              "RelativeDocumentMoniker": "src\\player\\pmove.c",
+              "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\player\\pmove.c",
+              "RelativeToolTip": "src\\player\\pmove.c",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAowGEAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2026-06-11T21:30:56.148Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "player.h",
+              "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\player\\player.h",
+              "RelativeDocumentMoniker": "include\\player\\player.h",
+              "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\player\\player.h",
+              "RelativeToolTip": "include\\player\\player.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-06-11T21:27:10.566Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "player.c",
+              "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\player\\player.c",
+              "RelativeDocumentMoniker": "src\\player\\player.c",
+              "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\player\\player.c",
+              "RelativeToolTip": "src\\player\\player.c",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2026-06-11T21:26:55.504Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "types_vector.c",
               "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\types\\types_vector.c",
               "RelativeDocumentMoniker": "src\\types\\types_vector.c",
               "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\types\\types_vector.c",
               "RelativeToolTip": "src\\types\\types_vector.c",
-              "ViewState": "AgIAABkBAAAAAAAAAAAtwDMBAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACAAAAAAAAAAAAAtwDIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2026-06-11T16:15:40.371Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-11T16:15:40.371Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "types_vector.h",
               "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\types\\types_vector.h",
               "RelativeDocumentMoniker": "include\\types\\types_vector.h",
               "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\types\\types_vector.h",
               "RelativeToolTip": "include\\types\\types_vector.h",
-              "ViewState": "AgIAAGMAAAAAAAAAAAAAAHgAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAIQAAAAAAAAAAAAAAIkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-06-11T16:15:31.352Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-11T16:15:31.352Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 13,
               "Title": "renderer.h",
               "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\rendering\\renderer.h",
               "RelativeDocumentMoniker": "include\\rendering\\renderer.h",
@@ -76,38 +208,47 @@
               "RelativeToolTip": "include\\rendering\\renderer.h",
               "ViewState": "AgIAADYAAAAAAAAAAAAAAEIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-06-11T16:12:21.049Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-11T16:12:21.049Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "main.c",
               "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\main.c",
               "RelativeDocumentMoniker": "src\\main.c",
               "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\main.c",
               "RelativeToolTip": "src\\main.c",
-              "ViewState": "AgIAAOkAAAAAAAAAAAAAAPgAAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAPAAAAAAAAAAAAAtwAYBAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2026-06-11T16:09:33.812Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-11T16:09:33.812Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "text.c",
               "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\rendering\\text.c",
               "RelativeDocumentMoniker": "src\\rendering\\text.c",
               "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\rendering\\text.c",
               "RelativeToolTip": "src\\rendering\\text.c",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAHMAAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAAAIkAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2026-06-11T16:06:16.818Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-11T16:06:16.818Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 11,
+              "Title": "physbody.h",
+              "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\physics\\physbody.h",
+              "RelativeDocumentMoniker": "include\\physics\\physbody.h",
+              "ToolTip": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\include\\physics\\physbody.h",
+              "RelativeToolTip": "include\\physics\\physbody.h",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAACwAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-06-11T21:39:36.685Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "renderer.c",
               "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\rendering\\renderer.c",
               "RelativeDocumentMoniker": "src\\rendering\\renderer.c",
@@ -115,12 +256,11 @@
               "RelativeToolTip": "src\\rendering\\renderer.c",
               "ViewState": "AgIAACEAAAAAAAAAAAAowC8AAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2026-06-11T16:05:28.474Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-11T16:05:28.474Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 15,
               "Title": "render_commands.c",
               "DocumentMoniker": "C:\\Users\\redw0od0\\Desktop\\CProjects\\Engine\\src\\rendering\\render_commands.c",
               "RelativeDocumentMoniker": "src\\rendering\\render_commands.c",
@@ -128,8 +268,7 @@
               "RelativeToolTip": "src\\rendering\\render_commands.c",
               "ViewState": "AgIAADAAAAAAAAAAAAAAAFoAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2026-06-11T16:04:57.782Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-11T16:04:57.782Z"
             }
           ]
         }

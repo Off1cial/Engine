@@ -6,6 +6,7 @@
 
 #define MESH_PUSH_VERTEX_FAIL ((size_t)-1)
 #define OFFSETOF(TYPE, ELEMENT) ((size_t)&(((TYPE *)0)->ELEMENT))
+
 #pragma pack(push, 1)
 struct vertex_t{
   Vector pos;
@@ -50,10 +51,6 @@ void MeshDraw(mesh_t* mesh, GLenum mode);
 void MeshDestroy(mesh_t* mesh);
 void MeshReset(mesh_t* mesh);
 
-void DebugLines_Init();
-void DebugLines_Push(Vector a, Vector b, Vector4 colour);
-void DebugLines_Upload();
-void DebugLines_Draw();
 
 
 struct vertex_t VectorToVertex(Vector a, float col[3]);

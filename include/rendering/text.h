@@ -21,6 +21,7 @@ typedef struct {
 typedef struct {
   GLuint  texture;
   glyph_t glyphs[MAX_GLYPHS];
+  int     ascent;
   int     atlasSize;
   int     fontSize;
   float   lineHeight;
@@ -31,6 +32,9 @@ font_t* Font_Load(const char *path, int fontSize);
 
 // Text rendering (batched quads)
 //void    Text_DrawString3D(font_t *font, const char *text, Vector origin, Vector right, Vector up, float scale, Vector4 colour);
+
+const char* TextVector(Vector v);
+
 
 // Cleanup
 void    Font_Destroy(font_t *font);

@@ -14,7 +14,7 @@
 
 #define MAX_BSP_NODES 1024
 #define MAX_BSP_LEAVES 1024
-#define MAX_TREE_DEPTH 16
+#define MAX_TREE_DEPTH 32
 #define MAX_BRUSHES_AT_LEVEL 4096
 
 #define MAX_CANDIDATES (512)
@@ -175,6 +175,7 @@ static winding_t build_brush_face(brush_t *in, int side)
 
   return face;
 }
+
 
 static split_result_t split_brush(brush_t *in, plane_t s_plane, brush_t **front, brush_t **back)
 {
@@ -436,8 +437,8 @@ static int build_tree(brush_t **brushes, int brush_count, bsp_tree_t *tree, int 
     BSP_DEBUG_SPLITPLANES[BSP_DEBUG_SPLITPLANES_COUNT++] = split;
 
   // Split brushes
-  brush_t *fronts[MAX_BRUSHES_AT_LEVEL];
-  brush_t *backs[MAX_BRUSHES_AT_LEVEL];
+  brush_t **fronts = malloc(sizeof(brush_t*) * MAX_BRUSHES_AT_LEVEL);
+  brush_t **backs  = malloc(sizeof(brush_t*) * MAX_BRUSHES_AT_LEVEL);
   int front_count = 0, back_count = 0;
 
   for (int i = 0; i < brush_count; i++)
@@ -459,6 +460,25 @@ static int build_tree(brush_t **brushes, int brush_count, bsp_tree_t *tree, int 
  // If the split didn't separate anything, make a leaf
   if (front_count == 0 || back_count == 0)
   {
+        printf(
+        "[BSP] Failed split depth=%d f=%d b=%d plane=(%.1f %.1f %.1f %.1f)\n",
+        depth,
+        front_count,
+        back_count,
+        split.normal.x,
+        split.normal.y,
+        split.normal.z,
+        split.dist
+    );
+
+    printf(
+    "depth=%d brush_count=%d f=%d b=%d\n",
+    depth,
+    brush_count,
+    front_count,
+    back_count
+);
+
     for (int i = 0; i < front_count; i++)
       free(fronts[i]);
     for (int i = 0; i < back_count; i++)
@@ -494,6 +514,8 @@ static int build_tree(brush_t **brushes, int brush_count, bsp_tree_t *tree, int 
   for (int i = 0; i < back_count; i++)
     free(backs[i]);
 
+  free(fronts);
+  free(backs);
   return node_idx;
 }
 
@@ -949,7 +971,7 @@ bsp_tree_t *BSP_Compile(void)
   assert(tree);
   bsp_container_init(tree);
 
-  brush_t *brush_list[MAX_BRUSHES];
+  brush_t** brush_list = malloc(sizeof(brush_t*) * MAX_BRUSHES);
   int brush_count = 0;
   BSP_DEBUG_SPLITPLANES_COUNT = 0;
 
@@ -978,6 +1000,7 @@ bsp_tree_t *BSP_Compile(void)
     BSP_DEBUG_SPLITPLANES_MESHES[i] = MeshFromPlane(BSP_DEBUG_SPLITPLANES[i]);
     MeshUpload(BSP_DEBUG_SPLITPLANES_MESHES[i], GL_STATIC_DRAW);
   }
+  /*
   printf("[BSP] Leaf contents:\n");
   for (int i = 0; i < tree->leaf_count; i++)
   {
@@ -985,6 +1008,7 @@ bsp_tree_t *BSP_Compile(void)
            tree->leaves[i].contents == CONTENTS_EMPTY ? "EMPTY" : tree->leaves[i].contents == CONTENTS_SOLID ? "SOLID"
                                                                                                              : "OTHER");
   }
+                                                                                                             */
   mesh_array_fill(tree);
 
 

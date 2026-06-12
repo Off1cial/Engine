@@ -137,7 +137,7 @@ inline bool IsValid(Vector* v)
 
 
 
-
+Vector VectorLerp(Vector a, Vector b, float t);
 Vector VectorInit(float x, float y, float z);
 
 double VectorDot(Vector a, Vector b);

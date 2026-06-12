@@ -338,14 +338,14 @@ void MeshPrimitives_Init()
 
 
 mesh_t* MeshFromPlane(plane_t plane) {
-  const float size = 400.0f;
+  const float size = 800.0f;
 
   // Pick two direction vectors perpendicular to the normal
   Vector u, v;
 
   // Use Y-up unless normal is parallel to Y
   Vector up = { 0, 1, 0 };
-  if (fabsf(VectorDot(plane.normal, up)) > 0.99f) {
+  if (fabs(VectorDot(plane.normal, up)) > 0.99f) {
     up = (Vector){ 1, 0, 0 };  // Use X instead
   }
 

@@ -27,6 +27,7 @@ void Text_AddString(font_t *font, const char *text, Vector pos, Vector4 colour, 
     
     batch = &batches[(*count)++];
     batch->font = font;
+    
     batch->screen_space = screen_space;
     batch->quad_count = 0;
     if (!batch->mesh_init)MeshInit(&batch->mesh, 4096 * 4, 4096 * 6); // pre-allocate
@@ -53,11 +54,21 @@ void Text_AddString(font_t *font, const char *text, Vector pos, Vector4 colour, 
       continue;
     }
 
+    /*
     float x0 = cursorX + (float)g->bearingX;
     float y0 = cursorY - (float)(g->h - g->bearingY);
     float x1 = x0 + (float)g->w;
     float y1 = y0 + (float)g->h;
+    */
+    float baseline = cursorY + font->ascent;
+    float x0 = cursorX;
+    float y0 = baseline;
 
+    float x1 = x0 + g->w;
+    float y1 = y0 + g->h;
+    int ascii = (int)(*c);
+
+  
     Vector col = {colour.x, colour.y, colour.z};
     struct vertex_t v0 = {.pos = {x0, y0, 0}, .colour = col, .uv = {g->u0, g->v0}, .normal = VECTOR_AXIS_Z, .tangent = VECTOR_AXIS_X};
     struct vertex_t v1 = {.pos = {x1, y0, 0}, .colour = col, .uv = {g->u1, g->v0}, .normal = VECTOR_AXIS_Z, .tangent = VECTOR_AXIS_X};
