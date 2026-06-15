@@ -28,6 +28,32 @@ typedef struct {
 } bsp_face_t;
 */
 
+// CURRENTLY REWRITING THE FILE, THE 4 BELOW ARE NEW
+typedef enum epside {
+  PSIDE_FRONT    = 1 << 0, // 1
+  PSIDE_BACK     = 1 << 1, // 2
+  PSIDE_COPLANAR = 1 << 2  // 4
+} planeside_t;
+
+typedef struct {
+  //brush_side_t* original;
+  winding_t win;
+  int planenum;
+  int fcontents, bcontents;
+} bspside_t;
+
+typedef struct{
+  brush_t* original;
+  int sidecount;
+  bspside_t sides[];
+} bspbrush_t;
+
+typedef struct{
+  int planenum;
+  int front, back;
+} node_t;
+
+
 typedef struct face_t {
   winding_t win;
   Vector2 uvs[MAX_WINDING_POINTS];
@@ -55,6 +81,7 @@ typedef struct
 } bsp_tree_t;
 
 bsp_tree_t* BSP_Compile(void);
+bsp_tree_t *BSP2_Compile(void);
 bool BSP_IsSolid(bsp_tree_t* tree, Vector point);
 
 void R_DrawBSPFaces(camera_t* camera, face_t* faces, int face_count);

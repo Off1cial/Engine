@@ -11,7 +11,7 @@
 #include "rendering/draw_list.h"
 #include "rendering/renderer.h"
 #include "mem.h"
-
+  
 #define MAX_BRUSH_FACES 64
 #define MAX_BRUSHES 256
 #define MAX_WINDING_POINTS 64
@@ -73,6 +73,7 @@ typedef struct brush_t
   // Allows all the brush hovering and rendering 
   // to be used for the light entity bounding box
 
+  int nodraw;
 } brush_t;
 
 
@@ -249,5 +250,50 @@ static winding_t clip_winding(winding_t *in, plane_t p)
 
   return out;
 }
+
+static void WindingEnsureOrientation(winding_t *w, Vector normal)
+{
+  if (w->count < 3)
+    return;
+
+  Vector e1 = VectorSub(w->v[1], w->v[0]);
+  Vector e2 = VectorSub(w->v[2], w->v[0]);
+
+  Vector geom = VectorCrossNormalise(e1, e2);
+
+  if (VectorDot(geom, normal) < 0.0f)
+  {
+    for (int i = 0; i < w->count / 2; i++)
+    {
+      Vector tmp = w->v[i];
+      w->v[i] = w->v[w->count - 1 - i];
+      w->v[w->count - 1 - i] = tmp;
+    }
+  }
+}
+
+static void BrushSide_DefaultUVs(brush_side_t *s)
+{
+  Vector n = s->plane.normal;
+
+  s->uv_origin = (Vector2){0, 0};
+
+  if (fabsf(n.x) > 0.9f)
+  {
+    s->uv_axis_u = VECTOR_AXIS_Y;
+    s->uv_axis_v = VECTOR_AXIS_Z;
+  }
+  else if (fabsf(n.y) > 0.9f)
+  {
+    s->uv_axis_u = VECTOR_AXIS_X;
+    s->uv_axis_v = VECTOR_AXIS_Z;
+  }
+  else
+  {
+    s->uv_axis_u = VECTOR_AXIS_X;
+    s->uv_axis_v = VECTOR_AXIS_Y;
+  }
+}
+void Brush_Move(brush_t *brush, Vector delta);
 
 #endif

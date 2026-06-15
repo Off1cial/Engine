@@ -8,6 +8,7 @@
 #include "editor/editor.h"
 #include "editor/editorcmd.h"
 #include "editor/bsp.h"
+#include "editor/csg.h"
 
 #include "inputbase.h"
 #include "types/types_vector.h"
@@ -167,18 +168,86 @@ int main(void)
 
   Camera_Switch(0, game_container.win_w, game_container.win_h);
 
-  // ----- World -----
-  EditorCreate_BrushRoom(gEditorBrushArray,
+
+ // ----- World -----
+  
+  
+  EditorCreate_BrushRoom_CSG(gEditorBrushArray,
                          VectorInit(-150, 500, -150),
                          VectorInit(150, 800, 150), 0, 0);
-
-  EditorCreate_BrushRoom(gEditorBrushArray,
+    
+  
+  EditorCreate_BrushRoom_CSG(gEditorBrushArray,
                          VectorInit(-200, 0, -150),
                          VectorInit(100, 300, 150), 0, 0);
+                         
+  
   EditorCreate_BrushRoom(gEditorBrushArray,
                          VectorInit(-800, -900, -800),
                          VectorInit(800, 900, 800), 3, 1); // skybox
 
+  
+
+  /* TESTING THE CSG - IT WORKS
+  
+  float bscale = 100.0f;
+  EditorCreate_Brush(gEditorBrushArray, VectorScale(VECTOR_ONE, -1), VECTOR_ONE, VectorScale(VECTOR_ONE, bscale), 0, 0);
+  EditorCreate_Brush(gEditorBrushArray, VectorScale(VECTOR_ONE, -1), VECTOR_ONE, VectorScale(VECTOR_ONE, bscale * 0.5), 0, 0);
+  brush_t* b0 = &gEditorBrushArray->brushes[0];
+  brush_t* b1 = &gEditorBrushArray->brushes[1];
+  Brush_Move(&gEditorBrushArray->brushes[1], VectorScale(VECTOR_ONE, bscale * 0.7f));
+  gEditorBrushArray->brushes[1].dirty = 1;
+  brush_t* csglist = NULL;
+  int subtractioncount = CSG_SubtractBrush(&gEditorBrushArray->brushes[0], &gEditorBrushArray->brushes[1], &csglist);
+  printf("[CSG: Subtraction count = %d\n", subtractioncount);
+  for (int i = 0; i < subtractioncount; i++){
+    csglist[i].dirty = 1;
+    csglist->nodraw = 0;
+    for (int j= 0; j < csglist[i].side_count; j++){
+      csglist[i].sides[j].material_id = 1;
+    }
+    //Brush_Move(&csglist[i], VectorScale(VECTOR_AXIS_Y, 100.0f * (i + 1)));
+    gEditorBrushArray->brushes[gEditorBrushArray->count++] = csglist[i];
+  }
+  b0->nodraw = 1;
+  b1->nodraw = 1;
+
+  */
+
+
+  
+
+  /* TESTING IF BRUSH SPLIT WORKS - IT DOES
+  brush_t* b0 = &gEditorBrushArray->brushes[0];
+  for (int i = 0; i < b0->side_count; i++){
+    b0->sides[i].material_id = 0;
+  }
+  plane_t split = (plane_t){.dist = 0, .normal = VECTOR_AXIS_X};
+  brush_t* f = malloc(sizeof(brush_t));
+  brush_t* b = malloc(sizeof(brush_t));
+  if (f == NULL){
+    printf("f null\n");
+  }
+  if (b == NULL){
+    printf("b null\n");
+  }
+  CSG_SplitBrush(b0, &split, &f, &b);
+  if (f == NULL){
+    printf("f null\n");
+  }
+  if (b == NULL){
+    printf("b null\n");
+  }
+  Brush_Move(f, VectorScale(VECTOR_AXIS_Y, 50.0f));
+  Brush_Move(b, VectorScale(VECTOR_AXIS_Y, -50.0f));
+  printf("f sides = %d\n", f->side_count);
+  printf("b sides = %d\n", b->side_count);
+  f->dirty = 1;
+  b->dirty =1;
+  gEditorBrushArray->brushes[gEditorBrushArray->count++] = *f;
+  gEditorBrushArray->brushes[gEditorBrushArray->count++] = *b;
+  */
+ 
   // ----- Physics ------
   PhysbodyArray_Init(1);
 
@@ -187,9 +256,9 @@ int main(void)
   // ----- Player -----
   PlayerArrayInit(1);
   PlayerCreate(VectorInit(0, 570, 0), &main_cam);
-
+;
   // ----- BSP -----
-  BSP_ACTIVE_TREE = BSP_Compile();
+  BSP_ACTIVE_TREE = BSP2_Compile();
 
   // ----- Fixed timestep -----
   Uint64 lastTime = SDL_GetTicksNS();
@@ -217,11 +286,11 @@ int main(void)
     while (accumulator >= FIXED_DT)
     {
       // Update player logic (input → velocity)
-      PlayerMove(0, 320, 160, 0, 20, 270, (float)FIXED_DT);
+      PlayerMove(0, 320, 160, 0, 0, 270, (float)FIXED_DT);
       
 
       // Integrate all physics bodies (including player)
-      PhysbodyArray_Step((float)FIXED_DT, (Vector){0, -800, 0});
+      PhysbodyArray_Step((float)FIXED_DT, (Vector){0, -600, 0});
       PlayerUpdateGrounded(0);
       PlayerGroundClamp(0);
 
@@ -260,10 +329,10 @@ int main(void)
     ImGui_StartFrame();
 
     if (BSP_IsSolid(BSP_ACTIVE_TREE, gRendererState->active_cam->pos)) {
-      //printf("Camera in solid\n");
+      printf("Camera in solid\n");
     }
     else {
-      //printf("EMPTY\n");
+      printf("EMPTY\n");
     }
 
     // ---- 3D scene ----

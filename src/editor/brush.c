@@ -122,6 +122,7 @@ static void BrushEntitySide_DefaultUVs(brush_side_t *s)
   return;
 }
 
+/*
 static void BrushSide_DefaultUVs(brush_side_t *s)
 {
   Vector n = s->plane.normal;
@@ -144,6 +145,7 @@ static void BrushSide_DefaultUVs(brush_side_t *s)
     s->uv_axis_v = VECTOR_AXIS_Y;
   }
 }
+*/
 
 brush_t make_brush_cube(Vector mins, Vector maxs)
 {
@@ -175,6 +177,8 @@ brush_t make_brush_cube(Vector mins, Vector maxs)
 
   return b;
 }
+
+
 
 void BrushHoveredSideComputeMesh(brush_side_hovered_t *hside)
 {
@@ -312,6 +316,7 @@ void BrushToMesh(brush_t *b, mesh_t *mesh_out)
 }
 void EditorBrush_Draw(brush_t *brush, rdrawqueue_t *drawlist, camera_t *cam)
 {
+  if (brush->nodraw)return;
   if (brush->dirty)
   {
     //printf("Recalculating brush\n");
@@ -586,4 +591,16 @@ void BrushDragPlane_3D(brush_t *brush, brush_side_t *side, float mousex, float m
     brush->dirty = 1;
     brush->dirty_ui_edges;
   }
+}
+
+void Brush_Move(brush_t *brush, Vector delta)
+{
+    // Update the brush's position
+    brush->pos = VectorAdd(brush->pos, delta);
+
+    // Update every side's plane distance
+    for (int i = 0; i < brush->side_count; i++)
+    {
+        brush->sides[i].plane.dist += VectorDot(brush->sides[i].plane.normal, delta);
+    }
 }

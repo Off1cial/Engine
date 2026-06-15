@@ -338,7 +338,7 @@ void MeshPrimitives_Init()
 
 
 mesh_t* MeshFromPlane(plane_t plane) {
-  const float size = 800.0f;
+  const float size = 500.0f;
 
   // Pick two direction vectors perpendicular to the normal
   Vector u, v;

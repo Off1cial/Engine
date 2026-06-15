@@ -167,7 +167,7 @@ void VectorCopy(Vector a, Vector* dest)
 
 int VectorEqual(Vector a, Vector b)
 {
-    return a.x == b.x && a.y == b.y && a.z == b.z;
+    return (fabsf(a.x - b.x) <= EPSILON) && (fabsf(a.y - b.y) <= EPSILON) && (fabsf(a.z - b.z) <= EPSILON);
 }
 
 int VectorCompare_Imprecise(Vector a, Vector b, float min, float max)

@@ -31,7 +31,6 @@ void EditorInit(editor_state_t* eState, SDL_Window* window, SDL_GLContext glCont
 void EditorDestroy(editor_state_t* eState);
 
 
-void EditorCreate_Brush(editor_brush_array* b_arr, Vector position, Vector scale);
 
 void EditorLoop(
   SDL_Window* window,

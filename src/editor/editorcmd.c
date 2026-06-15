@@ -39,10 +39,14 @@ void EditorCreate_Brush(editor_brush_array *b_arr, Vector start, Vector end, Vec
       fmaxf(start.x, end.x),
       fmaxf(start.y, end.y),
       fmaxf(start.z, end.z)};
+  mins.x *= scale.x; maxs.x *= scale.y;
+  mins.y *= scale.y; maxs.y *= scale.y;
+  mins.z *= scale.z; maxs.z *= scale.z;
 
   brush_t new_brush = make_brush_cube(mins, maxs);
   new_brush.is_entity = is_entity;
   new_brush.contents = CONTENTS_SOLID;
+  new_brush.nodraw = 0;
   for (int s = 0; s < new_brush.side_count; s++)
   {
     new_brush.sides[s].material_id = material;

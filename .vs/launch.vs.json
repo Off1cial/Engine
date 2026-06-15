@@ -5,7 +5,7 @@
     {
       "type": "default",
       "project": "CMakeLists.txt",
-      "projectTarget": "Engine.exe",
+      "projectTarget": "Engine",
       "name": "Engine.exe"
     }
   ]
