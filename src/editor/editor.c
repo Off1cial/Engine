@@ -50,7 +50,7 @@ void UpdatePlaneDrag(float mx, float my)
       VectorScale(up, -dy * sensitivity));
 
   float move_amount =
-      (int)VectorDot(move, gEditorPlaneDrag->normal) / 5;
+      (int)VectorDot(move, gEditorPlaneDrag->normal) / (float)5;
 
   gEditorPlaneDrag->side->plane.dist =
       gEditorPlaneDrag->initial_dist + move_amount;

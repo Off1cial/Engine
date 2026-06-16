@@ -23,7 +23,7 @@ int ApplicationInit(struct container_t* container, int winw, int winh){
 
 
   container->window = SDL_CreateWindow("Jay loves oiled black dudes", winw, winh,
-                                       SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
+                                       SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_FULLSCREEN
                                        );
   SDL_Surface* icon = SDL_LoadBMP("../Assets/icon.bmp");
   if (icon){

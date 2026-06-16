@@ -129,7 +129,7 @@ void PhysbodyArray_Step(float dt, Vector gravity)
     float az = gPhysbodyArray->fz[i] * invM;
 
     // Add gravity (world‑space, here Y is up)
-    //if (!gPhysbodyArray->grounded[i]) 
+    if (!gPhysbodyArray->grounded[i]) 
     ay += gravity.y;
     
 

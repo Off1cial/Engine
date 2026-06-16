@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "mem.h"
+#include <limits.h>
 
 // This must be the 5th rewrite of this file - 08/06/2026 03:03,
 // trying to keep it tidy to stop me from chimping out

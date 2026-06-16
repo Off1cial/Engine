@@ -21,7 +21,7 @@ typedef struct
   font_t *font;
   bool screen_space;
   bool mesh_init;
-  mesh_t mesh;
+  mesh_t* mesh;
   int quad_count;
 } text_batch_t;
 

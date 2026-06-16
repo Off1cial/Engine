@@ -382,6 +382,7 @@ int main(void)
   }
 
   // ----- Cleanup -----
+  EditorBrushArray_Destroy(gEditorBrushArray);
   Renderer_Destroy(gRendererState);
   MEM_ARENA_DESTROY(gMemArena);
   ApplicationDestroy(&game_container);

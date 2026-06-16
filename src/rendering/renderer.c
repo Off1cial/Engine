@@ -61,9 +61,9 @@ void R_DrawTextBatches(int winw, int winh)
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   for (size_t i = 0; i < gRendererState->textbatches2d_count; i++) {
     text_batch_t* batch = &gRendererState->textbatches2d[i];
-    if (batch->mesh.vertex_count == 0) continue;
+    if (batch->mesh->vertex_count == 0) continue;
 
-    MeshUpload(&batch->mesh, GL_DYNAMIC_DRAW);
+    MeshUpload(batch->mesh, GL_DYNAMIC_DRAW);
     glActiveTexture(GL_TEXTURE0);
     // Set orthographic projection (top-left origin, pixel coordinates)
     mat4 proj = Mat4Ortho(0.0f, (float)winW, (float)winH, 0.0f, -1.0f, 1.0f);
@@ -79,10 +79,10 @@ void R_DrawTextBatches(int winw, int winh)
     glBindTexture(GL_TEXTURE_2D, batch->font->texture);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    MeshDraw(&batch->mesh, GL_TRIANGLES);
+    MeshDraw(batch->mesh, GL_TRIANGLES);
     glDisable(GL_BLEND);
 
-    MeshReset(&batch->mesh);
+    MeshReset(batch->mesh);
   }
 
   // 3D batches — use camera's projection
@@ -90,9 +90,9 @@ void R_DrawTextBatches(int winw, int winh)
 
   for (size_t i = 0; i < gRendererState->textbatches3d_count; i++) {
     text_batch_t* batch = &gRendererState->textbatches3d[i];
-    if (batch->mesh.vertex_count == 0) continue;
+    if (batch->mesh->vertex_count == 0) continue;
 
-    MeshUpload(&batch->mesh, GL_DYNAMIC_DRAW);
+    MeshUpload(batch->mesh, GL_DYNAMIC_DRAW);
 
     camera_t* cam = gRendererState->active_cam;
     Shader_SetMat4Cached(shader->uProjLoc, cam->projection);
@@ -104,10 +104,10 @@ void R_DrawTextBatches(int winw, int winh)
     glBindTexture(GL_TEXTURE_2D, batch->font->texture);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    MeshDraw(&batch->mesh, GL_TRIANGLES);
+    MeshDraw(batch->mesh, GL_TRIANGLES);
     glDisable(GL_BLEND);
 
-    MeshReset(&batch->mesh);
+    MeshReset(batch->mesh);
   }
   glEnable(GL_CULL_FACE);
 }
@@ -132,6 +132,15 @@ void Renderer_Destroy(renderer_state_t* renderer){
   
   for (size_t m = 0; m < renderer->material_count; m++){
     destroy_material(renderer->materials[m]); 
+  }
+
+  for (int t = 0; t < renderer->textbatches2d_count; t++)
+  {
+    text_batch_t* batch = &renderer->textbatches2d[t];
+    Font_Destroy(batch->font);
+    batch->screen_space = 0;
+    batch->mesh_init = 0;
+    MeshDestroy(batch->mesh);
   }
   free(renderer->materials);
   size_t light_count = 0;

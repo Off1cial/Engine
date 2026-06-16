@@ -30,7 +30,16 @@ void Text_AddString(font_t *font, const char *text, Vector pos, Vector4 colour, 
     
     batch->screen_space = screen_space;
     batch->quad_count = 0;
-    if (!batch->mesh_init)MeshInit(&batch->mesh, 4096 * 4, 4096 * 6); // pre-allocate
+    if (!batch->mesh_init)
+    {
+
+    batch->mesh = malloc(sizeof(mesh_t));
+    MeshInit(
+        batch->mesh, 
+        4096 * 4, 
+        4096 * 6
+        ); // pre-allocate
+    }
     batch->mesh_init = true;
     printf("[FONTS]: Font batch created, batch count = %zu\n", *count);
   }
@@ -75,17 +84,17 @@ void Text_AddString(font_t *font, const char *text, Vector pos, Vector4 colour, 
     struct vertex_t v2 = {.pos = {x1, y1, 0}, .colour = col, .uv = {g->u1, g->v1}, .normal = VECTOR_AXIS_Z, .tangent = VECTOR_AXIS_X};
     struct vertex_t v3 = {.pos = {x0, y1, 0}, .colour = col, .uv = {g->u0, g->v1}, .normal = VECTOR_AXIS_Z, .tangent = VECTOR_AXIS_X};
 
-    GLuint i0 = MeshPushVertex(&batch->mesh, v0);
-    GLuint i1 = MeshPushVertex(&batch->mesh, v1);
-    GLuint i2 = MeshPushVertex(&batch->mesh, v2);
-    GLuint i3 = MeshPushVertex(&batch->mesh, v3);
+    GLuint i0 = MeshPushVertex(batch->mesh, v0);
+    GLuint i1 = MeshPushVertex(batch->mesh, v1);
+    GLuint i2 = MeshPushVertex(batch->mesh, v2);
+    GLuint i3 = MeshPushVertex(batch->mesh, v3);
 
-    MeshPushTriangle(&batch->mesh, i0, i1, i2);
-    MeshPushTriangle(&batch->mesh, i0, i2, i3);
+    MeshPushTriangle(batch->mesh, i0, i1, i2);
+    MeshPushTriangle(batch->mesh, i0, i2, i3);
 
     cursorX += (float)g->advance;
   }
-  MeshUpload(&batch->mesh, GL_DYNAMIC_DRAW);
+  MeshUpload(batch->mesh, GL_DYNAMIC_DRAW);
 }
 
 

@@ -76,6 +76,11 @@ void EditorBrushArray_Init(editor_brush_array *arr, size_t capacity)
 
 void EditorBrushArray_Destroy(editor_brush_array *arr)
 {
+  for (int i = 0; i < arr->count; i++)
+  {
+    brush_t* b = &arr->brushes[i];
+    if (b) MeshDestroy(&b->editor_mesh);
+  }
   free(arr->brushes);
   arr->count = arr->capacity = 0;
 }
@@ -232,6 +237,8 @@ void BrushHoveredSideComputeMesh(brush_side_hovered_t *hside)
 
 void BrushToMesh(brush_t *b, mesh_t *mesh_out)
 {
+  assert(b);
+  assert(mesh_out);
   MeshReset(mesh_out);
   MeshInit(mesh_out, 24, 24);
 
@@ -589,7 +596,7 @@ void BrushDragPlane_3D(brush_t *brush, brush_side_t *side, float mousex, float m
     }
     side->plane.dist += dist;
     brush->dirty = 1;
-    brush->dirty_ui_edges;
+    brush->dirty_ui_edges = 1;
   }
 }
 

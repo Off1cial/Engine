@@ -43,6 +43,7 @@ void MeshReset(mesh_t *m)
   if (!m)
     return;
 
+
   m->vertex_count = 0;
   m->index_count = 0;
 
